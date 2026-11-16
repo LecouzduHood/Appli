@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Notes de devis</title>
+<meta name="description" content="Prise de notes chez le client pour préparer les devis.">
+<meta name="theme-color" content="#1f4e79">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Devis">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{
+  --bg:#f3f5f8; --card:#ffffff; --text:#17202a; --muted:#5d6b7a; --line:#dde3ea;
+  --primary:#1f4e79; --primary-soft:#e3edf7; --accent:#e8a317; --danger:#c0392b;
+  --enc:#1f4e79; --gou:#b9770e; --gou-soft:#fdf2df;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11161c; --card:#1b232c; --text:#e8edf2; --muted:#9aa8b6; --line:#2c3743;
+    --primary:#5aa2e0; --primary-soft:#1d3245; --accent:#f0b43a; --danger:#e5604f;
+    --enc:#5aa2e0; --gou:#f0b43a; --gou-soft:#3a2f1a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11161c; --card:#1b232c; --text:#e8edf2; --muted:#9aa8b6; --line:#2c3743;
+  --primary:#5aa2e0; --primary-soft:#1d3245; --accent:#f0b43a; --danger:#e5604f;
+  --enc:#5aa2e0; --gou:#f0b43a; --gou-soft:#3a2f1a;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--text);
+  font:15px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{min-height:100vh;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+header.top{position:sticky;top:0;z-index:5;background:var(--primary);color:#fff;
+  padding:calc(6px + env(safe-area-inset-top)) 12px 6px;display:flex;align-items:center;gap:10px}
+header.top h1{font-size:17px;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.top button{color:#fff;min-width:38px;height:38px;border-radius:8px;font-size:20px}
+header.top button:active{background:rgba(255,255,255,.18)}
+header.top .hclient{flex:1;min-width:0;text-align:left;height:auto;font-size:inherit;padding:2px 4px;display:block}
+header.top .hclient b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.top .hclient small{display:block;font-size:12px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.room-head .etage{flex:0 0 96px;font-weight:400;min-height:32px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);font-size:16px}
+main{padding:12px 14px;max-width:720px;margin:0 auto}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:18px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 14px;
+  border-radius:10px;font-weight:600;background:var(--primary);color:#fff;width:100%}
+.btn.sec{background:var(--primary-soft);color:var(--primary)}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
+.btn:active{opacity:.8}
+.types{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.type{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px;text-align:left;min-height:76px}
+.type{display:flex;align-items:center;gap:12px;min-height:0}
+.type .ico{font-size:22px}
+.type b{display:block;font-size:15px}
+.type small{font-size:12px}
+.type small{color:var(--muted)}
+.type.on{border-color:var(--primary);background:var(--primary-soft)}
+.type[disabled]{opacity:.5}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--accent);color:#000;margin-left:4px;vertical-align:middle}
+label.f{display:block;margin-bottom:10px}
+label.f span{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+input.t,textarea.t{width:100%;min-height:40px;padding:8px 10px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+textarea.t{min-height:64px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:0}
+.devis-item{display:flex;align-items:center;gap:6px;text-align:left;width:100%;padding:0}
+.devis-item .open{flex:1;min-width:0;display:flex;align-items:center;gap:12px;text-align:left;padding:12px}
+.devis-item .icon-btn{margin-right:6px;font-size:22px}
+.seg{display:flex;background:var(--line);border-radius:10px;padding:3px;margin-bottom:10px}
+.seg button{flex:1;min-height:34px;border-radius:8px;font-weight:600;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.sync{display:block;width:100%;text-align:center;font-size:12px;color:var(--muted);margin:16px 0 0;padding:8px}
+.menu{display:flex;flex-direction:column;margin-bottom:12px}
+.menu button{text-align:left;padding:12px 4px;border-bottom:1px solid var(--line);font-size:15px}
+.menu .rouge{color:var(--danger)}
+.devis-item .ico{font-size:26px}
+.devis-item .m{flex:1;min-width:0}
+.devis-item .m b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.devis-item small{color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+/* onglets pièces */
+.tabs{position:sticky;top:calc(50px + env(safe-area-inset-top));z-index:4;background:var(--bg);
+  display:flex;gap:8px;overflow-x:auto;padding:8px 14px;margin:0 -14px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;min-height:34px;padding:0 12px;font-size:14px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-weight:600;white-space:nowrap}
+.tab.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.tab .n{font-size:12px;opacity:.8;margin-left:4px}
+.tab.add{color:var(--primary);border-style:dashed}
+.room-head{display:flex;align-items:center;gap:6px;margin:6px 0}
+.room-head input{flex:1;font-size:18px;font-weight:700;border:0;background:transparent;padding:6px 0;min-width:0}
+.icon-btn{min-width:36px;height:36px;border-radius:8px;font-size:17px;color:var(--muted)}
+.icon-btn:active{background:var(--line)}
+/* lignes */
+.ligne{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 10px;margin-bottom:6px}
+.ligne.has{border-color:var(--primary);box-shadow:inset 4px 0 0 var(--primary)}
+.l1{display:flex;align-items:center;gap:8px}
+.l1 .lib{flex:1;min-width:0;font-weight:500}
+.l1 .lib input{width:100%;border:0;border-bottom:1px dashed var(--line);background:transparent;padding:4px 0;min-height:32px;font-size:16px}
+.step{display:flex;align-items:center;flex:none}
+.step button{width:32px;height:32px;border-radius:8px;font-size:20px;line-height:1;font-weight:700;background:var(--primary-soft);color:var(--primary)}
+.step button:active{transform:scale(.94)}
+.step input{width:42px;text-align:center;font-size:16px;font-weight:700;border:0;background:transparent;-moz-appearance:textfield}
+.step input::-webkit-inner-spin-button{-webkit-appearance:none}
+.l2{display:flex;align-items:center;gap:6px;margin-top:5px}
+.pose{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.pose button{padding:3px 10px;min-height:26px;font-size:12px;font-weight:600;color:var(--muted)}
+.pose button.on.e{background:var(--enc);color:#fff}
+.pose button.on.g{background:var(--gou);color:#fff}
+.l2 .sp{flex:1}
+.unite{font-size:12px;color:var(--muted);margin-left:4px;min-width:22px}
+.lot{font-size:12px;color:var(--muted)}
+.l2 .del{color:var(--danger);font-size:16px;min-height:26px;padding:0 6px}
+.l2 .nbtn{color:var(--muted);font-size:12px;min-height:26px;padding:0 8px;border:1px solid var(--line);border-radius:99px}
+.l2 .nbtn.on{color:var(--primary);border-color:var(--primary)}
+.lnote{margin-top:6px}
+.lnote textarea{width:100%;min-height:52px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:16px;resize:vertical}
+.lnote-r{font-size:13px;color:var(--muted);margin-top:2px}
+.room-tools{display:flex;gap:6px;margin:4px 0 10px;flex-wrap:wrap}
+.chip{min-height:30px;padding:0 10px;border-radius:99px;border:1px solid var(--line);background:var(--card);font-size:13px}
+.chip:active{background:var(--line)}
+.only{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-left:auto}
+.only input{width:20px;height:20px}
+/* barre du bas */
+.bottom{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding:8px 14px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;z-index:6}
+.bottom .btn{flex:1}
+/* feuille modale */
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--card);width:100%;max-width:720px;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:85vh;overflow:auto}
+.sheet h3{margin:0 0 12px}
+.grid-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;margin-bottom:12px}
+.grid-chips button{min-height:40px;border-radius:10px;font-size:14px;border:1px solid var(--line);background:var(--bg);font-weight:600}
+.row2{display:flex;gap:10px}
+.row2 .btn{flex:1}
+/* récap */
+.recap table{width:100%;border-collapse:collapse;font-size:15px}
+.recap td{padding:8px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+.recap td.q{text-align:right;font-weight:700;white-space:nowrap;width:64px}
+.recap td.p{width:86px;text-align:right}
+.tag{font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.tag.e{background:var(--primary-soft);color:var(--enc)}
+.tag.g{background:var(--gou-soft);color:var(--gou)}
+.recap h4{margin:4px 0 6px}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:99px;z-index:30;font-size:14px}
+.muted{color:var(--muted)}
+/* sélecteur de prestations */
+.pick-h{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:12px 0 4px}
+.pick{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 4px;border-bottom:1px solid var(--line);font-size:15px}
+.pick .ck{flex:none;width:22px;height:22px;border-radius:6px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+.pick.sel .ck{background:var(--primary);border-color:var(--primary)}
+.pick[disabled]{opacity:.45}
+.pick small{margin-left:auto;color:var(--muted);font-size:12px}
+.sheet-foot{position:sticky;bottom:calc(-18px - env(safe-area-inset-bottom));z-index:1;background:var(--card);padding:10px 0 calc(18px + env(safe-area-inset-bottom));margin-top:8px}
+.add-presta{border:1px dashed var(--primary);background:transparent}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =====================================================================
+   CATALOGUE — à modifier librement.
+   Ajoutez, renommez ou supprimez des prestations ici.
+   ===================================================================== */
+const PRESTATIONS = {
+  prise:        "Prise de courant 16A",
+  prise2:       "Prise double 16A",
+  priseSpe:     "Prise spécialisée (LL, LV, four…)",
+  prise32:      "Sortie 32A (plaque de cuisson)",
+  inter:        "Interrupteur simple allumage",
+  vv:           "Interrupteur va-et-vient",
+  poussoir:     "Bouton poussoir (télérupteur)",
+  pl:           "Point lumineux plafond (DCL)",
+  applique:     "Applique murale",
+  spot:         "Spot encastré",
+  rj45:         "Prise RJ45",
+  tv:           "Prise TV",
+  dfaf:         "Détecteur de fumée",
+  radiateur:    "Alimentation radiateur",
+  seche:        "Alimentation sèche-serviettes",
+  vmc:          "Alimentation VMC",
+  volet:        "Alimentation volet roulant",
+  liaison:      "Liaison équipotentielle",
+  hotte:        "Alimentation hotte",
+  tableau:      "Tableau électrique",
+  gtl:          "GTL (gaine technique logement)",
+  interphone:   "Interphone / visiophone",
+  sonnette:     "Sonnette",
+};
+
+/* Prestations proposées par défaut selon le nom de la pièce */
+const PIECES_PRESTA = {
+  "Entrée":   ["tableau","gtl","prise","inter","vv","pl","interphone","sonnette","dfaf"],
+  "WC":       ["inter","pl","applique","vmc"],
+  "Salon":    ["prise","prise2","inter","vv","pl","applique","rj45","tv","radiateur","volet"],
+  "Cuisine":  ["prise","prise2","priseSpe","prise32","hotte","inter","pl","spot","applique","vmc"],
+  "Chambre":  ["prise","prise2","inter","vv","pl","applique","rj45","tv","radiateur","volet"],
+  "Salle de bain": ["prise","inter","pl","spot","applique","seche","vmc","liaison","priseSpe"],
+  "Couloir":  ["prise","vv","poussoir","pl","spot","dfaf"],
+  "Bureau":   ["prise","prise2","inter","pl","rj45","radiateur"],
+  "_defaut":  ["prise","prise2","inter","vv","pl","applique","rj45","radiateur"],
+};
+
+/* Prestations qui affichent d'office un encart de note */
+const NOTE_AUTO = ["tableau"];
+const NOTE_AIDE = { tableau: "Type de tableau, nb de rangées, différentiels, disjoncteurs…" };
+
+/* Pièces proposées dans « Ajouter une pièce » */
+const PIECES_SUGGEREES = ["Entrée","WC","WC 2","Salon","Séjour","Salle à manger","Cuisine","Chambre 1","Chambre 2","Chambre 3","Chambre 4",
+  "Salle de bain","Salle d'eau","Couloir","Dégagement","Bureau","Cellier","Buanderie","Dressing","Garage","Cave","Balcon","Terrasse","Extérieur"];
+
+/* Types de devis */
+/* tce: true → catalogue tout corps d'état ; etage: true → champ « Étage » par pièce */
+const TYPES = [
+  {id:"reno-elec", ico:"⚡", nom:"Rénovation électrique", desc:"Appartement, pièce par pièce", etage:true,
+   pieces:["Entrée","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain"]},
+  {id:"reno-complete", ico:"🏠", nom:"Rénovation complète", desc:"Tout corps d'état, pièce par pièce", tce:true,
+   pieces:["Entrée","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain"]},
+  {id:"intervention", ico:"🔧", nom:"Intervention électrique", desc:"Pièces et prestations au choix", pieces:[]},
+];
+const ANCIENS_TYPES = {"reno-appart":"reno-complete", "depannage":"intervention", "tce":"reno-complete"};
+
+/* Catalogue tout corps d'état (rénovation complète). L'électricité reprend PRESTATIONS ci-dessus. */
+const LOTS_TCE = {
+  "Démolition / dépose": {
+    depSol:["Dépose revêtement de sol","m²"], depFai:["Dépose faïence","m²"], demCloison:["Démolition de cloison","m²"],
+    depSan:["Dépose appareils sanitaires","u"], gravats:["Évacuation des gravats","forfait"] },
+  "Plâtrerie / isolation": {
+    cloison:["Cloison placo","m²"], doublage:["Doublage isolant","m²"], fauxPlaf:["Faux plafond","m²"],
+    coffrage:["Coffrage (gaines, tuyaux)","ml"], enduit:["Bandes et enduit","m²"] },
+  "Plomberie / sanitaire": {
+    wcSusp:["WC suspendu","u"], wcPose:["WC à poser","u"], vasque:["Lavabo / meuble vasque","u"],
+    douche:["Douche à l'italienne","u"], receveur:["Receveur + paroi de douche","u"], baignoire:["Baignoire","u"],
+    evier:["Évier","u"], alimEvac:["Alimentation + évacuation","u"], ballon:["Chauffe-eau","u"], radEau:["Radiateur à eau","u"] },
+  "Revêtements de sol": {
+    ragreage:["Ragréage","m²"], carrelage:["Carrelage sol","m²"], parquet:["Parquet","m²"], solPvc:["Sol vinyle / PVC","m²"],
+    plinthes:["Plinthes","ml"] },
+  "Revêtements muraux": {
+    faience:["Faïence murale","m²"], credence:["Crédence","ml"] },
+  "Peinture": {
+    peintPlaf:["Peinture plafond","m²"], peintMur:["Peinture murs","m²"], toileVerre:["Toile de verre","m²"],
+    peintPorte:["Peinture porte / boiseries","u"] },
+  "Menuiserie": {
+    porte:["Bloc-porte intérieur","u"], fenetre:["Fenêtre","u"], placard:["Placard / portes de placard","u"],
+    cuisine:["Pose meubles de cuisine","ml"] },
+};
+
+/* Catalogue complet, construit automatiquement (ne pas modifier) */
+const CATALOGUE = {};
+Object.entries(PRESTATIONS).forEach(([k,v]) => CATALOGUE[k] = {lib:v, lot:"Électricité", unite:"u", elec:true});
+Object.entries(LOTS_TCE).forEach(([lot,items]) => Object.entries(items).forEach(([k,[lib,unite]]) => CATALOGUE[k] = {lib, lot, unite, elec:false}));
+/* ===================================================================== */
+
+const KEY = "devis-notes-v1";
+const $app = document.getElementById("app");
+const uid = () => Math.random().toString(36).slice(2,10);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const typeOf = id => TYPES.find(t => t.id === id) || TYPES[0];
+
+let db = load();
+let view = {name:"home"};   // home | new | devis | recap
+let ui = {};
+
+function load(){
+  try{ const d = JSON.parse(localStorage.getItem(KEY)); if(d && Array.isArray(d.devis)){
+    // v1 → v2 : on retire les lignes pré-remplies jamais utilisées
+    d.devis.forEach(dv => { if(ANCIENS_TYPES[dv.type]) dv.type = ANCIENS_TYPES[dv.type];
+      dv.pieces.forEach(p => { p.lignes = p.lignes.filter(l => !l.presta || l.qte > 0 || l.note); }); });
+    return d; } }catch(e){}
+  return {devis:[]};
+}
+let saveT;
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(db)); }catch(e){}
+}
+
+/* Synchronisation avec le compte Claude (quand l'appli est ouverte depuis le lien claude.ai).
+   Chaque devis = un document privé « data/users/<id>/<devisId> » : visible de vous seul. */
+const cloud = {ref:null, ok:false, dirty:new Set(), timers:{}, chain:{}, diag:{}};
+function lsOk(){ try{ localStorage.setItem(KEY+"-t","1"); return localStorage.getItem(KEY+"-t")==="1"; }catch(e){ return false; } }
+function cloudSave(id){
+  if(!cloud.ref) return;
+  cloud.dirty.add(id);
+  clearTimeout(cloud.timers[id]);
+  cloud.timers[id] = setTimeout(() => {
+    const d = db.devis.find(x => x.id === id);
+    const prev = cloud.chain[id] || Promise.resolve();
+    cloud.chain[id] = prev.then(() => d ? cloud.ref.doc(id).set(JSON.parse(JSON.stringify(d))) : cloud.ref.doc(id).delete())
+      .then(() => { cloud.dirty.delete(id); setSync("ok"); })
+      .catch(e => { cloud.diag.err = e && e.code; setSync("err"); });
+  }, 300);
+}
+function cloudFlush(){
+  Object.keys(cloud.timers).forEach(id => { clearTimeout(cloud.timers[id]); delete cloud.timers[id];
+    const d = db.devis.find(x => x.id === id);
+    if(cloud.ref) (d ? cloud.ref.doc(id).set(JSON.parse(JSON.stringify(d))) : cloud.ref.doc(id).delete())
+      .then(() => { cloud.dirty.delete(id); setSync("ok"); }, e => { cloud.diag.err = e && e.code; setSync("err"); });
+  });
+}
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "hidden"){ save(); cloudFlush(); } });
+window.addEventListener("pagehide", () => { save(); cloudFlush(); });
+function setSync(st){
+  cloud.state = st;
+  const el = document.getElementById("sync"); if(el) el.innerHTML = syncTxt();
+  const ic = document.getElementById("syncIco"); if(ic) ic.textContent = syncIco();
+}
+function syncIco(){ return !cloud.ref ? (lsOk() ? "📱" : "⚠️") : cloud.state === "err" ? "⚠️" : cloud.state === "load" ? "⏳" : "☁️"; }
+function syncTxt(){
+  if(!cloud.ref && !lsOk()) return "⚠️ Rien n'est enregistré : ce navigateur bloque la sauvegarde";
+  if(!cloud.ref) return "📱 Enregistré sur ce téléphone uniquement";
+  if(cloud.state === "err") return "⚠️ Pas de réseau : enregistré sur le téléphone, envoi au retour du réseau";
+  if(cloud.state === "load") return "☁️ Chargement de vos devis…";
+  return "☁️ Enregistré sur votre compte";
+}
+async function initCloud(){
+  try{
+    cloud.diag.claude = !!(window.claude && window.claude.use);
+    if(!cloud.diag.claude) return;
+    const [store, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    cloud.diag.db = !!store; cloud.diag.user = !!user;
+    if(!store || !user){ setSync(); return; }
+    const uidUser = await user.id(); cloud.diag.id = !!uidUser;
+    if(!uidUser){ setSync(); return; }
+    cloud.ref = store.collection("data/users/" + uidUser);
+    setSync("load");
+    const timer = setTimeout(() => { if(cloud.state === "load") setSync("err"); }, 10000);
+    let first = true;
+    cloud.ref.onSnapshot(snap => {
+      if(snap.metadata.fromCache && first) return;
+      clearTimeout(timer);
+      const serveur = new Map(snap.docs.map(x => [x.id, x.data()]));
+      if(first){
+        // 1re fois : on envoie les devis qui n'existent que sur ce téléphone
+        db.devis.forEach(d => { if(!serveur.has(d.id)) cloudSave(d.id); });
+        first = false;
+      }
+      serveur.forEach((data, id) => {
+        if(cloud.dirty.has(id) || !data || !data.id) return;
+        const i = db.devis.findIndex(x => x.id === id);
+        const copie = JSON.parse(JSON.stringify(data));
+        if(i < 0) db.devis.push(copie);
+        else if((db.devis[i].maj||0) < (copie.maj||0)) db.devis[i] = copie;
+      });
+      snap.docChanges().forEach(ch => {
+        if(ch.type === "removed" && !cloud.dirty.has(ch.doc.id)) db.devis = db.devis.filter(x => x.id !== ch.doc.id);
+      });
+      save(); setSync("ok");
+      const saisie = document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName);
+      if(!saisie && !document.getElementById("sheet")) render();
+    }, e => { cloud.diag.err = e && e.code; setSync("err"); });
+  }catch(e){ cloud.diag.err = String(e && (e.code || e.message)); setSync(); }
+}
+function prestaFor(nom){
+  const base = nom.replace(/\s*\d+$/,"").trim();
+  const key = Object.keys(PIECES_PRESTA).find(k => k.toLowerCase() === base.toLowerCase())
+    || (/bain|eau/i.test(base) ? "Salle de bain" : "_defaut");
+  return PIECES_PRESTA[key];
+}
+function newPiece(nom){ return {id:uid(), nom, etage:"", note:"", lignes:[]}; }
+function newLigne(presta){ return {id:uid(), presta, libelle: presta ? CATALOGUE[presta].lib : "", qte:1, pose:"encastre", note:""}; }
+/* Une ligne libre est « électrique » sauf en rénovation complète */
+function estElec(l, d){ return l.presta ? !!(CATALOGUE[l.presta]||{elec:true}).elec : !typeOf(d.type).tce; }
+function unite(l){ return l.presta && CATALOGUE[l.presta] ? CATALOGUE[l.presta].unite : "u"; }
+function nomPiece(p){ return p.nom + (p.etage ? ` · ${p.etage}` : ""); }
+function cur(){ return db.devis.find(d => d.id === view.id); }
+function piece(d){ return d.pieces.find(p => p.id === ui.pieceId) || d.pieces[0]; }
+function nbLignes(p){ return p.lignes.filter(l => l.qte > 0).length; }
+function fmtDate(t){ return new Date(t).toLocaleDateString("fr-FR",{day:"2-digit",month:"short",year:"numeric"}); }
+
+/* ---------- Rendu ---------- */
+function render(){
+  if(view.name === "home") renderHome();
+  else if(view.name === "new") renderNew();
+  else if(view.name === "devis") renderDevis();
+  else if(view.name === "recap") renderRecap();
+}
+
+function renderHome(){
+  const f = ui.filtre || "cours", q = (ui.recherche||"").toLowerCase();
+  const nCours = db.devis.filter(d=>!d.termine).length, nFini = db.devis.length - nCours;
+  const list = [...db.devis].filter(d => f==="cours" ? !d.termine : d.termine)
+    .filter(d => !q || [d.client,d.adresse,d.tel].join(" ").toLowerCase().includes(q))
+    .sort((a,b)=>b.maj-a.maj);
+  $app.innerHTML = `
+  <header class="top"><h1>📋 Notes de devis</h1></header>
+  <main>
+    <div class="seg">
+      <button class="${f==="cours"?"on":""}" data-act="filtre" data-v="cours">En cours (${nCours})</button>
+      <button class="${f==="fini"?"on":""}" data-act="filtre" data-v="fini">Terminés (${nFini})</button>
+    </div>
+    ${db.devis.length > 3 ? `<input class="t" id="recherche" type="search" placeholder="Rechercher un client, une adresse…" value="${esc(ui.recherche||"")}" style="margin-bottom:10px">` : ""}
+    <div id="liste">${listeHTML(list, f)}</div>
+    <button class="sync" id="sync" data-act="diag">${syncTxt()}</button>
+  </main>
+  <div class="bottom"><button class="btn" data-act="new">＋ Nouveau devis</button></div>`;
+}
+
+function listeHTML(list, f){
+  if(!list.length) return `<div class="empty">${ui.recherche ? "Aucun devis ne correspond." : f==="cours" ? "Aucun devis en cours.<br>Appuyez sur « Nouveau devis » pour commencer." : "Aucun devis terminé."}</div>`;
+  return list.map(d=>{
+    const t = typeOf(d.type), n = d.pieces.reduce((s,p)=>s+nbLignes(p),0);
+    return `<div class="card devis-item">
+      <button class="open" data-act="open" data-id="${d.id}">
+        <span class="ico">${t.ico}</span>
+        <span class="m"><b>${esc(d.client || "Client sans nom")}</b>
+        <small>${d.adresse ? esc(d.adresse)+"<br>" : ""}${esc(t.nom)} · ${d.pieces.length} pièce(s) · ${n} ligne(s) · ${fmtDate(d.maj)}</small></span>
+      </button>
+      <button class="icon-btn" data-act="menuDevis" data-id="${d.id}" aria-label="Gérer ce devis">⋯</button></div>`;}).join("");
+}
+
+function menuDevis(d){
+  if(!d) return;
+  const s = sheet(`<h3>${esc(d.client || "Client sans nom")}</h3>
+    <div class="menu">
+      <button data-m="open">📂 Ouvrir</button>
+      <button data-m="infos">✎ Modifier nom, adresse, téléphone</button>
+      <button data-m="termine">${d.termine ? "↩️ Remettre en cours" : "✅ Marquer comme terminé"}</button>
+      <button data-m="dup">⧉ Dupliquer (même relevé pour un autre client)</button>
+      <button data-m="del" class="rouge">🗑 Supprimer</button>
+    </div>
+    <button class="btn sec" data-s="no">Fermer</button>`);
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  s.querySelectorAll("[data-m]").forEach(b => b.onclick = () => {
+    const m = b.dataset.m; closeSheet();
+    if(m === "open"){ ui.pieceId = null; go("devis",{id:d.id}); }
+    if(m === "infos"){ view = {name:"home", id:d.id}; infosSheet(); }
+    if(m === "termine"){ d.termine = !d.termine; d.maj = Date.now(); cloudSave(d.id); save(); renderHome();
+      toast(d.termine ? "Devis classé dans « Terminés »" : "Devis remis en cours"); }
+    if(m === "dup"){ const c = JSON.parse(JSON.stringify(d)); c.id = uid(); c.client = (d.client||"Client") + " (copie)";
+      c.termine = false; c.cree = c.maj = Date.now(); c.pieces.forEach(p => { p.id = uid(); p.lignes.forEach(l => l.id = uid()); });
+      db.devis.push(c); cloudSave(c.id); save(); ui.filtre = "cours"; renderHome(); toast("Devis dupliqué"); }
+    if(m === "del") supprimerDevis(d);
+  });
+}
+function supprimerDevis(d){
+  confirmSheet(`Supprimer définitivement le devis « ${esc(d.client || "Client sans nom")} » ?`, "Supprimer", () => {
+    db.devis = db.devis.filter(x=>x.id!==d.id); save(); cloudSave(d.id); go("home"); toast("Devis supprimé"); });
+}
+
+function renderNew(){
+  const sel = ui.newType || "reno-elec";
+  $app.innerHTML = `
+  <header class="top"><button data-act="home" aria-label="Retour">‹</button><h1>Nouveau devis</h1></header>
+  <main>
+    <h2>Type de devis</h2>
+    <div class="types" style="grid-template-columns:1fr">${TYPES.map(t=>`
+      <button class="type ${t.id===sel?"on":""}" data-act="pickType" data-id="${t.id}" ${t.bientot?"disabled":""}>
+        <span class="ico">${t.ico}</span><span><b>${t.nom}${t.bientot?'<span class="badge">Bientôt</span>':""}</b>
+        <small>${t.desc}</small></span></button>`).join("")}
+    </div>
+    <h2>Client</h2>
+    <div class="card">
+      <label class="f"><span>Nom du client</span><input class="t" id="nClient" autocomplete="off" placeholder="Ex. M. Dupont" value="${esc(ui.nClient||"")}"></label>
+      <label class="f"><span>Adresse du chantier</span><input class="t" id="nAdr" autocomplete="off" placeholder="Ex. 12 rue des Lilas, 3e étage" value="${esc(ui.nAdr||"")}"></label>
+      <label class="f" style="margin:0"><span>Téléphone</span><input class="t" id="nTel" type="tel" autocomplete="off" value="${esc(ui.nTel||"")}"></label>
+    </div>
+    <p class="muted" style="font-size:14px">Vous choisirez ensuite les pièces dans une liste.</p>
+  </main>
+  <div class="bottom"><button class="btn" data-act="create">Commencer le relevé</button></div>`;
+}
+
+function renderDevis(){
+  const d = cur(); if(!d){ go("home"); return; }
+  const p = piece(d); if(p) ui.pieceId = p.id;
+  const t = typeOf(d.type);
+  const lignes = p ? p.lignes : [];
+  $app.innerHTML = `
+  <header class="top"><button data-act="home" aria-label="Retour">‹</button>
+    <button class="hclient" data-act="infos"><b>${esc(d.client || "Nom du client ?")}</b>
+      <small>${t.ico} ${d.adresse ? esc(d.adresse) : "Adresse du chantier ?"}</small></button>
+    <button data-act="diag" id="syncIco" aria-label="État de la sauvegarde" style="font-size:16px">${syncIco()}</button>
+    <button data-act="infos" aria-label="Infos client">✎</button></header>
+  <main>
+    <div class="tabs" id="tabs">${d.pieces.map(x=>`
+      <button class="tab ${p&&x.id===p.id?"on":""}" data-act="tab" data-id="${x.id}">${esc(nomPiece(x))}${nbLignes(x)?`<span class="n">${nbLignes(x)}</span>`:""}</button>`).join("")}
+      <button class="tab add" data-act="addPiece">＋ Pièce</button>
+    </div>
+    ${p ? `
+    <div class="room-head">
+      <input id="roomName" value="${esc(p.nom)}" aria-label="Nom de la pièce">
+      ${t.etage ? `<input class="etage" id="roomEtage" value="${esc(p.etage||"")}" placeholder="Étage" aria-label="Étage (facultatif)">` : ""}
+      <button class="icon-btn" data-act="delPiece" aria-label="Supprimer la pièce">🗑</button>
+    </div>
+    <div class="room-tools" ${lignes.some(l=>estElec(l,d)) ? "" : "hidden"}>
+      <button class="chip" data-act="allPose" data-v="encastre">Tout encastré</button>
+      <button class="chip" data-act="allPose" data-v="goulotte">Tout en goulotte</button>
+    </div>
+    <div id="lignes">${lignes.map(ligneHTML).join("") || `<div class="empty">Aucune prestation dans cette pièce.<br>Appuyez sur « Ajouter des prestations ».</div>`}</div>
+    <div class="row2" style="margin-top:4px">
+      <button class="btn sec" data-act="pickPresta">＋ Ajouter des prestations</button>
+      <button class="btn sec add-presta" data-act="addLigne" style="flex:0 0 auto;width:auto">＋ Ligne libre</button>
+    </div>
+    <h2>Notes sur la pièce</h2>
+    <textarea class="t" id="roomNote" placeholder="Remarques, dimensions, état existant…">${esc(p.note)}</textarea>
+    ` : `<div class="empty">Aucune pièce. Ajoutez-en une avec « ＋ Pièce ».</div>`}
+  </main>
+  <div class="bottom">
+    <button class="btn sec" data-act="addPiece">＋ Pièce</button>
+    <button class="btn" data-act="recap">Récapitulatif</button>
+  </div>`;
+  const tb = document.querySelector(".tab.on"); if(tb) tb.scrollIntoView({inline:"center",block:"nearest"});
+}
+
+function ligneHTML(l){
+  const libre = !l.presta, d = cur(), elec = estElec(l, d), u = unite(l);
+  const noteAuto = NOTE_AUTO.includes(l.presta);
+  const noteOuverte = noteAuto || l.note || ui.noteOpen === l.id;
+  return `<div class="ligne ${l.qte>0?"has":""}" data-lid="${l.id}">
+    <div class="l1">
+      <div class="lib">${libre
+        ? `<input data-f="libelle" value="${esc(l.libelle)}" placeholder="Description de la prestation…">`
+        : esc(l.libelle)}</div>
+      <div class="step">
+        <button data-act="moins" aria-label="Moins">−</button>
+        <input data-f="qte" type="text" inputmode="decimal" autocomplete="off" value="${String(l.qte).replace(".",",")}" aria-label="Quantité">
+        <button data-act="plus" aria-label="Plus">+</button>
+        ${u !== "u" ? `<span class="unite">${esc(u)}</span>` : ""}
+      </div>
+    </div>
+    <div class="l2">
+      ${elec ? `<div class="pose">
+        <button class="e ${l.pose==="encastre"?"on":""}" data-act="pose" data-v="encastre">Encastré</button>
+        <button class="g ${l.pose==="goulotte"?"on":""}" data-act="pose" data-v="goulotte">Goulotte</button>
+      </div>` : `<span class="lot">${esc(l.presta ? CATALOGUE[l.presta].lot : "Ligne libre")}</span>`}
+      ${noteAuto ? "" : `<button class="nbtn ${noteOuverte?"on":""}" data-act="noteLigne">📝 Note</button>`}
+      <span class="sp"></span>
+      <button class="del" data-act="delLigne" aria-label="Retirer la ligne">✕</button>
+    </div>
+    ${noteOuverte ? `<div class="lnote"><textarea data-f="note" placeholder="${esc(NOTE_AIDE[l.presta] || "Note…")}">${esc(l.note||"")}</textarea></div>` : ""}
+  </div>`;
+}
+
+function qteTxt(l, u){ u = u || unite(l); return u === "u" ? `× ${String(l.qte).replace(".",",")}` : `${String(l.qte).replace(".",",")} ${esc(u)}`; }
+function poseTag(p){ return p==="goulotte" ? `<span class="tag g">Goulotte</span>` : `<span class="tag e">Encastré</span>`; }
+
+function renderRecap(){
+  const d = cur(); if(!d){ go("home"); return; }
+  const t = typeOf(d.type);
+  const tot = {};
+  d.pieces.forEach(p => p.lignes.forEach(l => { if(l.qte>0){
+    const k = (l.libelle||"Ligne libre")+"|"+(estElec(l,d)?l.pose:"")+"|"+unite(l); tot[k] = (tot[k]||0) + l.qte; }}));
+  const totKeys = Object.keys(tot).sort();
+  $app.innerHTML = `
+  <header class="top"><button data-act="back" aria-label="Retour">‹</button><h1>Récapitulatif</h1></header>
+  <main class="recap">
+    <div class="card">
+      <b>${esc(d.client || "Client sans nom")}</b><br>
+      <span class="muted">${esc(t.nom)}${d.adresse?" · "+esc(d.adresse):""}${d.tel?" · "+esc(d.tel):""}</span><br>
+      <span class="muted">Relevé du ${fmtDate(d.cree)}</span>
+    </div>
+    <h2>Par pièce</h2>
+    ${d.pieces.filter(p=>p.lignes.some(l=>l.qte>0)||p.note).map(p=>{
+      const ls = p.lignes.filter(l=>l.qte>0);
+      return `<div class="card"><h4>${esc(p.nom)}${p.etage?` <span class="muted" style="font-weight:400">· Étage : ${esc(p.etage)}</span>`:""}</h4>
+        ${ls.length ? `<table>${ls.map(l=>`<tr><td>${esc(l.libelle||"Ligne libre")}${l.note?`<div class="lnote-r">📝 ${esc(l.note)}</div>`:""}</td><td class="p">${estElec(l,d)?poseTag(l.pose):""}</td><td class="q">${qteTxt(l)}</td></tr>`).join("")}</table>`
+        : `<span class="muted">Rien de saisi</span>`}
+        ${p.note?`<p class="muted" style="margin:8px 0 0">📝 ${esc(p.note)}</p>`:""}</div>`;}).join("")}
+    ${(()=>{const v=d.pieces.filter(p=>!p.lignes.some(l=>l.qte>0)&&!p.note).map(p=>esc(p.nom)); return v.length?`<p class="muted" style="font-size:13px">Pièces sans saisie : ${v.join(", ")}</p>`:"";})()}
+    <h2>Totaux (toutes pièces)</h2>
+    <div class="card">${totKeys.length ? `<table>${totKeys.map(k=>{const [lib,pose,u]=k.split("|");
+      return `<tr><td>${esc(lib)}</td><td class="p">${pose?poseTag(pose):""}</td><td class="q">${qteTxt({qte:Math.round(tot[k]*100)/100}, u)}</td></tr>`;}).join("")}</table>`
+      : `<span class="muted">Aucune quantité saisie.</span>`}</div>
+    <div class="row2" style="margin-top:16px">
+      <button class="btn danger" data-act="delDevis">Supprimer le devis</button>
+    </div>
+  </main>
+  <div class="bottom">
+    <button class="btn sec" data-act="back">‹ Modifier</button>
+    <button class="btn" data-act="share">Partager / copier</button>
+  </div>`;
+}
+
+function recapTexte(d){
+  const t = typeOf(d.type);
+  const L = [`DEVIS — ${t.nom}`, `Client : ${d.client||"-"}`];
+  if(d.adresse) L.push(`Adresse : ${d.adresse}`);
+  if(d.tel) L.push(`Tél : ${d.tel}`);
+  L.push(`Relevé du ${fmtDate(d.cree)}`, "");
+  d.pieces.forEach(p=>{
+    const ls = p.lignes.filter(l=>l.qte>0);
+    if(!ls.length && !p.note) return;
+    L.push(`== ${p.nom.toUpperCase()}${p.etage?` (étage : ${p.etage})`:""} ==`);
+    ls.forEach(l=>{ const u = unite(l);
+      L.push(`- ${l.libelle||"Ligne libre"}${estElec(l,d)?` (${l.pose==="goulotte"?"goulotte":"encastré"})`:""} : ${u==="u"?"x "+String(l.qte).replace(".",","):String(l.qte).replace(".",",")+" "+u}`);
+      if(l.note) L.push(`    Note : ${l.note}`); });
+    if(p.note) L.push(`Note : ${p.note}`);
+    L.push("");
+  });
+  return L.join("\n");
+}
+
+/* ---------- Feuilles modales ---------- */
+function sheet(html){
+  closeSheet();
+  const bg = document.createElement("div");
+  bg.className = "sheet-bg"; bg.id = "sheet";
+  bg.innerHTML = `<div class="sheet">${html}</div>`;
+  bg.addEventListener("click", e => { if(e.target === bg) closeSheet(); });
+  document.body.appendChild(bg);
+  return bg;
+}
+function closeSheet(){ const s = document.getElementById("sheet"); if(s) s.remove(); }
+function confirmSheet(msg, okLabel, onOk){
+  const s = sheet(`<h3>${msg}</h3><div class="row2">
+    <button class="btn sec" data-s="no">Annuler</button><button class="btn" style="background:var(--danger)" data-s="ok">${okLabel}</button></div>`);
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  s.querySelector('[data-s="ok"]').onclick = () => { closeSheet(); onOk(); };
+}
+function toast(msg){
+  const t = document.createElement("div"); t.className="toast"; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(), 1800);
+}
+
+function addPieceSheet(){
+  const d = cur(), t = typeOf(d.type);
+  const deja = new Set(d.pieces.map(p=>p.nom));
+  const habituel = t.pieces;
+  const autres = PIECES_SUGGEREES.filter(n => !habituel.includes(n));
+  const sel = new Set();
+  const item = n => `<button class="pick" data-n="${esc(n)}" ${deja.has(n)?"disabled":""}><span class="ck"></span>${esc(n)}${deja.has(n)?"<small>déjà ajoutée</small>":""}</button>`;
+  const s = sheet(`<h3>Ajouter des pièces</h3>
+    ${habituel.length ? `<div class="pick-h">Habituel pour ce devis</div>${habituel.map(item).join("")}` : ""}
+    <div class="pick-h">${habituel.length ? "Autres pièces" : "Pièces"}</div>${autres.map(item).join("")}
+    <div class="pick-h">Nom libre</div>
+    <input class="t" id="customPiece" placeholder="Ex. Chambre parents, Garage…" autocomplete="off">
+    <div class="sheet-foot row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">Ajouter</button></div>`);
+  const okBtn = s.querySelector('[data-s="ok"]'), custom = s.querySelector("#customPiece");
+  const maj = () => { const n = sel.size + (custom.value.trim() ? 1 : 0); okBtn.textContent = n ? `Ajouter (${n})` : "Ajouter"; };
+  s.querySelectorAll(".pick").forEach(b => b.onclick = () => {
+    const n = b.dataset.n; sel.has(n) ? sel.delete(n) : sel.add(n);
+    b.classList.toggle("sel", sel.has(n)); b.querySelector(".ck").textContent = sel.has(n) ? "✓" : ""; maj();
+  });
+  custom.addEventListener("input", maj);
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  okBtn.onclick = () => {
+    const noms = [...habituel, ...autres].filter(n => sel.has(n));
+    if(custom.value.trim()) noms.push(custom.value.trim());
+    if(!noms.length){ closeSheet(); return; }
+    let premiere = null;
+    noms.forEach(nom => {
+      // Évite les doublons : « Garage » existe → « Garage (2) »
+      let n = nom, i = 2; while(d.pieces.some(p=>p.nom===n)) n = `${nom} (${i++})`;
+      const p = newPiece(n); d.pieces.push(p); premiere = premiere || p;
+    });
+    ui.pieceId = premiere.id; touch(); closeSheet(); renderDevis();
+  };
+}
+
+function pickPrestaSheet(){
+  const d = cur(), p = piece(d);
+  const deja = new Set(p.lignes.map(l=>l.presta).filter(Boolean));
+  const t = typeOf(d.type);
+  const sugg = t.id === "intervention" ? [] : prestaFor(p.nom);
+  const autres = Object.keys(PRESTATIONS).filter(k => !sugg.includes(k));
+  const lots = t.tce ? Object.entries(LOTS_TCE) : [];
+  const sel = new Set();
+  const item = k => `<button class="pick" data-k="${k}" ${deja.has(k)?"disabled":""}><span class="ck"></span>${esc(CATALOGUE[k].lib)}${deja.has(k)?"<small>déjà ajoutée</small>":(CATALOGUE[k].unite!=="u"?`<small>${esc(CATALOGUE[k].unite)}</small>`:"")}</button>`;
+  const s = sheet(`<h3>Ajouter dans « ${esc(p.nom)} »</h3>
+    ${sugg.length ? `<div class="pick-h">${t.tce?"Électricité · ":""}Habituel pour cette pièce</div>${sugg.map(item).join("")}` : ""}
+    <div class="pick-h">${t.tce ? "Électricité · autres" : sugg.length ? "Autres prestations" : "Prestations électriques"}</div>${autres.map(item).join("")}
+    ${lots.map(([lot,items]) => `<div class="pick-h">${esc(lot)}</div>${Object.keys(items).map(item).join("")}`).join("")}
+    <div class="sheet-foot row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">Ajouter</button></div>`);
+  const okBtn = s.querySelector('[data-s="ok"]');
+  s.querySelectorAll(".pick").forEach(b => b.onclick = () => {
+    const k = b.dataset.k; sel.has(k) ? sel.delete(k) : sel.add(k);
+    b.classList.toggle("sel", sel.has(k)); b.querySelector(".ck").textContent = sel.has(k) ? "✓" : "";
+    okBtn.textContent = sel.size ? `Ajouter (${sel.size})` : "Ajouter";
+  });
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  okBtn.onclick = () => {
+    // On garde l'ordre du catalogue
+    [...sugg, ...autres, ...lots.flatMap(([,items])=>Object.keys(items))].filter(k => sel.has(k)).forEach(k => p.lignes.push(newLigne(k)));
+    touch(); closeSheet(); renderDevis();
+  };
+}
+
+function infosSheet(){
+  const d = cur();
+  const s = sheet(`<h3>Infos client</h3>
+    <label class="f"><span>Nom du client</span><input class="t" id="iClient" value="${esc(d.client)}" placeholder="Ex. M. Dupont"></label>
+    <label class="f"><span>Adresse du chantier</span><input class="t" id="iAdr" value="${esc(d.adresse)}" placeholder="Ex. 12 rue des Lilas, 3e étage"></label>
+    <label class="f"><span>Téléphone</span><input class="t" id="iTel" type="tel" value="${esc(d.tel)}"></label>
+    <label class="f"><span>Notes générales</span><textarea class="t" id="iNote">${esc(d.note)}</textarea></label>
+    <button class="btn" data-s="ok">Enregistrer</button>`);
+  s.querySelector('[data-s="ok"]').onclick = () => {
+    d.client = s.querySelector("#iClient").value.trim();
+    d.adresse = s.querySelector("#iAdr").value.trim();
+    d.tel = s.querySelector("#iTel").value.trim();
+    d.note = s.querySelector("#iNote").value;
+    touch(); closeSheet(); render();
+  };
+}
+
+/* ---------- Actions ---------- */
+function go(name, extra){ view = Object.assign({name}, extra||{}); window.scrollTo(0,0); render();
+  try{ localStorage.setItem(KEY+"-vue", JSON.stringify(view.name==="devis" ? view : {name:"home"})); }catch(e){} }
+function touch(){ const d = cur(); if(d){ d.maj = Date.now(); cloudSave(d.id); } save(); }
+function findLigne(el){
+  const box = el.closest("[data-lid]"); if(!box) return {};
+  const p = piece(cur()); return {box, l: p.lignes.find(x=>x.id===box.dataset.lid)};
+}
+function majLigne(box, l){
+  box.classList.toggle("has", l.qte>0);
+  box.querySelector('[data-f="qte"]').value = String(l.qte).replace(".",",");
+  const p = piece(cur()), tab = document.querySelector(".tab.on");
+  if(tab){ const n = nbLignes(p); tab.innerHTML = esc(p.nom) + (n?`<span class="n">${n}</span>`:""); }
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if(!b) return;
+  const a = b.dataset.act, d = cur();
+  switch(a){
+    case "home": go("home"); break;
+    case "new": ui.newType = "reno-elec"; ui.nClient = ui.nAdr = ui.nTel = ""; go("new"); break;
+    case "pickType":
+      ui.nClient = document.getElementById("nClient").value;
+      ui.nAdr = document.getElementById("nAdr").value;
+      ui.nTel = document.getElementById("nTel").value;
+      ui.newType = b.dataset.id; renderNew(); break;
+    case "create": {
+      const t = typeOf(ui.newType || "reno-elec");
+      const nd = {id:uid(), type:t.id, client:document.getElementById("nClient").value.trim(),
+        adresse:document.getElementById("nAdr").value.trim(), tel:document.getElementById("nTel").value.trim(),
+        note:"", cree:Date.now(), maj:Date.now(), pieces:[]};
+      db.devis.push(nd); save(); cloudSave(nd.id); ui.pieceId = nd.pieces[0]?.id; go("devis",{id:nd.id});
+      addPieceSheet();
+      break;
+    }
+    case "open": { ui.pieceId = null; go("devis",{id:b.dataset.id}); const o = cur(); if(o && (!o.client || !o.adresse)) infosSheet(); break; }
+    case "pickPresta": pickPrestaSheet(); break;
+    case "noteLigne": {
+      const {l} = findLigne(b); if(!l) return;
+      ui.noteOpen = (ui.noteOpen === l.id && !l.note) ? null : l.id; renderDevis();
+      const ta = document.querySelector(`[data-lid="${l.id}"] [data-f="note"]`); if(ta) ta.focus();
+      break;
+    }
+    case "tab": ui.pieceId = b.dataset.id; renderDevis(); window.scrollTo(0,0); break;
+    case "addPiece": addPieceSheet(); break;
+    case "infos": infosSheet(); break;
+    case "delPiece": {
+      const p = piece(d);
+      confirmSheet(`Supprimer la pièce « ${esc(p.nom)} » ?`, "Supprimer", () => {
+        const i = d.pieces.indexOf(p); d.pieces.splice(i,1);
+        ui.pieceId = (d.pieces[i] || d.pieces[i-1] || {}).id; touch(); renderDevis();
+      }); break;
+    }
+    case "plus": case "moins": {
+      const {box,l} = findLigne(b); if(!l) return;
+      l.qte = Math.max(0, Math.round(((l.qte||0) + (a==="plus"?1:-1))*100)/100); majLigne(box,l); touch(); break;
+    }
+    case "pose": {
+      const {box,l} = findLigne(b); if(!l) return;
+      l.pose = b.dataset.v;
+      box.querySelectorAll(".pose button").forEach(x=>x.classList.toggle("on", x.dataset.v===l.pose));
+      touch(); break;
+    }
+    case "allPose": piece(d).lignes.filter(l=>estElec(l,d)).forEach(l=>l.pose=b.dataset.v); touch(); renderDevis(); toast(b.dataset.v==="goulotte"?"Toute la pièce en goulotte":"Toute la pièce en encastré"); break;
+    case "addLigne": {
+      const p = piece(d); const l = newLigne(null);
+      p.lignes.push(l); touch(); renderDevis();
+      const inp = document.querySelector(`[data-lid="${l.id}"] [data-f="libelle"]`);
+      if(inp){ inp.scrollIntoView({block:"center"}); inp.focus(); }
+      break;
+    }
+    case "delLigne": {
+      const {l} = findLigne(b); const p = piece(d);
+      p.lignes = p.lignes.filter(x=>x!==l); touch(); renderDevis(); break;
+    }
+    case "recap": go("recap",{id:d.id}); break;
+    case "back": go("devis",{id:d.id}); break;
+    case "share": {
+      const txt = recapTexte(d);
+      if(navigator.share && window.top === window.self){
+        navigator.share({title:"Relevé devis", text:txt}).catch(err => { if(err && err.name !== "AbortError") copier(txt); });
+      } else copier(txt);
+      break;
+    }
+    case "delDevis": supprimerDevis(d); break;
+    case "menuDevis": menuDevis(db.devis.find(x=>x.id===b.dataset.id)); break;
+    case "diag": {
+      const g = cloud.diag, oui = v => v ? "oui" : "non";
+      const s2 = sheet(`<h3>Sauvegarde</h3><p>${syncTxt()}</p>
+        <p class="muted" style="font-size:13px">Téléphone : ${oui(lsOk())} · Lien Claude : ${oui(g.claude)} · Base : ${oui(g.db)} · Compte : ${oui(g.id)}${g.err?` · Erreur : ${esc(g.err)}`:""}<br>${db.devis.length} devis sur cet appareil</p>
+        <button class="btn sec" data-s="no">Fermer</button>`);
+      s2.querySelector('[data-s="no"]').onclick = closeSheet; break;
+    }
+    case "filtre": ui.filtre = b.dataset.v; renderHome(); break;
+  }
+});
+
+function copier(txt){
+  const ok = () => toast("Récapitulatif copié");
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(ok, () => fallback());
+  } else fallback();
+  function fallback(){
+    const ta = document.createElement("textarea"); ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); ok(); }catch(e){ toast("Copie impossible"); }
+    ta.remove();
+  }
+}
+
+document.addEventListener("input", e => {
+  if(e.target.id === "recherche"){ ui.recherche = e.target.value; const f = ui.filtre||"cours", q = ui.recherche.toLowerCase();
+    document.getElementById("liste").innerHTML = listeHTML([...db.devis].filter(d => f==="cours" ? !d.termine : d.termine)
+      .filter(d => !q || [d.client,d.adresse,d.tel].join(" ").toLowerCase().includes(q)).sort((a,b)=>b.maj-a.maj), f); return; }
+  const el = e.target, d = cur(); if(!d) return;
+  if(el.id === "roomName"){ const p = piece(d); p.nom = el.value; const tab = document.querySelector(".tab.on");
+    if(tab){ const n = nbLignes(p); tab.innerHTML = esc(nomPiece(p)||"…") + (n?`<span class="n">${n}</span>`:""); } touch(); return; }
+  if(el.id === "roomEtage"){ const p = piece(d); p.etage = el.value.trim(); const tab = document.querySelector(".tab.on");
+    if(tab){ const n = nbLignes(p); tab.innerHTML = esc(nomPiece(p)) + (n?`<span class="n">${n}</span>`:""); } touch(); return; }
+  if(el.id === "roomNote"){ piece(d).note = el.value; touch(); return; }
+  if(el.dataset.f === "note"){ const {l} = findLigne(el); if(l){ l.note = el.value; touch(); } return; }
+  if(el.dataset.f === "libelle"){ const {l} = findLigne(el); if(l){ l.libelle = el.value; touch(); } return; }
+  if(el.dataset.f === "qte"){ const {box,l} = findLigne(el); if(l){ l.qte = Math.max(0, parseFloat(String(el.value).replace(",","."))||0);
+    box.classList.toggle("has", l.qte>0); touch(); } }
+});
+document.addEventListener("change", e => {
+  if(e.target.dataset.f === "qte"){ const {box,l} = findLigne(e.target); if(l) majLigne(box,l); }
+});
+document.addEventListener("focusin", e => { if(e.target.dataset.f === "qte") e.target.select(); });
+
+try{ const v = JSON.parse(localStorage.getItem(KEY+"-vue"));
+  if(v && v.name === "devis" && db.devis.some(d => d.id === v.id)) view = v; }catch(e){}
+render();
+initCloud();
+
+/* Hors ligne (seulement si la page est servie en https, hors aperçu) */
+if("serviceWorker" in navigator && location.protocol === "https:" && window.top === window.self){
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+</script>
+</body>
+</html>
