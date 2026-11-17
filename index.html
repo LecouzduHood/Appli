@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Notes de devis</title>
 <meta name="description" content="Prise de notes chez le client pour préparer les devis.">
-<meta name="theme-color" content="#1f4e79">
+<meta name="theme-color" content="#2b2c31">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Devis">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,19 +18,19 @@
 :root{
   --bg:#f3f5f8; --card:#ffffff; --text:#17202a; --muted:#5d6b7a; --line:#dde3ea;
   --primary:#1f4e79; --primary-soft:#e3edf7; --accent:#e8a317; --danger:#c0392b;
-  --enc:#1f4e79; --gou:#b9770e; --gou-soft:#fdf2df;
+  --enc:#1f4e79; --gou:#b9770e; --gou-soft:#fdf2df; --head:#1f4e79; --on-primary:#fff;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#11161c; --card:#1b232c; --text:#e8edf2; --muted:#9aa8b6; --line:#2c3743;
     --primary:#5aa2e0; --primary-soft:#1d3245; --accent:#f0b43a; --danger:#e5604f;
-    --enc:#5aa2e0; --gou:#f0b43a; --gou-soft:#3a2f1a;
+    --enc:#5aa2e0; --gou:#f0b43a; --gou-soft:#3a2f1a; --head:#16324d; --on-primary:#0b1724;
   }
 }
 :root[data-theme="dark"]{
   --bg:#11161c; --card:#1b232c; --text:#e8edf2; --muted:#9aa8b6; --line:#2c3743;
   --primary:#5aa2e0; --primary-soft:#1d3245; --accent:#f0b43a; --danger:#e5604f;
-  --enc:#5aa2e0; --gou:#f0b43a; --gou-soft:#3a2f1a;
+  --enc:#5aa2e0; --gou:#f0b43a; --gou-soft:#3a2f1a; --head:#16324d; --on-primary:#0b1724;
 }
 [hidden]{display:none!important}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -39,13 +39,14 @@ html,body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--text);
 body{min-height:100vh;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none}
-header.top{position:sticky;top:0;z-index:5;background:var(--primary);color:#fff;
+header.top{position:sticky;top:0;z-index:5;background:var(--head);color:#fff;
   padding:calc(6px + env(safe-area-inset-top)) 12px 6px;display:flex;align-items:center;gap:10px}
 header.top h1{font-size:17px;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 header.top button{color:#fff;min-width:38px;height:38px;border-radius:8px;font-size:20px}
 header.top button:active{background:rgba(255,255,255,.18)}
 header.top .hclient{flex:1;min-width:0;text-align:left;height:auto;font-size:inherit;padding:2px 4px;display:block}
 header.top .hclient b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.top .hclient .htype{font-weight:500;font-size:14px;opacity:.9}
 header.top .hclient small{display:block;font-size:12px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .room-meta{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 8px;font-size:14px;color:var(--muted)}
 .room-meta label{display:flex;align-items:center;gap:6px}
@@ -54,7 +55,7 @@ main{padding:12px 14px;max-width:720px;margin:0 auto}
 h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:18px 0 8px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 14px;
-  border-radius:10px;font-weight:600;background:var(--primary);color:#fff;width:100%}
+  border-radius:10px;font-weight:600;background:var(--primary);color:var(--on-primary);width:100%}
 .btn.sec{background:var(--primary-soft);color:var(--primary)}
 .btn.danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
 .btn:active{opacity:.8}
@@ -76,9 +77,28 @@ input:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:0}
 .devis-item{display:flex;align-items:center;gap:6px;text-align:left;width:100%;padding:0}
 .devis-item .open{flex:1;min-width:0;display:flex;align-items:center;gap:12px;text-align:left;padding:12px}
 .devis-item .icon-btn{margin-right:6px;font-size:22px}
-.seg{display:flex;background:var(--line);border-radius:10px;padding:3px;margin-bottom:10px}
-.seg button{flex:1;min-height:34px;border-radius:8px;font-weight:600;font-size:14px;color:var(--muted)}
-.seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.home-h h2{display:flex;align-items:center;gap:8px;margin-top:6px}
+.cnt{background:var(--primary-soft);color:var(--primary);border-radius:99px;padding:1px 8px;font-size:12px;letter-spacing:0}
+.note{position:relative;display:flex;align-items:stretch;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;
+  box-shadow:inset 4px 0 0 var(--bar, var(--primary))}
+.note[data-type="reno-complete"]{--bar:#2e8b57}
+.note[data-type="intervention"]{--bar:var(--accent)}
+.note[data-type="acces"]{--bar:#ffb020}
+.note[data-type="vrd"]{--bar:#c47a3a}
+.note-open{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;text-align:left;padding:12px 6px 12px 16px}
+.note-open:active{background:var(--bg)}
+.note-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chip-type{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.quand{font-size:12px;color:var(--muted);white-space:nowrap}
+.note-client{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.note-adr{font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note-stats{font-size:13px;color:var(--primary);font-weight:600;margin-top:4px}
+.note-menu{flex:none;width:44px;font-size:22px;color:var(--muted);border-left:1px solid var(--line)}
+.note-menu:active{background:var(--bg)}
+.vide{text-align:center;padding:48px 20px;color:var(--muted)}
+.vide-ico{font-size:44px;margin-bottom:8px}
+.vide b{display:block;color:var(--text);font-size:17px;margin-bottom:6px}
+.vide p{margin:0 auto;max-width:300px;font-size:14px}
 .sync{display:block;width:100%;text-align:center;font-size:12px;color:var(--muted);margin:16px 0 0;padding:8px}
 .menu{display:flex;flex-direction:column;margin-bottom:12px}
 .menu button{text-align:left;padding:12px 4px;border-bottom:1px solid var(--line);font-size:15px}
@@ -96,6 +116,38 @@ input:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:0}
 .tab.on{background:var(--primary);border-color:var(--primary);color:#fff}
 .tab .n{font-size:12px;opacity:.8;margin-left:4px}
 .tab.add{color:var(--primary);border-style:dashed}
+.rooms-top{display:flex;align-items:center;gap:8px;margin:4px 0 10px}
+.rooms-top .sp{flex:1}
+.room{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}
+.room-bar{display:flex;align-items:center;gap:8px;width:100%;min-height:46px;padding:0 12px;text-align:left;background:transparent;color:var(--text);font-size:16px}
+.room:not(.replie) .room-bar{border-bottom:1px solid var(--line);background:var(--primary-soft)}
+.rb-ico{width:14px;color:var(--primary);font-size:14px}
+.rb-txt{display:flex;align-items:baseline;gap:8px;min-width:0;flex:1}
+.rb-txt b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rb-info{font-size:13px;color:var(--muted);white-space:nowrap;margin-left:auto}
+.room-bar{padding-right:4px}
+.rb-tog{display:flex;align-items:center;gap:8px;flex:1;min-width:0;align-self:stretch;background:none;border:0;padding:0;color:inherit;font:inherit;text-align:left}
+.rb-meta{font-size:13px;color:var(--accent);white-space:nowrap}
+.rb-surf{flex:none;display:flex;align-items:center;gap:3px;font-size:13px;color:var(--accent)}
+.rb-surf input{width:52px;height:30px;padding:2px 6px;border:1px solid rgba(70,220,246,.45);border-radius:8px;background:rgba(20,20,24,.55);color:var(--text);font-size:16px;text-align:right}
+.rb-set{flex:none;width:36px;height:32px;border-radius:9px;border:1px solid var(--line);background:rgba(20,20,24,.35);color:var(--accent);font-size:17px;display:flex;align-items:center;justify-content:center}
+.danger-t{color:var(--danger)!important}
+.room-body{padding:4px 12px 12px}
+.room-body .room-head input{font-size:15px;font-weight:600;color:var(--muted)}
+.tabs:has(.roomsel){overflow:visible;align-items:flex-start}
+.roomsel{flex:1;min-width:0;position:relative}
+.roomsel summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:38px;padding:0 12px;border-radius:12px;
+  background:var(--primary);color:var(--on-primary,#fff);font-weight:700;cursor:pointer}
+.roomsel summary::-webkit-details-marker{display:none}
+.roomsel summary::after{content:"▾";margin-left:auto;font-size:14px}
+.roomsel[open] summary::after{content:"▴"}
+.rs-cur{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rs-cur .n,.rs-item .n{font-size:12px;font-weight:600;opacity:.8;margin-left:6px}
+.rs-nb{font-size:12px;font-weight:500;opacity:.8;white-space:nowrap}
+.rs-list{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);max-height:60vh;overflow:auto;z-index:8;padding:4px}
+.rs-item{display:flex;align-items:center;width:100%;min-height:40px;padding:0 10px;border-radius:8px;text-align:left;font-size:15px;font-weight:600;color:var(--text);background:transparent}
+.rs-item.on{background:var(--primary-soft);color:var(--primary)}
 .room-head{display:flex;align-items:center;gap:6px;margin:6px 0}
 .room-head input{flex:1;font-size:18px;font-weight:700;border:0;background:transparent;padding:6px 0;min-width:0}
 .icon-btn{min-width:36px;height:36px;border-radius:8px;font-size:17px;color:var(--muted)}
@@ -111,7 +163,7 @@ input:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:0}
 .step button:active{transform:scale(.94)}
 .step input{width:42px;text-align:center;font-size:16px;font-weight:700;border:0;background:transparent;-moz-appearance:textfield}
 .step input::-webkit-inner-spin-button{-webkit-appearance:none}
-.l2{display:flex;align-items:center;gap:6px;margin-top:5px}
+.l2{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:5px}
 .pose{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
 .pose button{padding:3px 10px;min-height:26px;font-size:12px;font-weight:600;color:var(--muted)}
 .pose button.on.e{background:var(--enc);color:#fff}
@@ -130,10 +182,36 @@ input:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:0}
 .chip:active{background:var(--line)}
 .only{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-left:auto}
 .only input{width:20px;height:20px}
+/* plan des pièces */
+.plan-hint{font-size:13px;color:var(--muted);margin:0 0 8px}
+.plan-wrap{height:56vh;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);-webkit-overflow-scrolling:touch;position:relative}
+.plan-grid{position:relative;background-color:var(--card);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px)}
+.proom{position:absolute;box-sizing:border-box;border:2px solid var(--primary);background:color-mix(in srgb,var(--primary-soft) 85%,transparent);
+  border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;
+  touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;padding:2px;color:var(--text)}
+.proom b{font-size:12px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.proom small{font-size:11px;color:var(--muted)}
+.proom.sel{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent);z-index:2}
+.proom.nosurf{border-style:dashed}
+.plan-tray{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;align-items:center}
+.plan-tray .lbl{font-size:13px;color:var(--muted);margin-right:2px}
+.plan-panel{margin-top:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.plan-panel h3{margin:0 0 6px;font-size:16px}
+.plan-panel .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.plan-panel label{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+.plan-panel input{width:70px;min-height:34px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:16px;color:var(--text)}
+.zoom{display:flex;gap:4px}
+.plan-svg{display:block;width:100%;height:auto;max-height:70vh;background:var(--card)}
+.plan-svg .g line{stroke:var(--line)}
+.plan-svg .r{fill:var(--primary-soft);stroke:var(--primary)}
+.plan-svg .r.ns{stroke-dasharray:.2 .15}
+.plan-svg text{fill:var(--text)} .plan-svg text.s{fill:var(--muted)}
+.zoom button{width:36px;height:36px;font-size:20px}
 /* barre du bas */
 .bottom{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
   padding:8px 14px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;z-index:6}
-.bottom .btn{flex:1}
+.bottom .btn{flex:1;min-width:0;white-space:nowrap;padding:0 10px}
 /* feuille modale */
 .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--card);width:100%;max-width:720px;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:85vh;overflow:auto}
@@ -161,7 +239,255 @@ input:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:0}
 .pick[disabled]{opacity:.45}
 .pick small{margin-left:auto;color:var(--muted);font-size:12px}
 .sheet-foot{position:sticky;bottom:calc(-18px - env(safe-area-inset-bottom));z-index:1;background:var(--card);padding:10px 0 calc(18px + env(safe-area-inset-bottom));margin-top:8px}
+.cat{border:1px solid var(--line);border-radius:12px;margin-bottom:8px;overflow:hidden;background:var(--card)}
+.cat summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;font-weight:600;font-size:15px;cursor:pointer}
+.cat summary::-webkit-details-marker{display:none}
+.cat summary::after{content:"›";font-size:20px;color:var(--muted);transform:rotate(90deg);transition:transform .15s}
+.cat[open] summary::after{transform:rotate(-90deg)}
+.cat summary span:first-child{flex:1}
+.cat-n{font-size:12px;color:var(--primary);font-weight:700}
+.cat[open] summary{border-bottom:1px solid var(--line);background:var(--primary-soft)}
+.cat-body{padding:0 12px 6px}
 .add-presta{border:1px dashed var(--primary);background:transparent}
+/* ===== Thème « Azerem » : rétro moderne (néon, chrome bleu-cyan, violet, lueur rose) ===== */
+:root, :root[data-theme="dark"], :root[data-theme="light"]{
+  --bg:#2b2c31; --card:#36373e; --text:#f3f3f7; --muted:#b4b4c2; --line:#4b4c56;
+  --primary:#e04cf5; --primary-soft:#3d3a52; --accent:#46dcf6; --danger:#ff5c7a;
+  --enc:#ff2a6d; --gou:#46dcf6; --gou-soft:#1f3a4a; --head:#1a237e; --on-primary:#fff;
+  --chrome: linear-gradient(90deg,#1a237e 0%,#4a2bb0 40%,#2fa6e0 78%,#47e3f5 100%);
+  --chrome-v: linear-gradient(180deg,#7fb6ff 0%,#3a5fd8 48%,#2fb5e8 52%,#6ff0ff 100%);
+  --glow: 0 0 0 1px rgba(70,220,246,.55), 0 0 14px rgba(70,220,246,.35);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#2b2c31; --card:#36373e; --text:#f3f3f7; --muted:#b4b4c2; --line:#4b4c56;
+  --primary:#e04cf5; --primary-soft:#3d3a52; --accent:#46dcf6; --danger:#ff5c7a;
+  --enc:#ff2a6d; --gou:#46dcf6; --gou-soft:#1f3a4a; --head:#1a237e; --on-primary:#fff; } }
+html,body{background:var(--bg);color:var(--text)}
+/* fond : dégradé + grille rétro en perspective, très discrète */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(120% 50% at 50% 0%, rgba(74,43,176,.22), transparent 60%),
+    radial-gradient(90% 40% at 50% 110%, rgba(70,220,246,.12), transparent 65%),
+    var(--bg)}
+body::after{content:"";position:fixed;left:-50%;right:-50%;bottom:0;height:38vh;z-index:-1;pointer-events:none;opacity:.14;
+  background-image:linear-gradient(rgba(224,76,245,.9) 1px,transparent 1px),linear-gradient(90deg,rgba(224,76,245,.9) 1px,transparent 1px);
+  background-size:44px 44px;transform:perspective(320px) rotateX(62deg);transform-origin:bottom;
+  -webkit-mask-image:linear-gradient(to top,#000,transparent);mask-image:linear-gradient(to top,#000,transparent)}
+/* barre du haut chromée */
+header.top{background:var(--chrome);box-shadow:0 1px 0 rgba(255,255,255,.25) inset, 0 4px 18px rgba(70,220,246,.35);text-shadow:0 1px 2px rgba(10,6,50,.6)}
+header.top h1{font-weight:800;font-style:italic;letter-spacing:.02em}
+header.top .hclient b{font-weight:800;font-style:italic}
+header.top button:active{background:rgba(255,255,255,.18)}
+h2{color:var(--primary);font-style:italic;font-weight:800;letter-spacing:.08em;text-shadow:0 0 10px rgba(224,76,245,.35)}
+/* cartes en verre sombre */
+.card,.note,.room,.ligne,.cat,.plan-panel,.type,.sync,.sheet{background:rgba(54,55,62,.94);border-color:var(--line);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.note{box-shadow:inset 4px 0 0 var(--bar,#e04cf5)}
+.note[data-type="reno-elec"]{--bar:#e04cf5}
+.note[data-type="reno-complete"]{--bar:#7b5cff}
+.note[data-type="intervention"]{--bar:#46dcf6}
+.note:active,.note-open:active{background:#3d3a52}
+.ligne.has{border-color:rgba(224,76,245,.6);box-shadow:inset 4px 0 0 var(--primary), 0 0 12px rgba(224,76,245,.12)}
+.type.on{border-color:var(--accent);box-shadow:var(--glow);background:#3d3a52}
+/* boutons */
+.btn{border-radius:12px}
+.btn:not(.sec):not(.danger){background:linear-gradient(100deg,#4a2bb0,#b03ee0 70%,#f06cf5);color:#fff;font-weight:800;
+  text-shadow:0 1px 2px rgba(10,6,50,.5);box-shadow:0 0 0 1px rgba(255,255,255,.12) inset, 0 4px 16px rgba(224,76,245,.28)}
+.btn.sec{background:rgba(224,76,245,.08);color:var(--primary);box-shadow:inset 0 0 0 1px rgba(224,76,245,.45)}
+.btn.danger{border-color:var(--danger);color:var(--danger)}
+.chip,.tab,.l2 .nbtn{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--text)}
+.tab.add{color:var(--primary);border-color:rgba(224,76,245,.55)}
+.step button{background:rgba(224,76,245,.12);color:var(--primary)}
+.pose{border-color:var(--line)}
+.pose button.on.e{background:var(--enc);color:#fff}
+.pose button.on.g{background:var(--gou);color:#0b0630}
+.tag.e{background:rgba(255,42,109,.16);color:var(--enc)}
+.tag.g{background:rgba(70,220,246,.14);color:var(--gou)}
+/* champs */
+input.t,textarea.t,.room-meta input,.step input,.l1 .lib input,.lnote textarea,.plan-panel input,.room-head input{background:rgba(20,20,24,.55);color:var(--text);border-color:var(--line)}
+input:focus,textarea:focus{outline:none;border-color:var(--primary) !important;box-shadow:0 0 0 2px rgba(224,76,245,.25)}
+/* pièces */
+.room-bar{color:var(--text)}
+.room:not(.replie){border-color:rgba(224,76,245,.45)}
+.room:not(.replie) .room-bar{background:linear-gradient(90deg,rgba(74,43,176,.55),rgba(224,76,245,.3));border-bottom-color:var(--line)}
+.rb-ico{color:var(--primary)}
+/* listes à cocher */
+.pick .ck{border-color:#5a4aa8}
+.pick.sel .ck{background:linear-gradient(135deg,#b03ee0,#f06cf5);border-color:#f06cf5;color:#fff}
+.pick.sel{background:rgba(224,76,245,.07)}
+.cat[open]{border-color:rgba(224,76,245,.45)}
+.cat[open] summary{background:linear-gradient(90deg,rgba(74,43,176,.6),rgba(224,76,245,.3))}
+.cat-n{color:var(--primary)}
+/* feuilles */
+.sheet-bg{background:rgba(5,2,20,.6)}
+.sheet{background:#303137;border-top:1px solid rgba(70,220,246,.5);box-shadow:0 -6px 30px rgba(70,220,246,.25)}
+.sheet h3{font-style:italic;font-weight:800}
+.sheet-foot{background:#303137}
+/* barre du bas */
+.bottom{background:rgba(38,39,44,.95);border-top-color:rgba(70,220,246,.4);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* divers */
+.toast{background:#3d3a52;color:#fff;box-shadow:var(--glow)}
+.badge{background:var(--accent);color:#fff}
+.roomsel summary{background:var(--chrome)}
+.plan-wrap{background:#222327;border-color:var(--line)}
+.plan-grid{background-color:#222327;background-image:linear-gradient(rgba(224,76,245,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(224,76,245,.14) 1px,transparent 1px)}
+.proom{background:rgba(74,43,176,.55);border-color:#e04cf5;color:#fff}
+.proom small{color:#f6dcff}
+.proom.sel{border-color:#46dcf6;box-shadow:0 0 0 3px rgba(70,220,246,.4), 0 0 16px rgba(70,220,246,.5)}
+.plan-svg{background:#222327}
+.plan-svg .g line{stroke:rgba(224,76,245,.14)}
+.plan-svg .r{fill:rgba(74,43,176,.55);stroke:#e04cf5}
+.plan-svg text{fill:#fff} .plan-svg text.s{fill:#cfe9ff}
+/* boutons plus compacts */
+.btn{min-height:36px;font-size:14px;padding:0 12px;border-radius:10px}
+.bottom{padding-top:6px;padding-bottom:calc(6px + env(safe-area-inset-bottom))}
+.chip{min-height:26px;padding:0 9px;font-size:12px}
+.tab{min-height:30px;font-size:13px}
+.step button{width:28px;height:28px;font-size:18px}
+.pose button{min-height:24px;padding:2px 9px;font-size:12px}
+.l2 .nbtn{min-height:24px;font-size:12px}
+.icon-btn{min-width:32px;height:32px;font-size:16px}
+.room-bar{min-height:40px;font-size:15px}
+.cat summary{padding:10px 12px}
+.pick{padding:7px 4px}
+header.top button{min-width:34px;height:34px;font-size:18px}
+/* en-tête d'accueil avec le logo */
+.hero{position:sticky;top:0;z-index:5;overflow:hidden;display:flex;flex-direction:row-reverse;align-items:center;justify-content:space-between;gap:10px;
+  padding:calc(6px + env(safe-area-inset-top)) 14px 6px;min-height:50px;
+  background:radial-gradient(80% 90% at 50% 0%, rgba(224,76,245,.35), transparent 70%), linear-gradient(180deg,#1a1440,#2b2c31);
+  border-bottom:1px solid rgba(224,76,245,.45);box-shadow:0 6px 24px rgba(224,76,245,.18)}
+.hero::after{content:"";position:absolute;left:-40%;right:-40%;bottom:-2px;height:70%;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(70,220,246,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(70,220,246,.8) 1px,transparent 1px);
+  background-size:36px 36px;transform:perspective(220px) rotateX(60deg);transform-origin:bottom;
+  -webkit-mask-image:linear-gradient(to top,#000,transparent);mask-image:linear-gradient(to top,#000,transparent)}
+.hero-logo{position:relative;z-index:1;display:block;height:34px;width:auto;filter:drop-shadow(0 0 6px rgba(224,76,245,.45))}
+.hero-txt{position:relative;z-index:1;text-align:left;min-width:0}
+.hero-sub{font-weight:800;font-style:italic;letter-spacing:.18em;text-transform:uppercase;font-size:11px;white-space:nowrap;color:#fff;text-shadow:0 0 8px rgba(70,220,246,.7)}
+.hero-date{margin-top:1px;font-size:11px;color:var(--muted);white-space:nowrap}
+.hero-date::first-letter{text-transform:uppercase}
+h2.titre-notes{color:#fff;font-size:19px;font-weight:600;letter-spacing:.04em;text-shadow:0 0 12px rgba(224,76,245,.45);display:flex;align-items:center;gap:10px;margin-top:8px}
+h2.titre-notes .cnt{font-size:14px}
+/* boutons et en-têtes : finitions */
+.btn.sec.btn-plan{background:rgba(255,206,48,.16);color:#ffd84a;box-shadow:inset 0 0 0 1px rgba(255,206,48,.55)}
+header.top{overflow:hidden;background:radial-gradient(80% 140% at 50% 0%, rgba(224,76,245,.35), transparent 70%), linear-gradient(180deg,#1a1440,#2b2c31);
+  border-bottom:1px solid rgba(224,76,245,.45);box-shadow:0 6px 24px rgba(224,76,245,.18);text-shadow:none}
+header.top::after{content:"";position:absolute;left:-40%;right:-40%;bottom:-2px;height:70%;pointer-events:none;opacity:.35;z-index:0;
+  background-image:linear-gradient(rgba(70,220,246,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(70,220,246,.8) 1px,transparent 1px);
+  background-size:36px 36px;transform:perspective(220px) rotateX(60deg);transform-origin:bottom;
+  -webkit-mask-image:linear-gradient(to top,#000,transparent);mask-image:linear-gradient(to top,#000,transparent)}
+header.top > *{position:relative;z-index:1}
+header.top h1,header.top .hclient b{text-shadow:0 0 10px rgba(224,76,245,.5)}
+.pose button.on.p{background:#ffb03a;color:#2a1600}
+.tag.p{background:rgba(255,176,58,.16);color:#ffb03a}
+.pose button{padding:2px 8px}
+.vide-l{font-size:12px;color:var(--muted);font-style:italic;padding:2px 2px 6px}
+header.top button.retour,.hero button.retour{flex:none;width:38px;min-width:38px;height:34px;font-size:22px;line-height:1;font-weight:700;color:#fff;
+  background:rgba(224,76,245,.18);box-shadow:inset 0 0 0 1px rgba(224,76,245,.6);border-radius:10px;padding:0 0 2px}
+header.top button.retour:active{background:rgba(224,76,245,.35)}
+.sw-btn{display:inline-flex;align-items:center;gap:6px}
+.note-piece{margin-top:12px}
+.note-piece + textarea{margin-top:8px}
+.sw{position:relative;width:26px;height:15px;border-radius:99px;background:#55566a;transition:background .15s;flex:none}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;transition:left .15s}
+.sw-btn.on .sw{background:var(--primary)}
+.sw-btn.on .sw::after{left:13px}
+.l2 .nbtn.on{background:rgba(224,76,245,.12);color:var(--text)}
+/* ===== Hiérarchie typographique (tailles de texte seulement, encarts inchangés) ===== */
+/* Niveau 1 : titres de page et de pièce */
+header.top h1{font-size:21px}
+header.top .hclient b{font-size:18px;line-height:1.15}
+header.top .hclient .htype{font-size:13px;font-weight:600}
+header.top .hclient small{font-size:12px}
+.room-bar b{font-size:18px;font-weight:800;letter-spacing:.01em}
+.sheet h3{font-size:20px}
+/* Niveau 2 : titres de section */
+h2{font-size:14px;letter-spacing:.1em}
+.recap h4{font-size:17px;font-weight:800}
+.cat summary{font-size:15px;font-weight:700}
+.rooms-top b{font-size:16px;font-weight:800}
+.plan-panel h3{font-size:17px}
+/* Niveau 3 : contenu (prestations, choix) */
+.l1 .lib{font-size:15px;font-weight:600}
+.pick{font-size:15px}
+.recap table{font-size:14px}
+.note-client{font-size:17px;font-weight:700}
+.recap > .card:first-child > b{font-size:19px;font-weight:800}
+.recap > .card:first-child .muted{font-size:13px}
+/* Niveau 4 : infos secondaires */
+.rb-info,.rb-meta,.rb-surf{font-size:12px}
+.chip,.pose button,.l2 .nbtn,.tag{font-size:11.5px}
+.vide-l,.lnote-r,.pick small,.unite,.lot,.note-adr,.quand{font-size:12px}
+label.f span{font-size:12px;letter-spacing:.02em}
+.pick-h{font-size:11px;letter-spacing:.08em}
+.pdfview{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column}
+.pdfview header.top{position:relative}
+.pv-pages{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px calc(80px + env(safe-area-inset-bottom))}
+.pv-page{display:block;width:100%;max-width:640px;margin:0 auto 14px;border-radius:4px;box-shadow:0 4px 18px rgba(0,0,0,.5)}
+body.pv-open{overflow:hidden}
+/* Catalogue */
+.l2 .sail{padding:0 5px}
+.l2 .sail.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.l2:has(.sail){gap:3px}
+.l2:has(.sail) .nbtn{padding:0 5px}
+.l2:has(.sail) .pose button{padding:2px 4px}
+.l2:has(.sail) .del{padding:0 2px}
+.hero-ret{order:3;flex:none}
+.hero:has(.hero-ret) .hero-txt{margin-right:auto}
+.hero:has(.hero-ret) .hero-logo{height:28px}
+.acc{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:16px}
+.tuile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:16px 14px;min-height:130px;border-radius:18px;text-align:left;color:var(--text);
+  background:linear-gradient(160deg,rgba(224,76,245,.22),rgba(70,220,246,.08));border:1px solid rgba(224,76,245,.45);box-shadow:0 6px 20px rgba(224,76,245,.15)}
+.tuile .ti{font-size:34px;line-height:1;margin-bottom:auto}
+.tuile b{font-size:16px}
+.tuile small{color:var(--muted);font-size:12px}
+.tuile.t-notes{grid-column:1 / -1;min-height:120px;background:linear-gradient(160deg,rgba(224,76,245,.4),rgba(90,60,220,.25))}
+.tuile.t-norme{grid-column:1 / -1;min-height:96px;background:linear-gradient(160deg,rgba(70,220,246,.22),rgba(70,120,246,.08));border-color:rgba(70,220,246,.5)}
+.tuile.off{opacity:.55;border-style:dashed}
+.norme .cat-body{padding:4px 12px 12px;font-size:14px;line-height:1.45}
+.norme ul{margin:6px 0;padding-left:18px}.norme li{margin:4px 0}
+.nt{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.nt th{text-align:left;color:var(--muted);font-weight:600;font-size:11.5px;padding:4px 4px;border-bottom:1px solid var(--line)}
+.nt td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+.nt td:first-child{font-weight:600}
+.nn{color:var(--muted);font-size:12.5px;margin:8px 0 0}
+.nh{margin:14px 0 2px;font-size:14px}
+.tuile.off{min-height:0;flex-direction:row;align-items:center;gap:10px;padding:12px}
+.tuile.off .ti{font-size:24px;margin:0}
+.tuile.off b{font-size:14px;display:block}
+.tuile.off .tt{min-width:0}
+.norme [hidden]{display:none!important}
+.doc{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;margin-bottom:6px;border-radius:12px;background:var(--card);border:1px solid var(--line);text-align:left;color:var(--text)}
+.doc .di{font-size:22px;flex:none}.doc .dt{flex:1;min-width:0}.doc b{display:block;font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.doc small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.doc .dg{color:var(--muted);font-size:20px}
+.doc.dos{background:rgba(224,76,245,.08)}
+.doc-fil{color:var(--muted);font-size:12px;margin:0 2px 8px}
+.tuile.t-doc{min-height:0;flex-direction:row;align-items:center;gap:10px;padding:12px}
+.tuile.t-doc .ti{font-size:24px;margin:0}.tuile.t-doc b{font-size:14px;display:block}
+.hero-cats{display:flex;gap:5px}
+.hero-cat{white-space:nowrap;margin-top:6px;padding:3px 8px;min-height:0;border:1px solid rgba(255,255,255,.18);border-radius:99px;background:rgba(255,255,255,.06);color:var(--muted);font-size:12px;font-weight:600}
+.cat-card{display:flex;align-items:center;gap:12px;width:100%;margin:4px 0 6px;padding:10px 12px;border-radius:12px;text-align:left;color:var(--text);
+  background:linear-gradient(100deg,rgba(70,220,246,.14),rgba(224,76,245,.12));border:1px solid rgba(70,220,246,.45)}
+.cc-ico{font-size:24px}.cc-txt{flex:1;min-width:0}.cc-txt b{display:block;font-size:16px}.cc-txt small{font-size:12px;color:var(--muted)}
+.cc-go{font-size:24px;color:var(--accent)}
+.cat-avert{font-size:12px;color:var(--muted);background:rgba(255,206,48,.08);border:1px solid rgba(255,206,48,.35);border-radius:10px;padding:8px 10px;margin:4px 0 10px}
+.cat-avert b{color:#ffd84a}
+.cat-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:0 0 8px}
+.cr-lib{display:block;width:100%;text-align:left;padding:0;background:none;border:0;color:var(--text)}
+.cr-lib b{display:block;font-size:15px;font-weight:700}
+.cr-lib small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-prix{display:flex;align-items:flex-end;gap:10px;margin-top:6px}
+.cr-prix label{display:flex;flex-direction:column;gap:2px;font-size:11px;color:var(--muted)}
+.cr-in{display:flex;align-items:center;gap:3px;color:var(--text);font-size:13px}
+.cr-in input{width:74px;height:32px;padding:2px 8px;border:1px solid var(--line);border-radius:8px;background:rgba(20,20,24,.55);color:var(--text);font-size:16px;text-align:right}
+.cr-prix label:nth-child(2) input{border-color:rgba(224,76,245,.55)}
+.cr-marge{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;font-size:11px;color:var(--muted)}
+.cr-marge b{font-size:14px;color:#5fe39a}
+.cr-marge.neg b{color:var(--danger)}
+.cat-regl{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px;background:var(--card);border:1px solid rgba(224,76,245,.45);border-radius:12px;padding:8px 10px;margin:4px 0 8px}
+.cat-regl .cr-t{flex:1 0 100%}.cat-regl .cr-t b{display:block;font-size:14px}.cat-regl .cr-t small{font-size:11.5px;color:var(--muted)}
+.cat-regl label{display:flex;flex-direction:column;gap:2px;font-size:11px;color:var(--muted)}
+.cat-regl input{width:74px;height:32px;padding:2px 8px;border:1px solid var(--line);border-radius:8px;background:rgba(20,20,24,.55);color:var(--text);font-size:16px;text-align:right}
+.cr-in input.auto{color:var(--accent);border-style:dashed}
 </style>
 </head>
 <body>
@@ -188,6 +514,9 @@ const PRESTATIONS = {
   radiateur:    "Alimentation radiateur",
   seche:        "Alimentation sèche-serviettes",
   vmc:          "Alimentation VMC",
+  clim:         "Climatisation",
+  solaire:      "Panneaux solaires",
+  irve:         "Borne de recharge véhicule électrique",
   volet:        "Alimentation volet roulant",
   liaison:      "Liaison équipotentielle",
   hotte:        "Alimentation hotte",
@@ -195,11 +524,34 @@ const PRESTATIONS = {
   gtl:          "GTL (gaine technique logement)",
   interphone:   "Interphone / visiophone",
   sonnette:     "Sonnette",
+  remplInter:   "Remplacement interrupteur",
+  remplPrise:   "Remplacement prise",
+  remplDisj:    "Remplacement disjoncteur",
+  remplDiff:    "Remplacement disjoncteur différentiel",
 };
+
+/* Tableaux électriques : menu à part, juste après les basiques ("tableau" = ancienne ligne, gardée pour les anciennes notes) */
+const TABLEAUX = {tab1:"Tableau 1 rangée (1×13)", tab2:"Tableau 2 rangées (2×13)", tab3:"Tableau 3 rangées (3×13)", tab4:"Tableau 4 rangées (4×13)", tabSpe:"Tableau spécial"};
+Object.assign(PRESTATIONS, TABLEAUX);
+/* Alimentations : menu à part après les tableaux, une ligne par type de câble, quantité = longueur en mètres */
+const ALIMS = {al3g15:"Alimentation 3G1,5", al3g25:"Alimentation 3G2,5", al3g6:"Alimentation 3G6", al3g10:"Alimentation 3G10",
+  al5g15:"Alimentation 5G1,5", al5g25:"Alimentation 5G2,5", al5g6:"Alimentation 5G6", al5g10:"Alimentation 5G10",
+  al2x10:"Alimentation 2×10²", al2x16:"Alimentation 2×16²", al4x25:"Alimentation 4×25²", alAutre:"Alimentation autre câble"};
+Object.assign(PRESTATIONS, ALIMS);
+const HORS_AUTRES = [...Object.keys(TABLEAUX), ...Object.keys(ALIMS), "tableau"];
+
+/* Appareillage pouvant être posé en saillie (option à cocher sur la ligne, prix à part dans le catalogue : clé + "_s") */
+const SAILLIE = ["prise","prise2","priseSpe","prise32","inter","vv","poussoir","rj45","tv","volet","remplInter","remplPrise"];
+const VARIANTES = {};
+SAILLIE.forEach(k => VARIANTES[k + "_s"] = PRESTATIONS[k] + " — saillie");
+const libK = k => PRESTATIONS[k] || VARIANTES[k] || (CATALOGUE[k] && CATALOGUE[k].lib) || k;
+const avecVar = ks => ks.flatMap(k => VARIANTES[k + "_s"] ? [k, k + "_s"] : [k]);
+const saillieOK = l => !!l.presta && SAILLIE.includes(l.presta);
+const libL = l => (l.libelle || "Ligne libre") + (l.saillie && saillieOK(l) ? " (saillie)" : "");
 
 /* Prestations proposées par défaut selon le nom de la pièce */
 const PIECES_PRESTA = {
-  "Entrée":   ["tableau","gtl","prise","inter","vv","pl","interphone","sonnette","dfaf"],
+  "Entrée":   ["tab3","gtl","prise","inter","vv","pl","interphone","sonnette","dfaf"],
   "WC":       ["inter","pl","applique","vmc"],
   "Salon":    ["prise","prise2","inter","vv","pl","applique","rj45","tv","radiateur","volet"],
   "Cuisine":  ["prise","prise2","priseSpe","prise32","hotte","inter","pl","spot","applique","vmc"],
@@ -210,22 +562,34 @@ const PIECES_PRESTA = {
   "_defaut":  ["prise","prise2","inter","vv","pl","applique","rj45","radiateur"],
 };
 
+/* Prestations électriques de base : affichées directement, les autres sont dans un menu déroulant */
+const BASIQUES = ["prise","prise2","inter","vv","pl","applique","spot","rj45","tv","remplInter","remplPrise"];
+
 /* Prestations qui affichent d'office un encart de note */
-const NOTE_AUTO = ["tableau"];
-const NOTE_AIDE = { tableau: "Type de tableau, nb de rangées, différentiels, disjoncteurs…" };
+const NOTE_AUTO = ["alAutre","tableau","tab1","tab2","tab3","tab4","tabSpe","clim","solaire","irve"];
+const NOTE_AIDE = { tableau: "Type de tableau, nb de rangées, différentiels, disjoncteurs…",
+  tab1: "Différentiels, disjoncteurs, emplacement…", tab2: "Différentiels, disjoncteurs, emplacement…",
+  tab3: "Différentiels, disjoncteurs, emplacement…", tab4: "Différentiels, disjoncteurs, emplacement…",
+  alAutre: "Type de câble, départ → arrivée, passage…",
+  tabSpe: "Description : triphasé, sous-tableau, nb de rangées, protections…",
+  clim: "Description : type, puissance, emplacement…",
+  solaire: "Description : nb de panneaux, puissance, toiture, onduleur…",
+  irve: "Description : puissance, emplacement, distance au tableau…" };
 
 /* Pièces proposées dans « Ajouter une pièce » */
 const PIECES_SUGGEREES = ["Entrée","WC","WC 2","Salon","Séjour","Salle à manger","Cuisine","Chambre 1","Chambre 2","Chambre 3","Chambre 4",
-  "Salle de bain","Salle d'eau","Couloir","Dégagement","Bureau","Cellier","Buanderie","Dressing","Garage","Cave","Balcon","Terrasse","Extérieur"];
+  "Salle de bain","Salle d'eau","Couloir","Dégagement","Bureau","Cage d'escalier","Cellier","Buanderie","Dressing","Garage","Cave","Balcon","Terrasse","Extérieur"];
 
 /* Types de devis */
 /* tce: true → catalogue tout corps d'état ; etage: true → champ « Étage » par pièce */
 const TYPES = [
-  {id:"reno-elec", ico:"⚡", nom:"Rénovation électrique", desc:"Appartement, pièce par pièce", etage:true,
-   pieces:["Entrée","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain"]},
-  {id:"reno-complete", ico:"🏠", nom:"Rénovation complète", desc:"Tout corps d'état, pièce par pièce", tce:true,
-   pieces:["Entrée","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain"]},
-  {id:"intervention", ico:"🔧", nom:"Intervention électrique", desc:"Pièces et prestations au choix", pieces:[]},
+  {id:"reno-elec", ico:"⚡", nom:"Rénovation électrique", desc:"Électricité uniquement, pièce par pièce", etage:true,
+   pieces:["Entrée","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain","Bureau","Cage d'escalier","Extérieur"]},
+  {id:"reno-complete", ico:"🏠", nom:"Rénovation complète", desc:"Électricité + tout corps d'état, pièce par pièce", tce:true,
+   pieces:["Entrée","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain","Bureau","Cage d'escalier","Extérieur"]},
+  {id:"intervention", ico:"🔧", nom:"Intervention", desc:"Prestations au choix, sans pièces", tce:true, sansPieces:true, pieces:[]},
+  {id:"acces", ico:"🔐", nom:"Contrôle d'accès", desc:"Interphone, digicode, badges, gâche… (à développer)", sansPieces:true, pieces:[]},
+  {id:"vrd", ico:"🚧", nom:"VRD", desc:"Tranchées, fourreaux, réseaux extérieurs… (à développer)", sansPieces:true, pieces:[]},
 ];
 const ANCIENS_TYPES = {"reno-appart":"reno-complete", "depannage":"intervention", "tce":"reno-complete"};
 
@@ -258,6 +622,7 @@ const LOTS_TCE = {
 const CATALOGUE = {};
 Object.entries(PRESTATIONS).forEach(([k,v]) => CATALOGUE[k] = {lib:v, lot:"Électricité", unite:"u", elec:true});
 Object.entries(LOTS_TCE).forEach(([lot,items]) => Object.entries(items).forEach(([k,[lib,unite]]) => CATALOGUE[k] = {lib, lot, unite, elec:false}));
+Object.keys(ALIMS).forEach(k => CATALOGUE[k].unite = "m");
 /* ===================================================================== */
 
 const KEY = "devis-notes-v1";
@@ -266,15 +631,100 @@ const uid = () => Math.random().toString(36).slice(2,10);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const typeOf = id => TYPES.find(t => t.id === id) || TYPES[0];
 
+/* ---------- Catalogue des prix (électricité) ----------
+   mat = prix matériel HT par point : appareillage Schneider au prix HT le plus élevé trouvé en ligne (nov. 2026 : RS, one-elec,
+   materielelectrique, bricozor) + plaque + boîte + part de câble (estimée). h = temps de pose estimé en rénovation (heures).
+   Prix client HT = matériel × coefficient + temps × taux horaire (réglables dans l'écran Catalogue). */
+const PRIX_DEF = {
+  prise:      {ref:"Fact. Plateforme : PC Odace 3,41 + plaque Styl 1,21 (+1 €) · boîte 0,60 (+1 €) · 8 m ICTA 3x2,5 à 1,94 €/m", mat:22.74, h:1},
+  prise2:     {ref:"Fact. Plateforme : 2 PC Odace + plaque 2 postes 3,33 (+1 €) · boîte double 1,73 (+1 €) · 8 m ICTA 3x2,5", mat:29.4, h:1.2},
+  priseSpe:   {ref:"Fact. Plateforme : PC Odace + plaque (+1 €) · boîte · disj. 20A 7,40 (+1 €) · 15 m ICTA 3x2,5", mat:44.72, h:1.5},
+  prise32:    {ref:"Fact. Plateforme : sortie de câble Odace 6,23 + plaque (+1 €) · boîte · disj. 32A 11,90 (+1 €) · 15 m R2V 3G6 3,81 €/m (+1 €)", mat:95.09, h:2},
+  inter:      {ref:"Fact. Plateforme : va-et-vient Odace 3,99 + plaque 1,21 (+1 €) · boîte · 8 m ICTA 3x1,5 à 1,61 €/m", mat:20.68, h:0.9},
+  vv:         {ref:"Fact. Plateforme : 2 va-et-vient Odace + plaques (+1 € chacun) · 2 boîtes · 15 m ICTA 3x1,5", mat:39.75, h:1.6},
+  poussoir:   {ref:"Fact. Plateforme : poussoir Odace 7,66 + plaque 1,21 (+1 €) · boîte · 8 m ICTA 3x1,5 (télérupteur en plus)", mat:24.35, h:0.8},
+  pl:         {ref:"Boîte + douille DCL (prix internet ≈6 €) · 8 m ICTA 3x1,5 (fact. Plateforme)", mat:18.88, h:0.8},
+  applique:   {ref:"Boîte + douille DCL (prix internet ≈6 €) · 8 m ICTA 3x1,5 (fact. Plateforme)", mat:18.88, h:0.8},
+  spot:       {ref:"Spot LED encastré + boîte + câble (prix estimé)", mat:19, h:0.6},
+  rj45:       {ref:"Fact. Plateforme : RJ45 Odace 12,71 + plaque (+1 €) · boîte · 15 m câble cat.6 FTP 0,69 €/m (+1 €)", mat:41.87, h:1.2},
+  tv:         {ref:"Fact. Plateforme : prise TV Odace 10,11 + plaque (+1 €) · boîte · coaxial 15 m (prix internet ≈0,60 €/m)", mat:22.92, h:1},
+  dfaf:       {ref:"Détecteur de fumée autonome NF (prix estimé)", mat:20, h:0.3},
+  radiateur:  {ref:"Fact. Plateforme : sortie de câble Odace + plaque (+1 €) · boîte · disj. 20A (+1 €) · 15 m ICTA 3x2,5", mat:47.54, h:1.3},
+  seche:      {ref:"Fact. Plateforme : sortie de câble Odace + plaque (+1 €) · boîte · disj. 20A (+1 €) · 15 m ICTA 3x2,5", mat:47.54, h:1.3},
+  vmc:        {ref:"Fact. Plateforme : sortie de câble Odace + plaque (+1 €) · boîte · disj. 2A 13,99 (+1 €) · 10 m ICTA 3x1,5", mat:41.13, h:1},
+  clim:       {ref:"Fact. Plateforme : disj. 20A (+1 €) · inter Plexo saillie 8,58 (+1 €) · 20 m ICTA 3x2,5 (hors clim)", mat:56.78, h:2.5},
+  solaire:    {ref:"Coffret protections AC/DC + raccordement, hors panneaux (prix estimé)", mat:450, h:8},
+  irve:       {ref:"EVlink EVH4S07N2 694,99 (internet) · ID 40A type A 49,90 (+1 €) · disj. 40A ≈25 (internet) · 15 m R2V 10² 3,49 €/m (+1 €) (fact. Plateforme)", mat:838.24, h:5},
+  volet:      {ref:"Fact. Plateforme : sortie de câble Odace + plaque (+1 €) · boîte · 8 m ICTA 3x1,5", mat:22.92, h:1},
+  liaison:    {ref:"Câble V/J 6² + barrette de terre (prix estimé)", mat:15, h:1},
+  hotte:      {ref:"Fact. Plateforme : sortie de câble Odace + plaque (+1 €) · boîte · 8 m ICTA 3x1,5", mat:22.92, h:0.8},
+  tableau:    {ref:"Fact. Plateforme : coffret 3 rangées 40,90 · 1 ID A 89,90 · 2 ID AC 67,90 · 12 disj. 7,40 · peignes (+1 € par article)", mat:406.52, h:8, cli:2500},
+  tab1:       {ref:"Fact. Plateforme : coffret 1 rangée 18,89 · 1 ID 63A type A 89,90 · 4 disj. 7,40 · peigne (+1 € par article). Prix client : forfait « Pose tableau 1x13 » de ton catalogue", mat:151.62, h:3, cli:800},
+  tab2:       {ref:"Fact. Plateforme : coffret 2 rangées 31,01 · 1 ID A 89,90 · 1 ID AC 67,90 · 8 disj. 7,40 · peignes (+1 € par article). Prix client : forfait remplacement tableau 2x13 complet", mat:286.9, h:5, cli:1150},
+  tab3:       {ref:"Fact. Plateforme : coffret 3 rangées 40,90 · 1 ID A · 2 ID AC · 12 disj. · peignes (+1 € par article). Prix client : forfait remplacement tableau 2x18 (le plus proche)", mat:406.52, h:8, cli:2500},
+  tab4:       {ref:"Fact. Plateforme : coffret 4 rangées 58,58 · 1 ID A · 3 ID AC · 16 disj. · peignes (+1 € par article). Prix client : entre tes forfaits 2x18 (2 500 €) et 5x13 (3 500 €)", mat:533.93, h:10, cli:3000},
+  tabSpe:     {ref:"À chiffrer selon le besoin (triphasé, sous-tableau, délestage…)", mat:null, h:null},
+  al3g15:     {ref:"Fact. Plateforme : R2V 3G1,5 couronne 100 m 62,24 € → 0,62 €/m (+1 €). Prix client : ton catalogue (3,50 €/m)", mat:1.62, h:0.05, cli:3.5},
+  al3g25:     {ref:"Fact. Plateforme : R2V 3G2,5 couronne 50 m 48,56 € → 0,97 €/m (+1 €). Prix client : ton catalogue (4 €/m)", mat:1.97, h:0.05, cli:4},
+  al3g6:      {ref:"Fact. Plateforme : R2V 3G6 au mètre 3,81 € (+1 €). Prix client : ton catalogue (9 €/m)", mat:4.81, h:0.08, cli:9},
+  al3g10:     {ref:"R2V 3G10 (prix internet estimé)", mat:6, h:0.1},
+  al5g15:     {ref:"Fact. Plateforme : R2V 5G1,5 couronne 50 m 63,63 € → 1,27 €/m (+1 €). Prix client : ton catalogue (4,50 €/m)", mat:2.27, h:0.06, cli:4.5},
+  al5g25:     {ref:"R2V 5G2,5 (prix internet estimé)", mat:2.2, h:0.06},
+  al5g6:      {ref:"R2V 5G6 (prix internet estimé). Prix client : ton catalogue (9 €/m)", mat:5.5, h:0.1, cli:9},
+  al5g10:     {ref:"R2V 5G10 (prix internet estimé). Prix client : ton catalogue (12 €/m)", mat:9.5, h:0.12, cli:12},
+  al2x10:     {ref:"Fact. Plateforme : R2V 2×10 au mètre 3,49 € (+1 €)", mat:4.49, h:0.1},
+  al2x16:     {ref:"R2V 2×16 (prix internet estimé). Prix client : ton catalogue (11 €/m)", mat:5.5, h:0.12, cli:11},
+  al4x25:     {ref:"R2V 4×25 (prix internet estimé). Prix client : ton catalogue (16,28 €/m)", mat:14, h:0.15, cli:16.28},
+  alAutre:    {ref:"À chiffrer selon le câble", mat:null, h:null},
+  prise_s:      {ref:"Comme la prise + cadre saillie Odace Styl 8,36 (+1 €) à la place de la boîte (fact. Plateforme)", mat:30.5, h:0.8},
+  prise2_s:     {ref:"Comme la prise double + cadre saillie Odace 2 postes (≈12 €, internet) à la place de la boîte", mat:38.67, h:0.95},
+  priseSpe_s:   {ref:"Comme la prise spécialisée + cadre saillie Odace Styl 8,36 (+1 €)", mat:52.48, h:1.2},
+  prise32_s:    {ref:"Comme la prise 32A + cadre saillie Odace Styl 8,36 (+1 €)", mat:102.85, h:1.6},
+  inter_s:      {ref:"Comme l'interrupteur + cadre saillie Odace Styl 8,36 (+1 €) à la place de la boîte", mat:28.44, h:0.7},
+  vv_s:         {ref:"Comme le va-et-vient + 2 cadres saillie Odace Styl (+1 € chacun)", mat:55.27, h:1.3},
+  poussoir_s:   {ref:"Comme le poussoir + cadre saillie Odace Styl 8,36 (+1 €)", mat:32.11, h:0.65},
+  rj45_s:       {ref:"Comme la RJ45 + cadre saillie Odace Styl 8,36 (+1 €)", mat:49.63, h:0.95},
+  tv_s:         {ref:"Comme la prise TV + cadre saillie Odace Styl 8,36 (+1 €)", mat:30.68, h:0.8},
+  volet_s:      {ref:"Comme le volet + cadre saillie Odace Styl 8,36 (+1 €)", mat:30.68, h:0.8},
+  remplInter_s: {ref:"Fact. Plateforme : interrupteur Plexo saillie complet 8,58 (+1 €)", mat:9.58, h:0.3},
+  remplPrise_s: {ref:"Fact. Plateforme : prise Plexo saillie complète 9,36 (+1 €)", mat:10.36, h:0.3},
+  gtl:        {ref:"Kit GTL Resi9 13 modules R9HKT13 (117,13 €)", mat:117.1, h:3},
+  interphone: {ref:"Visiophone 2 fils + câble (prix estimé)", mat:180, h:3},
+  sonnette:   {ref:"Carillon + bouton + transfo modulaire (prix estimé)", mat:35, h:1.5},
+  remplInter: {ref:"Fact. Plateforme : va-et-vient Odace 3,99 + plaque Styl 1,21 (+1 €)", mat:6.2, h:0.3},
+  remplPrise: {ref:"Fact. Plateforme : PC Odace 3,41 + plaque Styl 1,21 (+1 €)", mat:5.62, h:0.3},
+  remplDisj:  {ref:"Fact. Plateforme : disj. modulaire 16A courbe C 7,40 (+1 €)", mat:8.4, h:0.4},
+  remplDiff:  {ref:"Fact. Plateforme : inter diff. 40A type A 49,90 (+1 €)", mat:50.9, h:0.6},
+};
+const REGLAGES_DEF = {taux: 55, coef: 1.3};
+const CAT_KEY = KEY + "-catalogue";
+function loadCat(){ try{ const c = JSON.parse(localStorage.getItem(CAT_KEY)); if(c && c.prix) return Object.assign({perso:[], reglages:{}}, c); }catch(e){} return {prix:{}, perso:[], reglages:{}}; }
+let cat = loadCat();
+if(cat.v !== 3){ cat.prix = {}; cat.v = 3; }   // prix de base issus des factures Plateforme (+1 €)
+const reglages = () => Object.assign({}, REGLAGES_DEF, cat.reglages);
+function saveCat(){ try{ localStorage.setItem(CAT_KEY, JSON.stringify(cat)); }catch(e){} }
+function ajoutPerso(a){ PRESTATIONS[a.k] = a.lib; CATALOGUE[a.k] = {lib:a.lib, lot:"Électricité", unite:"u", elec:true}; }
+cat.perso.forEach(ajoutPerso);
+// Prix d'un article : valeurs par défaut, puis article perso, puis modifications. Le prix client est calculé tant qu'il n'est pas saisi à la main.
+function prixDe(k){ const def = PRIX_DEF[k] || {}, perso = cat.perso.find(a => a.k === k) || {}, mod = cat.prix[k] || {};
+  const p = Object.assign({ref:"", mat:null, h:null, cli:null}, def, perso, mod), r = reglages();
+  p.cliAuto = mod.cli == null && !(perso.k && perso.cli != null) && def.cli == null;
+  if(p.cliAuto) p.cli = p.mat != null ? Math.round(p.mat * r.coef + (p.h || 0) * r.taux) : null;
+  return p; }
+const euro = v => v == null || v === "" ? "" : String(Math.round(v * 100) / 100).replace(".", ",");
+const lireEuro = s => { const v = parseFloat(String(s).replace(",", ".").replace(/[^\d.]/g, "")); return isFinite(v) ? v : null; };
+const catKeys = () => Object.keys(PRESTATIONS).filter(k => k !== "tableau");
+
 let db = load();
-let view = {name:"home"};   // home | new | devis | recap
+let view = {name:"accueil"};   // home | new | devis | recap
 let ui = {};
 
 function load(){
   try{ const d = JSON.parse(localStorage.getItem(KEY)); if(d && Array.isArray(d.devis)){
     // v1 → v2 : on retire les lignes pré-remplies jamais utilisées
     d.devis.forEach(dv => { if(ANCIENS_TYPES[dv.type]) dv.type = ANCIENS_TYPES[dv.type];
-      dv.pieces.forEach(p => { p.lignes = p.lignes.filter(l => !l.presta || l.qte > 0 || l.note); }); });
+      dv.pieces.forEach(p => { p.lignes = p.lignes.filter(l => !l.presta || l.qte > 0 || l.note); });
+      if(dv.type === "intervention" && !dv.pieces.length) dv.pieces.push(newPiece("Intervention")); });
     return d; } }catch(e){}
   return {devis:[]};
 }
@@ -382,145 +832,468 @@ function fmtDate(t){ return new Date(t).toLocaleDateString("fr-FR",{day:"2-digit
 
 /* ---------- Rendu ---------- */
 function render(){
-  if(view.name === "home") renderHome();
+  if(view.name === "accueil") renderAccueil();
+  else if(view.name === "norme") renderNorme();
+  else if(view.name === "docs") renderDocs();
+  else if(view.name === "home") renderHome();
   else if(view.name === "new") renderNew();
   else if(view.name === "devis") renderDevis();
   else if(view.name === "recap") renderRecap();
+  else if(view.name === "plan") renderPlan();
+  else if(view.name === "catalogue") renderCatalogue();
 }
 
-function renderHome(){
-  const f = ui.filtre || "cours", q = (ui.recherche||"").toLowerCase();
-  const nCours = db.devis.filter(d=>!d.termine).length, nFini = db.devis.length - nCours;
-  const list = [...db.devis].filter(d => f==="cours" ? !d.termine : d.termine)
-    .filter(d => !q || [d.client,d.adresse,d.tel].join(" ").toLowerCase().includes(q))
-    .sort((a,b)=>b.maj-a.maj);
+
+/* ---------- Page d'accueil (icônes) ---------- */
+function renderAccueil(){
+  const n = db.devis.length;
   $app.innerHTML = `
-  <header class="top"><h1>📋 Notes de devis</h1></header>
+  <header class="hero hero-acc">
+    <img class="hero-logo" src="${LOGO}" alt="Azerem">
+    <div class="hero-txt"><div class="hero-sub">Outils chantier</div>
+    <div class="hero-date">${new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})}</div></div>
+  </header>
+  <main class="acc">
+    <button class="tuile t-notes" data-act="home"><span class="ti">📝</span><b>Notes de devis</b><small>${n ? n + " note" + (n > 1 ? "s" : "") + " en cours" : "Relevé chez le client"}</small></button>
+    <button class="tuile t-norme" data-act="norme"><span class="ti">📘</span><b>Norme NF C 15‑100</b><small>Édition 2024 · l'essentiel</small></button>
+    <button class="tuile t-doc" data-act="docs" data-cible="devis"><span class="ti">🧾</span><span class="tt"><b>Devis</b><small>PDF · Google Drive</small></span></button>
+    <button class="tuile t-doc" data-act="docs" data-cible="factur"><span class="ti">💶</span><span class="tt"><b>Factures</b><small>PDF · Google Drive</small></span></button>
+    ${[["🔌","Tableau électrique"],["✅","Liste de tâches"],["🔑","Codes","digicodes + adresses"],["📚","Documentation technique"]]
+      .map(([i, n, d]) => `<button class="tuile off" data-act="bientot" data-n="${n}"><span class="ti">${i}</span><span class="tt"><b>${n}</b><small>${d ? d + " · " : ""}bientôt</small></span></button>`).join("")}
+  </main>`;
+}
+
+/* ---------- Norme électrique : aide-mémoire ---------- */
+const NORME = [
+ ["📌 Quelle version ?", `<p>La <b>NF C 15-100 série 2024</b> (publiée le 23 août 2024) remplace l'édition 2002 + A5. Elle est <b>obligatoire depuis le 1er septembre 2025</b> pour le neuf et la rénovation totale. Une installation existante non modifiée n'a pas à être mise à jour.</p>
+  <ul><li>La norme est découpée en 21 parties : -1 (règles générales), <b>-10 (habitat)</b>, -11 (communication)…</li>
+  <li><b>IRVE</b> : la partie 7-722 devient la référence (remplace le guide UTE C 15-722).</li>
+  <li><b>Différentiel type F</b> admis pour les appareils à variation de vitesse (clim, PAC, IRVE mono).</li>
+  <li><b>DDA / AFDD</b> (détecteur d'arc) : recommandé, pas obligatoire en logement.</li>
+  <li><b>Parafoudre</b> : distance seuil tableau → équipement sensible passée de 30 m à 10 m.</li>
+  <li>Câbles : classement <b>Euroclasses</b> à la place de C1/C2/C3.</li>
+  <li>L'attestation <b>Consuel</b> doit indiquer la version de norme appliquée.</li></ul>`],
+ ["🏠 Pièce par pièce", `<table class="nt"><tr><th>Pièce</th><th>Prises 16A</th><th>Éclairage</th><th>RJ45</th></tr>
+  <tr><td>Séjour</td><td>1 par 4 m², mini 5 (7 suffisent au-delà de 28 m²)</td><td>1 commandé</td><td>2</td></tr>
+  <tr><td>Chambre</td><td>3</td><td>1 commandé</td><td>1</td></tr>
+  <tr><td>Cuisine</td><td>6 dont 4 au-dessus du plan de travail (3 si ≤ 4 m²)</td><td>1</td><td>—</td></tr>
+  <tr><td>Salle de bain</td><td>1 hors volumes</td><td>1</td><td>—</td></tr>
+  <tr><td>WC</td><td>—</td><td>1</td><td>—</td></tr>
+  <tr><td>Entrée / couloir</td><td>1 si > 4 m²</td><td>1 (commande à chaque accès)</td><td>—</td></tr>
+  <tr><td>Garage / cellier</td><td>1</td><td>1</td><td>—</td></tr>
+  <tr><td>Extérieur</td><td>—</td><td>—</td><td>—</td></tr></table>
+  <p class="nn">Prise double ou triple = 2 ou 3 socles. Extérieur : appareillage étanche, 30 mA, câble enterré sous gaine rouge.</p>
+  <h4 class="nh">📏 Hauteurs recommandées</h4>
+  <table class="nt"><tr><th>Appareil</th><th>Hauteur</th></tr>
+  <tr><td>Prise 16 A / 20 A</td><td>axe à 5 cm du sol fini minimum (25–30 cm en pratique)</td></tr>
+  <tr><td>Prise 32 A (cuisson)</td><td>axe à 12 cm du sol fini minimum</td></tr>
+  <tr><td>Prises plan de travail</td><td>au-dessus du plan, ≈ 1,10–1,20 m du sol · jamais au-dessus de l'évier ou des plaques</td></tr>
+  <tr><td>Prise / sortie hotte</td><td>≈ 1,80–2,00 m</td></tr>
+  <tr><td>Interrupteurs</td><td>entre 0,90 et 1,30 m (accessibilité PMR, logement neuf)</td></tr>
+  <tr><td>Prise près de l'interrupteur (PMR)</td><td>1 par pièce de l'unité de vie, entre 0,90 et 1,30 m</td></tr>
+  <tr><td>RJ45 / TV</td><td>comme les prises (souvent à côté d'une prise)</td></tr>
+  <tr><td>Tableau électrique</td><td>organes de commande entre 1,00 et 1,80 m (0,75–1,30 m en logement PMR)</td></tr>
+  <tr><td>Thermostat</td><td>≈ 1,50 m, sur un mur intérieur</td></tr>
+  <tr><td>Salle de bain</td><td>volumes 1 et 2 jusqu'à 2,25 m du fond de la baignoire / receveur</td></tr>
+  <tr><td>Applique / point lumineux mural</td><td>≈ 1,80–2,00 m</td></tr></table>`],
+ ["🔁 Circuits", `<table class="nt"><tr><th>Circuit</th><th>Disj.</th><th>Section</th><th>Maxi</th></tr>
+  <tr><td>Prises</td><td>16 A</td><td>1,5²</td><td>8 socles</td></tr>
+  <tr><td>Prises</td><td>20 A</td><td>2,5²</td><td>12 socles</td></tr>
+  <tr><td>Éclairage</td><td>16 A (10 A courant)</td><td>1,5²</td><td>8 points</td></tr>
+  <tr><td>Prises cuisine (plan de travail)</td><td>20 A</td><td>2,5²</td><td>6 socles</td></tr>
+  <tr><td>Plaque / cuisinière mono</td><td>32 A</td><td>6²</td><td>1</td></tr>
+  <tr><td>Lave-linge, lave-vaisselle, four, sèche-linge, congélateur</td><td>20 A</td><td>2,5²</td><td>1 chacun</td></tr>
+  <tr><td>Chauffe-eau</td><td>20 A</td><td>2,5²</td><td>1</td></tr>
+  <tr><td>VMC</td><td>2 A</td><td>1,5²</td><td>1</td></tr>
+  <tr><td>Tableau de communication</td><td>16 A</td><td>1,5²</td><td>1</td></tr>
+  <tr><td>Volets roulants</td><td>16 A</td><td>1,5²</td><td>selon moteurs</td></tr>
+  <tr><td>Chauffage électrique</td><td>16 A / 20 A</td><td>1,5² / 2,5²</td><td>3 500 W / 4 500 W</td></tr></table>
+  <p class="nn">Au moins 3 circuits spécialisés en plus de la cuisson. Un appareil = un circuit.</p>`],
+ ["🛡 Différentiels", `<ul><li>Au moins <b>2 interrupteurs différentiels 30 mA</b> par logement, dont au moins <b>1 type A</b>.</li>
+  <li><b>8 circuits maxi</b> par différentiel.</li>
+  <li><b>Type A</b> (ou F) obligatoire pour : plaque de cuisson, lave-linge, sèche-linge, borne de recharge.</li>
+  <li><b>Type F</b> possible pour clim, pompe à chaleur, piscine (variation de vitesse).</li>
+  <li>Type AC toujours admis sur les autres circuits.</li>
+  <li>Repère courant : 2 ID jusqu'à 35 m², 3 jusqu'à 100 m², 4 au-delà.</li></ul>`],
+ ["🚿 Salle de bain", `<ul><li><b>Volume 0</b> (dans la baignoire / le receveur) : TBTS 12 V seulement, IPX7.</li>
+  <li><b>Volume 1</b> (au-dessus, jusqu'à 2,25 m) : TBTS 12 V, IPX4. Chauffe-eau électrique horizontal admis si on ne peut pas le mettre ailleurs.</li>
+  <li><b>Volume 2</b> (60 cm autour du volume 1) : luminaires classe II, IPX4, prise rasoir. Pas de prise 230 V ni d'interrupteur.</li>
+  <li><b>Hors volumes</b> : prises 230 V autorisées.</li>
+  <li>Tous les circuits de la pièce en <b>30 mA</b> + liaison équipotentielle supplémentaire.</li></ul>`],
+ ["🗄 Tableau, GTL, communication", `<ul><li>Appareil de coupure général en tête, puis chaque rangée : 1 différentiel 30 mA + ses disjoncteurs.</li>
+  <li>Garder environ <b>20 % de place libre</b> dans le tableau.</li>
+  <li>Chaque disjoncteur repéré de façon durable (vérifié par le Consuel).</li>
+  <li><b>GTL</b> obligatoire dans le neuf (tableau, compteur, coffret de communication), accessible de l'intérieur.</li>
+  <li>Tableau de communication avec prise 16 A dédiée. RJ45 : voir pièce par pièce.</li></ul>`],
+ ["🚗 Borne de recharge (IRVE)", `<ul><li>Un circuit dédié par point de recharge, avec son différentiel 30 mA.</li>
+  <li>Monophasé : différentiel <b>type A ou F</b> + détection de courant continu 6 mA (souvent intégrée à la borne). Triphasé : <b>type B</b>.</li>
+  <li>IP44 minimum en extérieur.</li>
+  <li>Attestation Consuel obligatoire pour toute borne neuve. Qualification IRVE requise au-delà de 3,7 kW.</li></ul>`],
+];
+function renderNorme(){
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-act="accueil" aria-label="Retour">‹</button><h1>Norme NF C 15-100</h1></header>
+  <main class="norme">
+    <input class="t" id="normeQ" type="search" placeholder="🔍 Rechercher : 32 A, hauteur, salle de bain…" autocomplete="off" style="margin-bottom:8px">
+    <p class="nn" id="normeVide" hidden>Rien trouvé.</p>
+    ${NORME.map(([t, h], i) => `<details class="cat" ${i === 0 ? "open" : ""}><summary><span>${t}</span></summary><div class="cat-body">${h}</div></details>`).join("")}
+    <p class="cat-avert" style="margin-top:12px">Aide-mémoire pratique tiré des guides fabricants et professionnels (Hager, Legrand, Promotelec…), pas le texte officiel. En cas de doute, le texte AFNOR et le Consuel font foi.</p>
+  </main>`;
+}
+
+/* Recherche dans l'aide-mémoire de la norme */
+const sansAccent = t => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+function filtreNorme(q){
+  q = sansAccent(q.trim()); let total = 0;
+  document.querySelectorAll(".norme details").forEach((det, i) => {
+    let n = 0;
+    const titreOk = sansAccent(det.querySelector("summary").textContent).includes(q);
+    det.querySelectorAll("li, tr, p, h4").forEach(el => {
+      if(el.querySelector("th")) return;
+      const tab = el.closest("table"), h = tab && tab.previousElementSibling;
+      const groupeOk = h && h.tagName === "H4" && sansAccent(h.textContent).includes(q);
+      const ok = !q || titreOk || groupeOk || sansAccent(el.textContent).includes(q);
+      el.hidden = !ok; if(ok) n++;
+    });
+    det.querySelectorAll("table").forEach(t => t.hidden = !!q && !t.querySelector("tr:not([hidden]) td"));
+    det.hidden = !!q && !n; det.open = q ? n > 0 : i === 0; total += n;
+  });
+  const v = document.getElementById("normeVide"); if(v) v.hidden = !q || total > 0;
+}
+document.addEventListener("input", e => { if(e.target.id === "normeQ") filtreNorme(e.target.value); });
+
+/* ---------- Google Drive : PDF de devis et factures (lecture seule, dossier AZEREM) ---------- */
+const GDRIVE = {client:"221320566257-hhjo1g9ea21mersovch83o5g38suhp24.apps.googleusercontent.com",
+  racine:"1R7W6cUriYPnS3FDHo6Ityc6ZwBU6CL07", scope:"https://www.googleapis.com/auth/drive.readonly",
+  site:"lecouzduhood.github.io"};
+const DOSSIER = "application/vnd.google-apps.folder";
+let gTok = (() => { try{ const t = JSON.parse(sessionStorage.getItem("gdrive-tok")); return t && t.exp > Date.now() ? t : null; }catch(e){ return null; } })();
+let gClient = null, gIndex = null;
+function gScript(){
+  if(window.google && google.accounts && google.accounts.oauth2) return Promise.resolve();
+  return new Promise((ok, ko) => { const sc = document.createElement("script"); sc.src = "https://accounts.google.com/gsi/client";
+    sc.onload = ok; sc.onerror = () => ko(new Error("Script Google introuvable")); document.head.appendChild(sc); });
+}
+function gPreparer(){
+  return gScript().then(() => { if(gClient) return;
+    gClient = google.accounts.oauth2.initTokenClient({client_id:GDRIVE.client, scope:GDRIVE.scope, callback: r => {
+      if(r && r.access_token){ gTok = {t:r.access_token, exp:Date.now() + (r.expires_in - 60) * 1000};
+        try{ sessionStorage.setItem("gdrive-tok", JSON.stringify(gTok)); }catch(e){}
+        if(view.name === "docs") renderDocs(); }
+      else toast("Connexion Google annulée"); }});
+  });
+}
+function gConnecter(){ if(gClient) gClient.requestAccessToken({prompt: gTok ? "" : "consent"}); else gPreparer().then(() => gClient.requestAccessToken()).catch(e => toast(e.message)); }
+async function gApi(params){
+  if(!gTok) throw new Error("connexion");
+  const r = await fetch("https://www.googleapis.com/drive/v3/files?" + new URLSearchParams(Object.assign({pageSize:"1000",
+    fields:"nextPageToken,files(id,name,mimeType,modifiedTime,webViewLink,parents)", supportsAllDrives:"true", includeItemsFromAllDrives:"true"}, params)),
+    {headers:{Authorization:"Bearer " + gTok.t}});
+  if(r.status === 401){ gTok = null; try{ sessionStorage.removeItem("gdrive-tok"); }catch(e){} throw new Error("connexion"); }
+  if(!r.ok) throw new Error("Drive : erreur " + r.status);
+  return r.json();
+}
+async function gTout(params){ let out = [], tok; do { const j = await gApi(Object.assign({}, params, tok ? {pageToken:tok} : {})); out = out.concat(j.files || []); tok = j.nextPageToken; } while(tok); return out; }
+const dansParents = ids => "(" + ids.map(id => `'${id}' in parents`).join(" or ") + ")";
+/* Tous les sous-dossiers d'AZEREM (pour chercher dedans) */
+async function gDossiers(){
+  if(gIndex) return gIndex;
+  const idx = {[GDRIVE.racine]:{nom:"AZEREM", parent:null}}; let niveau = [GDRIVE.racine];
+  while(niveau.length){ const suivant = [];
+    for(let i = 0; i < niveau.length; i += 40){
+      const fs = await gTout({q:`mimeType='${DOSSIER}' and trashed=false and ${dansParents(niveau.slice(i, i + 40))}`});
+      fs.forEach(f => { if(!idx[f.id]){ idx[f.id] = {nom:f.name, parent:(f.parents || [])[0]}; suivant.push(f.id); } }); }
+    niveau = suivant; }
+  return gIndex = idx;
+}
+const cheminDe = (idx, id) => { const c = []; let x = idx[id]; while(x && x.parent){ c.unshift(x.nom); x = idx[x.parent]; } return c.join(" › "); };
+const docDate = t => new Date(t).toLocaleDateString("fr-FR", {day:"2-digit", month:"short", year:"numeric"});
+const docLigne = (f, chemin) => f.mimeType === DOSSIER
+  ? `<button class="doc dos" data-act="docDos" data-id="${f.id}" data-nom="${esc(f.name)}"><span class="di">📁</span><span class="dt"><b>${esc(f.name)}</b></span><span class="dg">›</span></button>`
+  : `<button class="doc" data-act="docPdf" data-url="${esc(f.webViewLink)}"><span class="di">📄</span><span class="dt"><b>${esc(f.name.replace(/\.pdf$/i, ""))}</b><small>${chemin ? esc(chemin) + " · " : ""}${docDate(f.modifiedTime)}</small></span></button>`;
+
+function renderDocs(){
+  const D = ui.docs || (ui.docs = {pile:[{id:GDRIVE.racine, nom:"AZEREM"}], cible:"", q:""});
+  const ici = D.pile[D.pile.length - 1], horsSite = location.hostname !== GDRIVE.site;
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-act="${D.pile.length > 1 ? "docUp" : "accueil"}" aria-label="Retour">‹</button><h1>${esc(D.pile.length > 1 ? ici.nom : (D.cible === "factur" ? "Factures" : D.cible === "devis" ? "Devis" : "Documents"))}</h1></header>
+  <main class="docs">
+    ${horsSite ? `<p class="cat-avert">La connexion Google ne marche que dans l'appli en ligne (lecouzduhood.github.io), pas dans l'aperçu.</p>` : ""}
+    ${!gTok ? `<div class="empty"><div style="font-size:40px">🔐</div><p>Tes PDF de devis et factures sont dans ton Google Drive (dossier AZEREM).<br>Connecte-toi une fois pour les voir. Rien n'est copié ailleurs.</p>
+      <button class="btn" data-act="gConnect" ${horsSite ? "disabled" : ""}>Se connecter à Google</button></div>` : `
+    <input class="t" id="docQ" type="search" placeholder="🔍 Chercher un client, un n°… dans tout AZEREM" value="${esc(D.q)}" autocomplete="off" style="margin-bottom:8px">
+    ${D.pile.length > 1 ? `<div class="doc-fil">${D.pile.map(p => esc(p.nom)).join(" › ")}</div>` : ""}
+    <div id="docListe"><div class="empty">Chargement…</div></div>`}
+  </main>`;
+  if(!gTok){ if(!horsSite) gPreparer().catch(() => {}); return; }
+  D.q ? docChercher(D.q) : docCharger(ici.id);
+}
+async function docCharger(id){
+  const box = document.getElementById("docListe"), D = ui.docs;
+  try{
+    const fs = await gTout({q:`'${id}' in parents and trashed=false and (mimeType='${DOSSIER}' or mimeType='application/pdf')`, orderBy:"folder,modifiedTime desc"});
+    // Depuis la tuile Devis / Factures : on entre directement dans le dossier correspondant s'il existe
+    if(D.cible && D.pile.length === 1){ const c = fs.find(f => f.mimeType === DOSSIER && sansAccent(f.name).includes(D.cible));
+      D.cible = D.cible + "-fait"; if(c){ D.pile.push({id:c.id, nom:c.name}); return renderDocs(); } }
+    if(view.name !== "docs" || D.q) return;
+    box.innerHTML = fs.length ? fs.map(f => docLigne(f)).join("") : `<div class="empty">Aucun PDF ici.</div>`;
+  }catch(e){ if(e.message === "connexion") return renderDocs(); box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+let docMinuteur = null;
+async function docChercher(q){
+  const box = document.getElementById("docListe"); if(!box) return;
+  box.innerHTML = `<div class="empty">Recherche…</div>`;
+  try{
+    const idx = await gDossiers(), ids = Object.keys(idx), mot = q.replace(/\\/g, "").replace(/'/g, "\\'");
+    let res = [];
+    for(let i = 0; i < ids.length; i += 40)
+      res = res.concat(await gTout({q:`mimeType='application/pdf' and trashed=false and name contains '${mot}' and ${dansParents(ids.slice(i, i + 40))}`}));
+    if(ui.docs.q !== q) return;
+    res.sort((a, b) => b.modifiedTime.localeCompare(a.modifiedTime));
+    box.innerHTML = res.length ? res.slice(0, 200).map(f => docLigne(f, cheminDe(idx, (f.parents || [])[0]))).join("") : `<div class="empty">Aucun PDF trouvé pour « ${esc(q)} ».</div>`;
+  }catch(e){ if(e.message === "connexion") return renderDocs(); box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+document.addEventListener("input", e => { if(e.target.id !== "docQ") return;
+  ui.docs.q = e.target.value.trim(); clearTimeout(docMinuteur);
+  docMinuteur = setTimeout(() => ui.docs.q ? docChercher(ui.docs.q) : docCharger(ui.docs.pile[ui.docs.pile.length - 1].id), 450); });
+
+function filtrer(){
+  const q = (ui.recherche||"").toLowerCase();
+  return [...db.devis].filter(d => !q || [d.client,d.adresse,d.tel].join(" ").toLowerCase().includes(q)).sort((a,b)=>b.maj-a.maj);
+}
+function ilya(t){
+  const m = Math.round((Date.now()-t)/60000);
+  if(m < 1) return "à l'instant";
+  if(m < 60) return `il y a ${m} min`;
+  const h = Math.round(m/60); if(h < 24) return `il y a ${h} h`;
+  const j = Math.round(h/24); if(j === 1) return "hier"; if(j < 7) return `il y a ${j} jours`;
+  return "le " + fmtDate(t);
+}
+const LOGO = "data:image/webp;base64,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";
+function renderHome(){
+  const n = db.devis.length;
+  $app.innerHTML = `
+  <header class="hero">
+    <img class="hero-logo" src="${LOGO}" alt="Azerem">
+    <div class="hero-txt"><div class="hero-sub">Notes de devis</div>
+    <div class="hero-date">${new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})}</div>
+    <div class="hero-cats"><button class="hero-cat" data-act="catalogue">⚡ Prix élec</button><button class="hero-cat" data-act="catalogueTce">🧱 Prix TCE</button></div></div>
+    <button class="retour hero-ret" data-act="accueil" aria-label="Accueil">‹</button>
+  </header>
   <main>
-    <div class="seg">
-      <button class="${f==="cours"?"on":""}" data-act="filtre" data-v="cours">En cours (${nCours})</button>
-      <button class="${f==="fini"?"on":""}" data-act="filtre" data-v="fini">Terminés (${nFini})</button>
-    </div>
-    ${db.devis.length > 3 ? `<input class="t" id="recherche" type="search" placeholder="Rechercher un client, une adresse…" value="${esc(ui.recherche||"")}" style="margin-bottom:10px">` : ""}
-    <div id="liste">${listeHTML(list, f)}</div>
+    ${n ? `<div class="home-h"><h2 class="titre-notes">Mes notes en cours <span class="cnt">${n}</span></h2></div>
+    ${n > 3 ? `<input class="t" id="recherche" type="search" placeholder="🔍 Rechercher un client, une adresse…" value="${esc(ui.recherche||"")}" style="margin-bottom:10px">` : ""}` : ""}
+    <div id="liste">${listeHTML(filtrer())}</div>
     <button class="sync" id="sync" data-act="diag">${syncTxt()}</button>
   </main>
-  <div class="bottom"><button class="btn" data-act="new">＋ Nouveau devis</button></div>`;
+  <div class="bottom"><button class="btn" data-act="new">＋ Nouvelle note de devis</button></div>`;
 }
 
-function listeHTML(list, f){
-  if(!list.length) return `<div class="empty">${ui.recherche ? "Aucun devis ne correspond." : f==="cours" ? "Aucun devis en cours.<br>Appuyez sur « Nouveau devis » pour commencer." : "Aucun devis terminé."}</div>`;
+function listeHTML(list){
+  if(!db.devis.length) return `<div class="vide">
+      <div class="vide-ico">📝</div>
+      <b>Aucune note pour l'instant</b>
+      <p>Chez le client, créez une note : choisissez le type de travaux, les pièces, puis cochez les prestations et les quantités.</p>
+    </div>`;
+  if(!list.length) return `<div class="empty">Aucune note ne correspond à « ${esc(ui.recherche)} ».</div>`;
   return list.map(d=>{
-    const t = typeOf(d.type), n = d.pieces.reduce((s,p)=>s+nbLignes(p),0);
-    return `<div class="card devis-item">
-      <button class="open" data-act="open" data-id="${d.id}">
-        <span class="ico">${t.ico}</span>
-        <span class="m"><b>${esc(d.client || "Client sans nom")}</b>
-        <small>${d.adresse ? esc(d.adresse)+"<br>" : ""}${esc(t.nom)} · ${d.pieces.length} pièce(s) · ${n} ligne(s) · ${fmtDate(d.maj)}</small></span>
+    const t = typeOf(d.type), n = d.pieces.reduce((s,p)=>s+nbLignes(p),0), sf = surfTot(d);
+    const stats = [`${n} prestation${n>1?"s":""}`];
+    if(!(t.sansPieces && d.pieces.length<=1)) stats.unshift(`${d.pieces.length} pièce${d.pieces.length>1?"s":""}`);
+    if(sf) stats.push(m2(sf));
+    return `<div class="note" data-type="${t.id}">
+      <button class="note-open" data-act="open" data-id="${d.id}">
+        <span class="note-top"><span class="chip-type">${t.ico} ${esc(t.nom)}</span><span class="quand">${ilya(d.maj)}</span></span>
+        <b class="note-client">${esc(d.client || "Client sans nom")}</b>
+        ${d.adresse ? `<span class="note-adr">📍 ${esc(d.adresse)}</span>` : ""}
+        <span class="note-stats">${stats.join(" · ")}</span>
       </button>
-      <button class="icon-btn" data-act="menuDevis" data-id="${d.id}" aria-label="Gérer ce devis">⋯</button></div>`;}).join("");
+      <button class="note-menu" data-act="menuDevis" data-id="${d.id}" aria-label="Gérer cette note">⋯</button>
+    </div>`;}).join("");
 }
 
 function menuDevis(d){
   if(!d) return;
   const s = sheet(`<h3>${esc(d.client || "Client sans nom")}</h3>
     <div class="menu">
-      <button data-m="open">📂 Ouvrir</button>
+      <button data-m="open">📂 Ouvrir la note</button>
+      <button data-m="recap">📋 Voir le récapitulatif</button>
       <button data-m="infos">✎ Modifier nom, adresse, téléphone</button>
-      <button data-m="termine">${d.termine ? "↩️ Remettre en cours" : "✅ Marquer comme terminé"}</button>
       <button data-m="dup">⧉ Dupliquer (même relevé pour un autre client)</button>
-      <button data-m="del" class="rouge">🗑 Supprimer</button>
+      <button data-m="del" class="rouge">🗑 Supprimer la note</button>
     </div>
     <button class="btn sec" data-s="no">Fermer</button>`);
   s.querySelector('[data-s="no"]').onclick = closeSheet;
   s.querySelectorAll("[data-m]").forEach(b => b.onclick = () => {
     const m = b.dataset.m; closeSheet();
     if(m === "open"){ ui.pieceId = null; go("devis",{id:d.id}); }
+    if(m === "recap") go("recap",{id:d.id});
     if(m === "infos"){ view = {name:"home", id:d.id}; infosSheet(); }
-    if(m === "termine"){ d.termine = !d.termine; d.maj = Date.now(); cloudSave(d.id); save(); renderHome();
-      toast(d.termine ? "Devis classé dans « Terminés »" : "Devis remis en cours"); }
     if(m === "dup"){ const c = JSON.parse(JSON.stringify(d)); c.id = uid(); c.client = (d.client||"Client") + " (copie)";
-      c.termine = false; c.cree = c.maj = Date.now(); c.pieces.forEach(p => { p.id = uid(); p.lignes.forEach(l => l.id = uid()); });
-      db.devis.push(c); cloudSave(c.id); save(); ui.filtre = "cours"; renderHome(); toast("Devis dupliqué"); }
+      c.cree = c.maj = Date.now(); c.pieces.forEach(p => { p.id = uid(); p.lignes.forEach(l => l.id = uid()); });
+      db.devis.push(c); cloudSave(c.id); save(); renderHome(); toast("Note dupliquée"); }
     if(m === "del") supprimerDevis(d);
   });
 }
 function supprimerDevis(d){
-  confirmSheet(`Supprimer définitivement le devis « ${esc(d.client || "Client sans nom")} » ?`, "Supprimer", () => {
-    db.devis = db.devis.filter(x=>x.id!==d.id); save(); cloudSave(d.id); go("home"); toast("Devis supprimé"); });
+  confirmSheet(`Supprimer définitivement la note « ${esc(d.client || "Client sans nom")} » ?`, "Supprimer", () => {
+    db.devis = db.devis.filter(x=>x.id!==d.id); save(); cloudSave(d.id); go("home"); toast("Note supprimée"); });
 }
 
 function renderNew(){
   const sel = ui.newType || "reno-elec";
   $app.innerHTML = `
-  <header class="top"><button data-act="home" aria-label="Retour">‹</button><h1>Nouveau devis</h1></header>
+  <header class="top"><button class="retour" data-act="home" aria-label="Retour">‹</button><h1>Nouvelle note de devis</h1></header>
   <main>
-    <h2>Type de devis</h2>
-    <div class="types" style="grid-template-columns:1fr">${TYPES.map(t=>`
+    ${[["⚡ Électricité", TYPES.filter(t => t.id !== "reno-complete")], ["🏠 Tout corps d'état", TYPES.filter(t => t.id === "reno-complete")]].map(([titre, ts]) => `
+    <h2>${titre}</h2>
+    <div class="types" style="grid-template-columns:1fr">${ts.map(t=>`
       <button class="type ${t.id===sel?"on":""}" data-act="pickType" data-id="${t.id}" ${t.bientot?"disabled":""}>
         <span class="ico">${t.ico}</span><span><b>${t.nom}${t.bientot?'<span class="badge">Bientôt</span>':""}</b>
         <small>${t.desc}</small></span></button>`).join("")}
-    </div>
-    <h2>Client</h2>
-    <div class="card">
-      <label class="f"><span>Nom du client</span><input class="t" id="nClient" autocomplete="off" placeholder="Ex. M. Dupont" value="${esc(ui.nClient||"")}"></label>
-      <label class="f"><span>Adresse du chantier</span><input class="t" id="nAdr" autocomplete="off" placeholder="Ex. 12 rue des Lilas, 3e étage" value="${esc(ui.nAdr||"")}"></label>
-      <label class="f" style="margin:0"><span>Téléphone</span><input class="t" id="nTel" type="tel" autocomplete="off" value="${esc(ui.nTel||"")}"></label>
-    </div>
-    <p class="muted" style="font-size:14px">Vous choisirez ensuite les pièces dans une liste.</p>
+    </div>`).join("")}
+    <p class="muted" style="font-size:14px">${typeOf(ui.newType||"reno-elec").sansPieces ? "Vous indiquerez ensuite le client, puis les prestations." : "Vous indiquerez ensuite le client, puis les pièces."}</p>
   </main>
   <div class="bottom"><button class="btn" data-act="create">Commencer le relevé</button></div>`;
 }
 
+function roomBody(p, d, t, simple){
+  const lignes = p.lignes;
+  return `
+    <div class="room-tools" ${lignes.some(l=>estElec(l,d)) ? "" : "hidden"}>
+      <button class="chip" data-act="allPose" data-v="encastre">Tout encastré</button>
+      <button class="chip" data-act="allPose" data-v="goulotte">Tout en goulotte</button>
+      <button class="chip" data-act="allPose" data-v="placo">Tout en placo</button>
+    </div>
+    <div class="lignes">${lignes.map(ligneHTML).join("") || `<div class="vide-l">Aucune prestation pour l'instant</div>`}</div>
+    <div class="row2" style="margin-top:4px">
+      <button class="btn sec" data-act="pickPresta">＋ ${simple ? "Ajouter des prestations" : "Prestations"}</button>
+      <button class="btn sec add-presta" data-act="addLigne" style="flex:0 0 auto;width:auto">＋ Ligne libre</button>
+    </div>
+    <button class="chip sw-btn note-piece ${noteP(p)?"on":""}" data-act="notePiece" aria-pressed="${noteP(p)}"><span class="sw"></span>${simple ? "Note" : "Note sur la pièce"}</button>
+    ${noteP(p) ? `<textarea class="t" data-r="note" placeholder="Remarques, dimensions, état existant…">${esc(p.note)}</textarea>` : ""}`;
+}
+function barTxt(p){ const n = nbLignes(p), d = cur(), t = d ? typeOf(d.type) : {};
+  const meta = t.etage && p.etage ? `<span class="rb-meta">Ét. ${esc(p.etage)}</span>` : "";
+  return `<b>${esc(p.nom||"…")}</b>${meta}<span class="rb-info">${n ? `${n} prest.` : ""}</span>`; }
 function renderDevis(){
   const d = cur(); if(!d){ go("home"); return; }
   const p = piece(d); if(p) ui.pieceId = p.id;
   const t = typeOf(d.type);
-  const lignes = p ? p.lignes : [];
+  const simple = t.sansPieces && d.pieces.length <= 1 && p;   // intervention : pas de pièces, juste une liste
+  const toutReplie = d.pieces.length && d.pieces.every(x => x.replie);
   $app.innerHTML = `
-  <header class="top"><button data-act="home" aria-label="Retour">‹</button>
-    <button class="hclient" data-act="infos"><b>${esc(d.client || "Nom du client ?")}</b>
-      <small>${t.ico} ${d.adresse ? esc(d.adresse) : "Adresse du chantier ?"}</small></button>
+  <header class="top"><button class="retour" data-act="home" aria-label="Retour">‹</button>
+    <button class="hclient" data-act="infos"><b>${esc(d.client || "Nom du client ?")}<span class="htype"> · ${t.ico} ${esc(t.nom)}</span></b>
+      <small>📍 ${d.adresse ? esc(d.adresse) : "Adresse du chantier ?"}</small></button>
     <button data-act="diag" id="syncIco" aria-label="État de la sauvegarde" style="font-size:16px">${syncIco()}</button>
     <button data-act="infos" aria-label="Infos client">✎</button></header>
   <main>
-    <div class="tabs" id="tabs">${d.pieces.map(x=>`
-      <button class="tab ${p&&x.id===p.id?"on":""}" data-act="tab" data-id="${x.id}">${esc(nomPiece(x))}${nbLignes(x)?`<span class="n">${nbLignes(x)}</span>`:""}</button>`).join("")}
-      <button class="tab add" data-act="addPiece">＋ Pièce</button>
-    </div>
-    ${p ? `
-    <div class="room-head">
-      <input id="roomName" value="${esc(p.nom)}" aria-label="Nom de la pièce">
-      <button class="icon-btn" data-act="delPiece" aria-label="Supprimer la pièce">🗑</button>
-    </div>
-    ${t.id !== "intervention" ? `<div class="room-meta">
-      <label>Surface <input id="roomSurf" type="text" inputmode="decimal" autocomplete="off" value="${p.surface ? String(p.surface).replace(".",",") : ""}" placeholder="—"> m²</label>
-      ${t.etage ? `<label>Étage <input id="roomEtage" value="${esc(p.etage||"")}" placeholder="—" autocomplete="off"></label>` : ""}
-    </div>` : ""}
-    <div class="room-tools" ${lignes.some(l=>estElec(l,d)) ? "" : "hidden"}>
-      <button class="chip" data-act="allPose" data-v="encastre">Tout encastré</button>
-      <button class="chip" data-act="allPose" data-v="goulotte">Tout en goulotte</button>
-    </div>
-    <div id="lignes">${lignes.map(ligneHTML).join("") || `<div class="empty">Aucune prestation dans cette pièce.<br>Appuyez sur « Ajouter des prestations ».</div>`}</div>
-    <div class="row2" style="margin-top:4px">
-      <button class="btn sec" data-act="pickPresta">＋ Ajouter des prestations</button>
-      <button class="btn sec add-presta" data-act="addLigne" style="flex:0 0 auto;width:auto">＋ Ligne libre</button>
-    </div>
-    <h2>Notes sur la pièce</h2>
-    <textarea class="t" id="roomNote" placeholder="Remarques, dimensions, état existant…">${esc(p.note)}</textarea>
-    ` : `<div class="empty">Aucune pièce. Ajoutez-en une avec « ＋ Pièce ».</div>`}
+    ${simple ? `<h2 style="margin-top:4px">Prestations</h2><div data-room="${p.id}">${roomBody(p, d, t, true)}</div>`
+    : `<div class="rooms-top"><b>${d.pieces.length} pièce${d.pieces.length>1?"s":""}</b>
+        ${d.pieces.length > 1 ? `<button class="chip" data-act="toutReplier">${toutReplie ? "Tout ouvrir" : "Tout réduire"}</button>` : ""}
+        <span class="sp"></span><button class="tab add" data-act="addPiece">＋ Pièce</button></div>
+      ${d.pieces.map(x => `<section class="room ${x.replie?"replie":""}" data-room="${x.id}" id="room-${x.id}">
+        <div class="room-bar"><button class="rb-tog" data-act="toggleRoom"><span class="rb-ico">${x.replie?"▸":"▾"}</span><span class="rb-txt">${barTxt(x)}</span></button>
+          ${t.sansPieces ? "" : `<label class="rb-surf"><input data-r="surf" type="text" inputmode="decimal" autocomplete="off" value="${x.surface ? String(x.surface).replace(".",",") : ""}" placeholder="—" aria-label="Surface en m²"><span>m²</span></label>`}
+          <button class="rb-set" data-act="roomSettings" aria-label="Paramètres de la pièce">⚙</button></div>
+        ${x.replie ? "" : `<div class="room-body">${roomBody(x, d, t, false)}</div>`}
+      </section>`).join("") || `<div class="empty">Aucune pièce. Ajoutez-en une avec « ＋ Pièce ».</div>`}`}
   </main>
   <div class="bottom">
-    <button class="btn sec" data-act="addPiece">＋ Pièce</button>
+    ${simple ? `<button class="btn sec" data-act="pickPresta">＋ Prestations</button>` : `<button class="btn sec" data-act="addPiece">＋ Pièce</button>
+    <button class="btn sec btn-plan" data-act="plan" style="flex:0 0 auto;width:auto">🗺 Plan</button>`}
     <button class="btn" data-act="recap">Récapitulatif</button>
   </div>`;
-  const tb = document.querySelector(".tab.on"); if(tb) tb.scrollIntoView({inline:"center",block:"nearest"});
+  if(ui.versPiece){ const el = document.getElementById("room-" + ui.versPiece); ui.versPiece = null;
+    if(el) el.scrollIntoView({block:"start"}); window.scrollBy(0, -60); }
 }
 
+/* ---------- Écran Catalogue ---------- */
+function renderCatalogue(){
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-act="home" aria-label="Retour">‹</button><h1>${ui.catTce ? "Catalogue tout corps d'état" : "Catalogue électricité"}</h1></header>
+  <main>
+    <div class="cat-regl">
+      <div class="cr-t"><b>Calcul du prix client</b><small>matériel × coef. + temps de pose × taux horaire</small></div>
+      <label><span>Taux horaire HT</span><span class="cr-in"><input id="rTaux" inputmode="decimal" value="${euro(reglages().taux)}">€/h</span></label>
+      <label><span>Coef. matériel</span><span class="cr-in"><input id="rCoef" inputmode="decimal" value="${euro(reglages().coef)}">×</span></label>
+    </div>
+    ${ui.catTce ? `<p class="cat-avert">Prix HT par unité (m², ml, u ou forfait). Les prix sont <b>à remplir</b> : tape le matériel et le temps de pose (le prix client se calcule), ou directement le prix client.</p>` : ""}
+    <p class="cat-avert" ${ui.catTce ? "hidden" : ""}>Prix HT à l'unité. Matériel : tes factures Plateforme 2025 <b>+1 € par article</b> (appareillage avec son cache, câble au mètre +1 €). Ce qui n'y était pas garde le prix internet. Tableaux : prix client de tes forfaits. Temps de pose estimés. Les prix tapés à la main ne sont plus recalculés.</p>
+    <input class="t" id="catQ" type="search" placeholder="🔍 Rechercher un article, une référence…" value="${esc(ui.catQ||"")}" style="margin-bottom:6px">
+    <div id="catListe">${catListeHTML()}</div>
+  </main>
+  ${ui.catTce ? "" : `<div class="bottom"><button class="btn" data-act="catAdd">＋ Ajouter un article</button></div>`}`;
+}
+function catListeHTML(){
+  const q = (ui.catQ || "").toLowerCase().trim();
+  const ok = k => { if(!q) return true; const p = prixDe(k); return (libK(k) + " " + p.ref).toLowerCase().includes(q); };
+  const perso = cat.perso.map(a => a.k);
+  const groupes = ui.catTce ? Object.entries(LOTS_TCE).map(([lot, items]) => [lot, Object.keys(items)]) : [["Basiques", BASIQUES], ["Tableau", Object.keys(TABLEAUX)], ["Alimentation", Object.keys(ALIMS)], ["Autres prestations", catKeys().filter(k => !BASIQUES.includes(k) && !perso.includes(k) && !HORS_AUTRES.includes(k))], ["Mes articles", perso]];
+  const html = groupes.map(([nom, ks]) => { const l = avecVar(ks).filter(k => libK(k) !== k && ok(k)); if(!l.length) return "";
+    return `<h2>${nom} <span class="cnt">${l.length}</span></h2>${l.map(catRowHTML).join("")}`; }).join("");
+  return html || `<div class="empty">Aucun article ne correspond.</div>`;
+}
+function catRowHTML(k){
+  const p = prixDe(k), marge = p.mat != null && p.cli != null ? p.cli - p.mat : null;
+  return `<div class="cat-row" data-ck="${k}">
+    <button class="cr-lib" data-act="catEdit" data-k="${k}"><b>${esc(libK(k))}</b><small>${p.h ? `⏱ ${euro(p.h)} h · ` : ""}${esc(p.ref || "Ajouter une référence…")}</small></button>
+    <div class="cr-prix">
+      <label><span>Matériel${CATALOGUE[k] && CATALOGUE[k].unite !== "u" ? " / " + esc(CATALOGUE[k].unite) : ""}</span><span class="cr-in"><input data-ck="${k}" data-cf="mat" inputmode="decimal" autocomplete="off" value="${euro(p.mat)}" placeholder="—">€</span></label>
+      <label><span>Client${p.cliAuto ? " (calculé)" : ""}</span><span class="cr-in"><input class="${p.cliAuto ? "auto" : ""}" data-ck="${k}" data-cf="cli" inputmode="decimal" autocomplete="off" value="${euro(p.cli)}" placeholder="—">€</span></label>
+      <span class="cr-marge ${marge != null && marge < 0 ? "neg" : ""}">${marge == null ? "" : `Marge<b>${euro(marge)} €</b>`}</span>
+    </div></div>`;
+}
+function catSheet(k){
+  const neuf = !k, perso = k && cat.perso.find(a => a.k === k), p = k ? prixDe(k) : {ref:"", mat:null, cli:null};
+  const modifie = k && !perso && cat.prix[k];
+  const s = sheet(`<h3>${neuf ? "Nouvel article" : "Article du catalogue"}</h3>
+    <label class="f"><span>Désignation</span><input class="t" id="cLib" value="${esc(k ? libK(k) : "")}" ${k && !perso ? "disabled" : ""} placeholder="Ex. Prise USB double"></label>
+    <label class="f"><span>Référence / gamme</span><input class="t" id="cRef" value="${esc(p.ref)}" placeholder="Ex. Odace S520219"></label>
+    <div class="row2"><label class="f" style="flex:1"><span>Matériel HT (€)</span><input class="t" id="cMat" inputmode="decimal" value="${euro(p.mat)}"></label>
+      <label class="f" style="flex:1"><span>Temps de pose (h)</span><input class="t" id="cH" inputmode="decimal" value="${euro(p.h)}"></label></div>
+    <label class="f"><span>Prix client HT (€) — vide = calculé automatiquement</span><input class="t" id="cCli" inputmode="decimal" value="${p.cliAuto ? "" : euro(p.cli)}" placeholder="${p.cliAuto && p.cli != null ? "calculé : " + euro(p.cli) + " €" : "calculé"}"></label>
+    <div class="row2">${perso ? `<button class="btn sec danger-t" data-s="del">🗑 Supprimer</button>` : modifie ? `<button class="btn sec" data-s="reset">Prix d'origine</button>` : `<button class="btn sec" data-s="no">Annuler</button>`}
+      <button class="btn" data-s="ok">Enregistrer</button></div>`);
+  const q = id => s.querySelector(id);
+  q('[data-s="ok"]').onclick = () => {
+    const ref = q("#cRef").value.trim(), mat = lireEuro(q("#cMat").value), h = lireEuro(q("#cH").value), cli = lireEuro(q("#cCli").value);
+    if(neuf){ const lib = q("#cLib").value.trim(); if(!lib){ q("#cLib").focus(); return; }
+      const a = {k: "p" + uid(), lib, ref, mat, h, cli}; cat.perso.push(a); ajoutPerso(a); }
+    else if(perso){ const lib = q("#cLib").value.trim() || perso.lib; Object.assign(perso, {lib, ref, mat, h, cli}); ajoutPerso(perso); }
+    else { cat.prix[k] = {ref, mat, h}; if(cli != null) cat.prix[k].cli = cli; }
+    saveCat(); closeSheet(); renderCatalogue(); toast("Catalogue enregistré");
+  };
+  const no = q('[data-s="no"]'); if(no) no.onclick = closeSheet;
+  const rs = q('[data-s="reset"]'); if(rs) rs.onclick = () => { delete cat.prix[k]; saveCat(); closeSheet(); renderCatalogue(); };
+  const dl = q('[data-s="del"]'); if(dl) dl.onclick = () => confirmSheet(`Supprimer « ${esc(perso.lib)} » du catalogue ?`, "Supprimer", () => {
+    cat.perso = cat.perso.filter(a => a !== perso); delete PRESTATIONS[k]; saveCat(); renderCatalogue(); });
+}
+document.addEventListener("input", e => {
+  const el = e.target;
+  if(el.id === "rTaux" || el.id === "rCoef"){ const v = lireEuro(el.value); if(v == null || v <= 0) return;
+    cat.reglages = Object.assign({}, cat.reglages, {[el.id === "rTaux" ? "taux" : "coef"]: v}); saveCat();
+    document.getElementById("catListe").innerHTML = catListeHTML(); return; }
+  if(el.id === "catQ"){ ui.catQ = el.value; document.getElementById("catListe").innerHTML = catListeHTML(); return; }
+  if(!el.dataset || !el.dataset.ck) return;
+  const k = el.dataset.ck, perso = cat.perso.find(a => a.k === k), v = lireEuro(el.value), f = el.dataset.cf;
+  if(perso) perso[f] = v;
+  else { cat.prix[k] = Object.assign({}, cat.prix[k] || {}); if(v == null && f === "cli") delete cat.prix[k].cli; else cat.prix[k][f] = v; }
+  if(f === "cli") el.classList.toggle("auto", v == null);
+  saveCat();
+  const row = el.closest(".cat-row"), p = prixDe(k), m = row && row.querySelector(".cr-marge");
+  if(f === "mat" && p.cliAuto){ const ci = row.querySelector('[data-cf="cli"]'); if(ci) ci.value = euro(p.cli); }
+  if(m){ const marge = p.mat != null && p.cli != null ? p.cli - p.mat : null; m.className = "cr-marge" + (marge != null && marge < 0 ? " neg" : "");
+    m.innerHTML = marge == null ? "" : `Marge<b>${euro(marge)} €</b>`; }
+});
+
+/* Note d'une prestation : option activable (activée d'office pour tableau, clim, solaire, borne) */
+function noteP(p){ return p.noteOn !== undefined ? p.noteOn : !!p.note; }
+function noteActive(l){ return l.noteOn !== undefined ? l.noteOn : (NOTE_AUTO.includes(l.presta) || !!l.note); }
 function ligneHTML(l){
   const libre = !l.presta, d = cur(), elec = estElec(l, d), u = unite(l);
-  const noteAuto = NOTE_AUTO.includes(l.presta);
-  const noteOuverte = noteAuto || l.note || ui.noteOpen === l.id;
+  const noteOuverte = noteActive(l);
   return `<div class="ligne ${l.qte>0?"has":""}" data-lid="${l.id}">
     <div class="l1">
       <div class="lib">${libre
@@ -537,8 +1310,10 @@ function ligneHTML(l){
       ${elec ? `<div class="pose">
         <button class="e ${l.pose==="encastre"?"on":""}" data-act="pose" data-v="encastre">Encastré</button>
         <button class="g ${l.pose==="goulotte"?"on":""}" data-act="pose" data-v="goulotte">Goulotte</button>
+        <button class="p ${l.pose==="placo"?"on":""}" data-act="pose" data-v="placo">Placo</button>
       </div>` : `<span class="lot">${esc(l.presta ? CATALOGUE[l.presta].lot : "Ligne libre")}</span>`}
-      ${noteAuto ? "" : `<button class="nbtn ${noteOuverte?"on":""}" data-act="noteLigne">📝 Note</button>`}
+      ${saillieOK(l) ? `<button class="nbtn sail ${l.saillie?"on":""}" data-act="saillie" aria-pressed="${!!l.saillie}">${l.saillie?"☑":"☐"} Saillie</button>` : ""}
+      <button class="nbtn sw-btn ${noteOuverte?"on":""}" data-act="noteLigne" aria-pressed="${noteOuverte}"><span class="sw"></span>Note</button>
       <span class="sp"></span>
       <button class="del" data-act="delLigne" aria-label="Retirer la ligne">✕</button>
     </div>
@@ -547,17 +1322,19 @@ function ligneHTML(l){
 }
 
 function qteTxt(l, u){ u = u || unite(l); return u === "u" ? `× ${String(l.qte).replace(".",",")}` : `${String(l.qte).replace(".",",")} ${esc(u)}`; }
-function poseTag(p){ return p==="goulotte" ? `<span class="tag g">Goulotte</span>` : `<span class="tag e">Encastré</span>`; }
+const POSE_NOM = {encastre:"Encastré", goulotte:"Goulotte", placo:"Placo"};
+function poseTag(p){ const k = POSE_NOM[p] ? p : "encastre"; return `<span class="tag ${k[0]}">${POSE_NOM[k]}</span>`; }
 
 function renderRecap(){
   const d = cur(); if(!d){ go("home"); return; }
   const t = typeOf(d.type);
   const tot = {};
   d.pieces.forEach(p => p.lignes.forEach(l => { if(l.qte>0){
-    const k = (l.libelle||"Ligne libre")+"|"+(estElec(l,d)?l.pose:"")+"|"+unite(l); tot[k] = (tot[k]||0) + l.qte; }}));
+    const k = libL(l)+"|"+(estElec(l,d)?l.pose:"")+"|"+unite(l); tot[k] = (tot[k]||0) + l.qte; }}));
   const totKeys = Object.keys(tot).sort();
+  const simple = t.sansPieces && d.pieces.length <= 1;
   $app.innerHTML = `
-  <header class="top"><button data-act="back" aria-label="Retour">‹</button><h1>Récapitulatif</h1></header>
+  <header class="top"><button class="retour" data-act="back" aria-label="Retour">‹</button><h1>Récapitulatif</h1></header>
   <main class="recap">
     <div class="card">
       <b>${esc(d.client || "Client sans nom")}</b><br>
@@ -565,26 +1342,197 @@ function renderRecap(){
       <span class="muted">Relevé du ${fmtDate(d.cree)}</span>
       ${surfTot(d) ? `<br><span class="muted">Surface relevée : <b>${m2(surfTot(d))}</b></span>` : ""}
     </div>
-    <h2>Par pièce</h2>
+    <h2>${simple ? "Prestations" : "Par pièce"}</h2>
     ${d.pieces.filter(p=>p.lignes.some(l=>l.qte>0)||p.note||p.surface).map(p=>{
       const ls = p.lignes.filter(l=>l.qte>0);
-      return `<div class="card"><h4>${esc(p.nom)}${p.surface?` <span class="muted" style="font-weight:400">· ${m2(p.surface)}</span>`:""}${p.etage?` <span class="muted" style="font-weight:400">· Étage : ${esc(p.etage)}</span>`:""}</h4>
-        ${ls.length ? `<table>${ls.map(l=>`<tr><td>${esc(l.libelle||"Ligne libre")}${l.note?`<div class="lnote-r">📝 ${esc(l.note)}</div>`:""}</td><td class="p">${estElec(l,d)?poseTag(l.pose):""}</td><td class="q">${qteTxt(l)}</td></tr>`).join("")}</table>`
+      return `<div class="card">${simple ? "" : `<h4>${esc(p.nom)}${p.surface?` <span class="muted" style="font-weight:400">· ${m2(p.surface)}</span>`:""}${p.etage?` <span class="muted" style="font-weight:400">· Étage : ${esc(p.etage)}</span>`:""}</h4>`}
+        ${ls.length ? `<table>${ls.map(l=>`<tr><td>${esc(libL(l))}${l.note&&noteActive(l)?`<div class="lnote-r">📝 ${esc(l.note)}</div>`:""}</td><td class="p">${estElec(l,d)?poseTag(l.pose):""}</td><td class="q">${qteTxt(l)}</td></tr>`).join("")}</table>`
         : `<span class="muted">Rien de saisi</span>`}
-        ${p.note?`<p class="muted" style="margin:8px 0 0">📝 ${esc(p.note)}</p>`:""}</div>`;}).join("")}
-    ${(()=>{const v=d.pieces.filter(p=>!p.lignes.some(l=>l.qte>0)&&!p.note&&!p.surface).map(p=>esc(p.nom)); return v.length?`<p class="muted" style="font-size:13px">Pièces sans saisie : ${v.join(", ")}</p>`:"";})()}
-    <h2>Totaux (toutes pièces)</h2>
+        ${p.note&&noteP(p)?`<p class="muted" style="margin:8px 0 0">📝 ${esc(p.note)}</p>`:""}</div>`;}).join("")}
+    ${simple ? "" : (()=>{const v=d.pieces.filter(p=>!p.lignes.some(l=>l.qte>0)&&!p.note&&!p.surface).map(p=>esc(p.nom)); return v.length?`<p class="muted" style="font-size:13px">Pièces sans saisie : ${v.join(", ")}</p>`:"";})()}
+    ${simple ? "" : `<h2>Totaux (toutes pièces)</h2>
     <div class="card">${totKeys.length ? `<table>${totKeys.map(k=>{const [lib,pose,u]=k.split("|");
       return `<tr><td>${esc(lib)}</td><td class="p">${pose?poseTag(pose):""}</td><td class="q">${qteTxt({qte:Math.round(tot[k]*100)/100}, u)}</td></tr>`;}).join("")}</table>`
-      : `<span class="muted">Aucune quantité saisie.</span>`}</div>
+      : `<span class="muted">Aucune quantité saisie.</span>`}</div>`}
+    ${planSVG(d) ? `<h2>Plan</h2><div class="card" style="padding:6px">${planSVG(d)}
+      <p class="muted" style="font-size:12px;margin:6px 4px 0">Plan approximatif, dessiné à partir des surfaces. Un carreau = 1 m. <button class="chip" data-act="plan" style="margin-left:4px">Modifier le plan</button></p></div>` : ""}
     <div class="row2" style="margin-top:16px">
+      <button class="btn sec" data-act="share">Copier en texte</button>
       <button class="btn danger" data-act="delDevis">Supprimer le devis</button>
     </div>
   </main>
   <div class="bottom">
-    <button class="btn sec" data-act="back">‹ Modifier</button>
-    <button class="btn" data-act="share">Partager / copier</button>
+    <button class="btn sec" data-act="pdfApercu">👁 Aperçu PDF</button>
+    <button class="btn" data-act="pdfShare">Partager PDF</button>
   </div>`;
+  setTimeout(() => pdfBlob(d).catch(() => {}), 300);   // PDF prêt avant l'appui sur Partager
+}
+
+/* ---------- Plan des pièces (à l'échelle de la surface) ---------- */
+const PLAN_M = 30;                     // taille du plan : 30 m × 30 m
+const SURF_DEF = 9;                    // surface supposée si non renseignée
+function dimsPiece(p, pl){
+  const S = p.surface || SURF_DEF, r = (pl && pl.r) || 1;
+  const w = Math.sqrt(S * r); return {w, h: S / w, S};
+}
+const arr = v => Math.round(v * 4) / 4;          // arrondi au quart de mètre
+const mTxt = v => (Math.round(v * 10) / 10).toString().replace(".", ",");
+/* Collisions : les pièces peuvent se toucher mais pas se superposer */
+const EPS = 0.01;
+function autresRect(d, id){
+  return Object.entries(d.plan).filter(([k]) => k !== id).map(([k, q]) => { const pp = d.pieces.find(t => t.id === k);
+    return pp ? {x: q.x, y: q.y, ...dimsPiece(pp, q)} : null; }).filter(Boolean);
+}
+const chevauche = (x, y, w, h, o) => x < o.x + o.w - EPS && x + w > o.x + EPS && y < o.y + o.h - EPS && y + h > o.y + EPS;
+function libre(d, id, x, y, w, h){ return !autresRect(d, id).some(o => chevauche(x, y, w, h, o)); }
+// Déplacement de (px,py) vers (x,y) : la pièce glisse et s'arrête contre les murs des autres
+function bloque(d, id, px, py, x, y, w, h){
+  const os = autresRect(d, id);
+  let nx = x;
+  for(let k = 0; k < 6; k++){ const o = os.find(o => chevauche(nx, py, w, h, o)); if(!o) break;
+    nx = nx > px ? o.x - w : o.x + o.w; }
+  if(nx < 0 || os.some(o => chevauche(nx, py, w, h, o))) nx = px;
+  let ny = y;
+  for(let k = 0; k < 6; k++){ const o = os.find(o => chevauche(nx, ny, w, h, o)); if(!o) break;
+    ny = ny > py ? o.y - h : o.y + o.h; }
+  if(ny < 0 || os.some(o => chevauche(nx, ny, w, h, o))) ny = py;
+  return [nx, ny];
+}
+function renderPlan(){
+  const d = cur(); if(!d){ go("home"); return; }
+  d.plan = d.plan || {};
+  const z = ui.zoom || 28;                        // pixels par mètre
+  const aPlacer = d.pieces.filter(p => !d.plan[p.id]);
+  if(ui.planSel && !d.plan[ui.planSel]) ui.planSel = null;
+  const sel = ui.planSel ? d.pieces.find(p => p.id === ui.planSel) : null;
+  const wrapOld = document.getElementById("planWrap");
+  const scroll = wrapOld ? [wrapOld.scrollLeft, wrapOld.scrollTop] : (ui.planScroll || [0, 0]);
+  const roomHTML = p => { const pl = d.plan[p.id], {w, h, S} = dimsPiece(p, pl);
+    return `<div class="proom ${p.surface?"":"nosurf"} ${p.id===ui.planSel?"sel":""}" data-pid="${p.id}"
+      style="left:${pl.x*z}px;top:${pl.y*z}px;width:${w*z}px;height:${h*z}px">
+      <b>${esc(p.nom)}</b><small>${p.surface ? m2(S) : "? m²"}</small></div>`; };
+  let panel = "";
+  if(sel){ const pl = d.plan[sel.id], {w, h} = dimsPiece(sel, pl);
+    panel = `<div class="plan-panel">
+      <h3>${esc(sel.nom)}</h3>
+      <span class="muted" style="font-size:14px">${mTxt(w)} m × ${mTxt(h)} m${sel.surface ? "" : " · surface non renseignée (9 m² par défaut)"}</span>
+      <div class="row">
+        <label>Surface <input id="planSurf" type="text" inputmode="decimal" autocomplete="off" value="${sel.surface ? String(sel.surface).replace(".",",") : ""}" placeholder="—"> m²</label>
+        <label>Longueur <input id="planLong" type="text" inputmode="decimal" autocomplete="off" value="${mTxt(w)}"> m</label>
+      </div>
+      <div class="row">
+        <button class="chip" data-pa="large">↔ Plus large</button>
+        <button class="chip" data-pa="haut">↕ Plus haut</button>
+        <button class="chip" data-pa="tourne">↻ Tourner</button>
+        <button class="chip" data-pa="retire" style="color:var(--danger)">Retirer du plan</button>
+      </div></div>`; }
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-act="back" aria-label="Retour">‹</button><h1>Plan · ${esc(d.client || "Client")}</h1>
+    <div class="zoom"><button data-pa="zoomOut" aria-label="Dézoomer">−</button><button data-pa="zoomIn" aria-label="Zoomer">＋</button></div></header>
+  <main>
+    <p class="plan-hint">Touchez une pièce pour l'ajouter, puis faites-la glisser avec le doigt. Un carreau = 1 m. Les pièces sont dessinées à partir de leur surface.</p>
+    <div class="plan-wrap" id="planWrap"><div class="plan-grid" id="planGrid"
+      style="width:${PLAN_M*z}px;height:${PLAN_M*z}px;background-size:${z}px ${z}px">
+      ${d.pieces.filter(p => d.plan[p.id]).map(roomHTML).join("")}</div></div>
+    ${aPlacer.length ? `<div class="plan-tray"><span class="lbl">À placer :</span>${aPlacer.map(p =>
+      `<button class="chip" data-pa="place" data-pid="${p.id}">＋ ${esc(p.nom)}${p.surface ? ` · ${m2(p.surface)}` : ""}</button>`).join("")}</div>`
+      : (d.pieces.length ? "" : `<div class="empty">Aucune pièce dans ce devis.</div>`)}
+    ${panel}
+  </main>`;
+  const wrap = document.getElementById("planWrap");
+  wrap.scrollLeft = scroll[0]; wrap.scrollTop = scroll[1];
+  wrap.addEventListener("scroll", () => { ui.planScroll = [wrap.scrollLeft, wrap.scrollTop]; }, {passive:true});
+
+  // Boutons du plan
+  $app.querySelectorAll("[data-pa]").forEach(b => b.onclick = () => {
+    const a = b.dataset.pa, pl = sel && d.plan[sel.id];
+    if(a === "zoomIn"){ zoomPlan(1.25); return; }
+    if(a === "zoomOut"){ zoomPlan(0.8); return; }
+    if(a === "place"){
+      const p = d.pieces.find(x => x.id === b.dataset.pid), {w} = dimsPiece(p, {r:1});
+      // à droite de la dernière pièce posée ; au bord de l'écran, on passe à la ligne
+      const poses = Object.entries(d.plan).map(([id, q]) => { const pp = d.pieces.find(t => t.id === id); return pp ? {q, ...dimsPiece(pp, q)} : null; }).filter(Boolean);
+      const gauche = arr(wrap.scrollLeft / z + 1), droite = Math.min(PLAN_M, (wrap.scrollLeft + wrap.clientWidth) / z);
+      let x = gauche, y = arr(wrap.scrollTop / z + 1);
+      if(poses.length){ const der = poses[poses.length - 1];
+        x = arr(der.q.x + der.w + 0.5); y = der.q.y;
+        if(x + w > droite){ x = gauche; y = arr(Math.max(...poses.map(o => o.q.y + o.h)) + 0.5); } }
+      x = Math.max(0, x); y = Math.max(0, Math.min(y, PLAN_M - 1));
+      if(!libre(d, p.id, x, y, w, w)){   // cherche une place libre, ligne par ligne
+        let ok = false;
+        for(let yy = 0; yy < PLAN_M && !ok; yy += 0.5) for(let xx = 0; xx + w <= PLAN_M && !ok; xx += 0.5)
+          if(libre(d, p.id, xx, yy, w, w)){ x = xx; y = yy; ok = true; }
+      }
+      d.plan[p.id] = {x, y, r: 1};
+      ui.planSel = p.id; touch(); renderPlan(); return;
+    }
+    if(!pl) return;
+    if(a === "retire"){ delete d.plan[sel.id]; ui.planSel = null; touch(); renderPlan(); return; }
+    const r0 = pl.r || 1;
+    pl.r = a === "large" ? r0 * 1.25 : a === "haut" ? r0 / 1.25 : 1 / r0;
+    if(!placeOk(d, sel, pl)){ pl.r = r0; return; }
+    touch(); renderPlan();
+  });
+  const surf = document.getElementById("planSurf"), lon = document.getElementById("planLong");
+  if(surf) surf.onchange = () => { const v = parseFloat(surf.value.replace(",", ".")), s0 = sel.surface;
+    sel.surface = v > 0 ? v : null; if(!placeOk(d, sel, d.plan[sel.id])) sel.surface = s0; touch(); renderPlan(); };
+  if(lon) lon.onchange = () => { const v = parseFloat(lon.value.replace(",", ".")), S = sel.surface || SURF_DEF, pl = d.plan[sel.id], r0 = pl.r;
+    if(v > 0){ pl.r = v * v / S; if(placeOk(d, sel, pl)) touch(); else pl.r = r0; } renderPlan(); };
+
+  // Déplacement au doigt
+  let drag = null;
+  wrap.querySelectorAll(".proom").forEach(el => {
+    el.addEventListener("pointerdown", e => {
+      const pl = d.plan[el.dataset.pid];
+      drag = {el, pl, x0: e.clientX, y0: e.clientY, px: pl.x, py: pl.y, moved: false};
+      el.setPointerCapture(e.pointerId);
+      wrap.querySelectorAll(".proom.sel").forEach(o => o.classList.remove("sel")); el.classList.add("sel");
+    });
+    el.addEventListener("pointermove", e => {
+      if(!drag || drag.el !== el) return;
+      const dx = (e.clientX - drag.x0) / z, dy = (e.clientY - drag.y0) / z;
+      if(Math.abs(dx) + Math.abs(dy) > 0.1) drag.moved = true;
+      const pp = d.pieces.find(t => t.id === el.dataset.pid), {w, h} = dimsPiece(pp, drag.pl);
+      const [nx, ny] = bloque(d, pp.id, drag.pl.x, drag.pl.y, Math.max(0, arr(drag.px + dx)), Math.max(0, arr(drag.py + dy)), w, h);
+      drag.pl.x = nx; drag.pl.y = ny;
+      el.style.left = drag.pl.x * z + "px"; el.style.top = drag.pl.y * z + "px";
+    });
+    const fin = () => { if(!drag || drag.el !== el) return;
+      const id = el.dataset.pid; drag = null; ui.planSel = id; touch(); renderPlan(); };
+    el.addEventListener("pointerup", fin); el.addEventListener("pointercancel", fin);
+  });
+  document.getElementById("planGrid").addEventListener("click", e => {
+    if(e.target.id === "planGrid" && ui.planSel){ ui.planSel = null; renderPlan(); } });
+}
+/* Plan en image (SVG) pour le récapitulatif */
+function planSVG(d){
+  const pl = d.plan || {};
+  const ps = d.pieces.filter(p => pl[p.id]).map(p => ({p, q: pl[p.id], ...dimsPiece(p, pl[p.id])}));
+  if(!ps.length) return "";
+  const m = 0.5, x0 = Math.min(...ps.map(o => o.q.x)) - m, y0 = Math.min(...ps.map(o => o.q.y)) - m;
+  const x1 = Math.max(...ps.map(o => o.q.x + o.w)) + m, y1 = Math.max(...ps.map(o => o.q.y + o.h)) + m;
+  const W = x1 - x0, H = y1 - y0, fs = Math.max(0.35, Math.min(0.6, W / 18));
+  let grille = "";
+  for(let x = Math.ceil(x0); x <= x1; x++) grille += `<line x1="${x}" y1="${y0}" x2="${x}" y2="${y1}"/>`;
+  for(let y = Math.ceil(y0); y <= y1; y++) grille += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/>`;
+  return `<svg class="plan-svg" viewBox="${x0} ${y0} ${W} ${H}" role="img" aria-label="Plan des pièces">
+    <g class="g" stroke-width="0.02">${grille}</g>
+    ${ps.map(o => { const t = Math.min(fs, o.w * 0.9 / (Math.max(o.p.nom.length, 6) * 0.58));
+      return `<g><rect x="${o.q.x}" y="${o.q.y}" width="${o.w}" height="${o.h}" class="r ${o.p.surface?"":"ns"}" stroke-width="0.07"/>
+      <text x="${o.q.x + o.w/2}" y="${o.q.y + o.h/2}" font-size="${t}" text-anchor="middle" font-weight="700">${esc(o.p.nom)}</text>
+      <text x="${o.q.x + o.w/2}" y="${o.q.y + o.h/2 + t*1.2}" font-size="${t*0.85}" text-anchor="middle" class="s">${o.p.surface ? m2(o.S) : "? m²"}</text></g>`; }).join("")}
+  </svg>`;
+}
+function placeOk(d, p, pl){ const {w, h} = dimsPiece(p, pl);
+  if(libre(d, p.id, pl.x, pl.y, w, h)) return true;
+  toast("Pas la place : une autre pièce bloque"); return false; }
+function zoomPlan(f){
+  const wrap = document.getElementById("planWrap"), z = ui.zoom || 28, nz = Math.min(70, Math.max(10, z * f));
+  // garde le centre de la vue
+  const cx = (wrap.scrollLeft + wrap.clientWidth / 2) / z, cy = (wrap.scrollTop + wrap.clientHeight / 2) / z;
+  ui.zoom = nz; renderPlan();
+  const w2 = document.getElementById("planWrap");
+  w2.scrollLeft = cx * nz - w2.clientWidth / 2; w2.scrollTop = cy * nz - w2.clientHeight / 2;
 }
 
 function surfTot(d){ return Math.round(d.pieces.reduce((s,p)=>s+(p.surface||0),0)*100)/100; }
@@ -599,14 +1547,270 @@ function recapTexte(d){
   d.pieces.forEach(p=>{
     const ls = p.lignes.filter(l=>l.qte>0);
     if(!ls.length && !p.note && !p.surface) return;
-    L.push(`== ${p.nom.toUpperCase()}${p.surface?` — ${m2(p.surface)}`:""}${p.etage?` (étage : ${p.etage})`:""} ==`);
+    if(!(t.sansPieces && d.pieces.length<=1)) L.push(`== ${p.nom.toUpperCase()}${p.surface?` — ${m2(p.surface)}`:""}${p.etage?` (étage : ${p.etage})`:""} ==`);
     ls.forEach(l=>{ const u = unite(l);
-      L.push(`- ${l.libelle||"Ligne libre"}${estElec(l,d)?` (${l.pose==="goulotte"?"goulotte":"encastré"})`:""} : ${u==="u"?"x "+String(l.qte).replace(".",","):String(l.qte).replace(".",",")+" "+u}`);
-      if(l.note) L.push(`    Note : ${l.note}`); });
-    if(p.note) L.push(`Note : ${p.note}`);
+      L.push(`- ${libL(l)}${estElec(l,d)?` (${(POSE_NOM[l.pose]||"Encastré").toLowerCase()})`:""} : ${u==="u"?"x "+String(l.qte).replace(".",","):String(l.qte).replace(".",",")+" "+u}`);
+      if(l.note && noteActive(l)) L.push(`    Note : ${l.note}`); });
+    if(p.note && noteP(p)) L.push(`Note : ${p.note}`);
     L.push("");
   });
   return L.join("\n");
+}
+
+/* ---------- Récapitulatif en PDF ---------- */
+// Bibliothèque PDF livrée avec l'appli (marche hors ligne), sinon depuis cdnjs
+const JSPDF_URLS = ["jspdf.umd.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"];
+let jspdfP = null;
+function chargerJsPDF(){
+  if(window.jspdf) return Promise.resolve(window.jspdf);
+  const essai = i => new Promise((ok, ko) => {
+    if(i >= JSPDF_URLS.length) return ko(new Error("Réseau"));
+    const s = document.createElement("script"); s.src = JSPDF_URLS[i];
+    s.onload = () => window.jspdf ? ok(window.jspdf) : essai(i + 1).then(ok, ko);
+    s.onerror = () => { s.remove(); essai(i + 1).then(ok, ko); };
+    document.head.appendChild(s);
+  });
+  if(!jspdfP) jspdfP = essai(0).catch(e => { jspdfP = null; throw e; });
+  return jspdfP;
+}
+function logoPNG(){
+  return new Promise(ok => { const im = new Image();
+    im.onload = () => { try{ const c = document.createElement("canvas"); c.width = im.naturalWidth; c.height = im.naturalHeight;
+      c.getContext("2d").drawImage(im, 0, 0); ok({url: c.toDataURL("image/png"), w: c.width, h: c.height, img: im}); }catch(e){ ok(null); } };
+    im.onerror = () => ok(null); im.src = LOGO; });
+}
+// Retire les caractères que la police du PDF ne sait pas écrire (émojis…)
+const pdfTxt = s => String(s == null ? "" : s).replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+  .replace(/[^\x20-\x7E -ÿŒœ–—…€]/g, "").replace(/\s+/g, " ").trim();
+const qtePdf = (l, u) => { u = u || unite(l); const q = String(l.qte).replace(".", ","); return u === "u" ? "× " + q : q + " " + u; };
+function nomPDF(d){
+  const t = typeOf(d.type), dt = new Date(d.cree || Date.now());
+  const j = String(dt.getDate()).padStart(2,"0") + "-" + String(dt.getMonth()+1).padStart(2,"0") + "-" + dt.getFullYear();
+  return (`Devis ${d.client || "client"} ${t.nom} ${j}`).normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^A-Za-z0-9 _-]/g, "").replace(/\s+/g, " ").trim().slice(0, 80) + ".pdf";
+}
+async function recapPDF(d, Doc){
+  const [lib, logo] = await Promise.all([Doc ? null : chargerJsPDF(), logoPNG()]);
+  const jsPDF = Doc || lib.jsPDF;
+  const t = typeOf(d.type), simple = t.sansPieces && d.pieces.length <= 1;
+  const doc = new jsPDF({unit: "mm", format: "a4"});
+  const PW = 210, PH = 297, M = 14, W = PW - 2*M, BAS = PH - 16;
+  const ROSE = [224,76,245], GRIS = [105,105,118], CLAIR = [150,150,160], NOIR = [28,28,34];
+  const POSE_C = {encastre: [235,30,95], goulotte: [20,150,175], placo: [205,125,15]};
+  let y = 0, entete = null;
+  const police = (taille, style, coul) => { doc.setFont("helvetica", style || "normal"); doc.setFontSize(taille); doc.setTextColor(...(coul || NOIR)); };
+  const fill = c => doc.setFillColor(...c), draw = (c, w) => { doc.setDrawColor(...c); doc.setLineWidth(w || .2); };
+  const place = h => { if(y + h > BAS){ doc.addPage(); y = 16; if(entete) entete(); return true; } return false; };
+  const lignesQ = p => p.lignes.filter(l => l.qte > 0);
+  const nbPrest = d.pieces.reduce((s, p) => s + lignesQ(p).length, 0);
+
+  // ---- En-tête
+  fill([43,44,49]); doc.rect(0, 0, PW, 28, "F"); fill(ROSE); doc.rect(0, 28, PW, 1.2, "F");
+  police(17, "bold", [255,255,255]); doc.text("Relevé de chantier", M, 13);
+  police(9.5, "normal", [205,205,215]); doc.text(pdfTxt(t.nom + " · relevé du " + fmtDate(d.cree)), M, 20);
+  if(logo){ const lh = 13, lw = lh * logo.w / logo.h; doc.addImage(logo.url, "PNG", PW - M - lw, 7.5, lw, lh); }
+  y = 36;
+
+  // ---- Bloc client / relevé (deux colonnes)
+  const colW = (W - 6) / 2, cx2 = M + colW + 6;
+  const gauche = [["b", d.client || "Client sans nom"], d.adresse && ["n", d.adresse], d.tel && ["n", "Tél. " + d.tel]].filter(Boolean);
+  const droite = [["Type", t.nom], ["Date", fmtDate(d.cree)]];
+  if(!simple) droite.push(["Pièces", String(d.pieces.length)]);
+  if(surfTot(d)) droite.push(["Surface", m2(surfTot(d))]);
+  droite.push(["Prestations", String(nbPrest)]);
+  police(10, "normal"); const gl = gauche.map(([k, s]) => [k, doc.splitTextToSize(pdfTxt(s), colW - 8)]);
+  const hG = 9 + gl.reduce((s, [k, ls]) => s + ls.length * (k === "b" ? 6 : 4.8), 0), hD = 9 + droite.length * 5;
+  const hB = Math.max(hG, hD) + 3;
+  fill([246,245,249]); draw([228,226,236]); doc.roundedRect(M, y, colW, hB, 2, 2, "FD"); doc.roundedRect(cx2, y, colW, hB, 2, 2, "FD");
+  police(7.5, "bold", ROSE); doc.text("CLIENT", M + 4, y + 6); doc.text("RELEVÉ", cx2 + 4, y + 6);
+  let yy = y + 12;
+  gl.forEach(([k, ls]) => { if(k === "b"){ police(13, "bold"); ls.forEach(l => { doc.text(l, M + 4, yy); yy += 6; }); }
+    else { police(10, "normal", GRIS); ls.forEach(l => { doc.text(l, M + 4, yy); yy += 4.8; }); } });
+  yy = y + 12;
+  droite.forEach(([k, v]) => { police(9, "normal", CLAIR); doc.text(k, cx2 + 4, yy); police(10, "bold"); doc.text(pdfTxt(v), cx2 + colW - 4, yy, {align: "right"}); yy += 5; });
+  y += hB + 6;
+
+  // ---- Notes générales
+  if(d.note && d.note.trim()){
+    police(9.5, "normal"); const n = doc.splitTextToSize(pdfTxt(d.note), W - 10);
+    const h = 9 + n.length * 4.4; place(h);
+    fill([255,248,225]); draw([240,215,140]); doc.roundedRect(M, y, W, h, 2, 2, "FD");
+    police(7.5, "bold", [170,120,0]); doc.text("NOTES GÉNÉRALES", M + 4, y + 5.5);
+    police(9.5, "normal"); doc.text(n, M + 4, y + 10.5); y += h + 6;
+  }
+
+  const titre = (s, sous) => { place(18); y += 2; police(12.5, "bold", NOIR); doc.text(pdfTxt(s), M, y);
+    if(sous){ const w = doc.getTextWidth(pdfTxt(s)); police(9, "normal", CLAIR); doc.text(pdfTxt(sous), M + w + 3, y); }
+    y += 2.2; fill(ROSE); doc.rect(M, y, 18, .9, "F"); draw([225,225,232]); doc.line(M + 18, y + .45, M + W, y + .45); y += 5; };
+  const XP = M + W - 44, XQ = M + W - 2, LW = W - 52;
+  const enteteTab = () => { fill([238,237,243]); doc.rect(M, y, W, 6, "F"); police(7.5, "bold", GRIS);
+    doc.text("PRESTATION", M + 2, y + 4.1); doc.text("POSE", XP, y + 4.1); doc.text("QTÉ", XQ, y + 4.1, {align: "right"}); y += 7; };
+  const pilule = (pose, x, yb) => { const c = POSE_C[pose] || POSE_C.encastre, s = POSE_NOM[pose] || "Encastré";
+    police(7.5, "bold", c); const w = doc.getTextWidth(s) + 4; fill(c.map(v => Math.round(v + (255 - v) * .87))); doc.roundedRect(x - 1, yb - 3.3, w, 4.6, 2.2, 2.2, "F"); doc.text(s, x + 1, yb); };
+  const tableau = (rows, suite) => { enteteTab(); const avant = entete;
+    entete = () => { if(suite){ police(9, "bold", GRIS); doc.text(pdfTxt(suite + " (suite)"), M, y + 3); y += 5.5; } enteteTab(); };
+    rows.forEach((r, i) => {
+      if(r.groupe){ place(9); y += 1; police(8.5, "bold", ROSE); doc.text(pdfTxt(r.groupe).toUpperCase(), M + 2, y + 3.5); y += 6; return; }
+      police(10, "normal"); const lib = doc.splitTextToSize(pdfTxt(r.lib), LW);
+      police(8.5, "italic"); const note = r.note ? doc.splitTextToSize(pdfTxt(r.note), LW - 6) : [];
+      const h = lib.length * 4.5 + (note.length ? note.length * 3.9 + 1.2 : 0) + 3; place(h);
+      if(r.zebre) { fill([250,250,252]); doc.rect(M, y, W, h, "F"); }
+      police(10, "normal"); doc.text(lib, M + 2, y + 4.2);
+      if(r.pose) pilule(r.pose, XP, y + 4.2);
+      police(10.5, "bold"); doc.text(pdfTxt(r.q), XQ, y + 4.2, {align: "right"});
+      if(note.length){ const yn = y + 4.2 + lib.length * 4.5; fill(ROSE); doc.rect(M + 3, yn - 3, .6, note.length * 3.9, "F");
+        police(8.5, "italic", GRIS); doc.text(note, M + 5.5, yn); }
+      y += h; draw([232,232,238]); doc.line(M, y, M + W, y);
+    });
+    entete = avant; y += 2; };
+  const ligneRow = (l, i) => ({lib: libL(l), pose: estElec(l, d) ? (l.pose || "encastre") : "", q: qtePdf(l),
+    note: l.note && noteActive(l) ? l.note : "", zebre: i % 2 === 1});
+
+  // ---- Synthèse des quantités (toutes pièces), par corps d'état
+  if(!simple && nbPrest){
+    const tot = {}, ordre = [];
+    d.pieces.forEach(p => lignesQ(p).forEach(l => {
+      const lot = l.presta && CATALOGUE[l.presta] ? CATALOGUE[l.presta].lot : (t.tce ? "Autres prestations" : "Électricité");
+      const k = [lot, libL(l), estElec(l, d) ? (l.pose || "encastre") : "", unite(l)].join("|");
+      if(!(k in tot)){ tot[k] = 0; ordre.push(k); } tot[k] += l.qte; }));
+    const lots = [...new Set(ordre.map(k => k.split("|")[0]))], rows = [];
+    lots.forEach(lot => { if(lots.length > 1) rows.push({groupe: lot});
+      ordre.filter(k => k.startsWith(lot + "|")).sort().forEach((k, i) => { const [, lb, pose, u] = k.split("|");
+        rows.push({lib: lb, pose, q: qtePdf({qte: Math.round(tot[k] * 100) / 100}, u), zebre: i % 2 === 1}); }); });
+    titre("Synthèse des quantités", "toutes pièces confondues"); tableau(rows); y += 3;
+  }
+
+  // ---- Détail par pièce
+  const pleines = d.pieces.filter(p => lignesQ(p).length || (p.note && noteP(p)));
+  const vides = d.pieces.filter(p => !pleines.includes(p));
+  titre(simple ? "Prestations" : "Détail par pièce");
+  if(!pleines.length){ police(10, "italic", GRIS); doc.text("Aucune prestation saisie.", M, y + 2); y += 8; }
+  pleines.forEach(p => {
+    const ls = lignesQ(p);
+    if(!simple){ place(22); fill([251,236,253]); doc.roundedRect(M, y, W, 8, 1.5, 1.5, "F"); fill(ROSE); doc.rect(M, y, 1.2, 8, "F");
+      police(11, "bold"); doc.text(pdfTxt(p.nom), M + 4, y + 5.5);
+      const sub = [p.surface && m2(p.surface), p.etage && "Étage " + p.etage, ls.length && ls.length + " prest."].filter(Boolean).join("  ·  ");
+      police(9, "normal", GRIS); doc.text(pdfTxt(sub), M + W - 3, y + 5.5, {align: "right"}); y += 10; }
+    if(ls.length) tableau(ls.map(ligneRow), simple ? "" : p.nom);
+    if(p.note && noteP(p)){ police(9, "italic"); const n = doc.splitTextToSize(pdfTxt(p.note), W - 10); const h = n.length * 4.1 + 4;
+      place(h + 2); draw([232,232,238]); fill([248,248,250]); doc.roundedRect(M, y, W, h, 1.5, 1.5, "FD");
+      police(9, "italic", GRIS); doc.text(n, M + 4, y + 4.8); y += h + 2; }
+    y += 4;
+  });
+  if(!simple && vides.length){ police(9, "normal", CLAIR); const s = doc.splitTextToSize(pdfTxt("Pièces sans saisie : " + vides.map(p => p.nom).join(", ")), W);
+    place(s.length * 4.2 + 2); doc.text(s, M, y + 2); y += s.length * 4.2 + 4; }
+
+  // ---- Plan
+  const pl = d.plan || {}, ps = d.pieces.filter(p => pl[p.id]).map(p => ({p, q: pl[p.id], ...dimsPiece(p, pl[p.id])}));
+  if(ps.length){
+    const x0 = Math.min(...ps.map(o => o.q.x)) - .5, y0 = Math.min(...ps.map(o => o.q.y)) - .5;
+    const x1 = Math.max(...ps.map(o => o.q.x + o.w)) + .5, y1 = Math.max(...ps.map(o => o.q.y + o.h)) + .5;
+    const k = Math.min(W / (x1 - x0), 150 / (y1 - y0)), pw = (x1 - x0) * k, ph = (y1 - y0) * k;
+    place(ph + 26); titre("Plan", "approximatif, d'après les surfaces · 1 carreau = 1 m");
+    const ox = M + (W - pw) / 2, oy = y, X = v => ox + (v - x0) * k, Y = v => oy + (v - y0) * k;
+    draw([232,232,238], .15);
+    for(let x = Math.ceil(x0); x <= x1; x++) doc.line(X(x), Y(y0), X(x), Y(y1));
+    for(let v = Math.ceil(y0); v <= y1; v++) doc.line(X(x0), Y(v), X(x1), Y(v));
+    ps.forEach(o => {
+      fill(o.p.surface ? [251,233,253] : [240,240,243]); draw(ROSE, .6);
+      doc.rect(X(o.q.x), Y(o.q.y), o.w * k, o.h * k, "FD");
+      const nom = pdfTxt(o.p.nom), fs = Math.max(8, Math.min(14, (o.w * k) * 0.9 / (Math.max(nom.length, 6) * 0.2)));
+      police(fs, "bold"); doc.text(nom, X(o.q.x + o.w/2), Y(o.q.y + o.h/2), {align: "center"});
+      police(fs * .85, "normal", GRIS); doc.text(o.p.surface ? m2(o.S) : "? m²", X(o.q.x + o.w/2), Y(o.q.y + o.h/2) + fs * .42, {align: "center"});
+    });
+    y += ph + 4;
+  }
+
+  // ---- Pied de page
+  const n = doc.getNumberOfPages();
+  for(let i = 1; i <= n; i++){ doc.setPage(i); draw([225,225,232]); doc.line(M, PH - 11, PW - M, PH - 11); police(8, "normal", CLAIR);
+    doc.text(pdfTxt([d.client || "Client", d.adresse, "relevé du " + fmtDate(d.cree)].filter(Boolean).join(" · ")).slice(0, 110), M, PH - 6.5);
+    doc.text(`Page ${i}/${n}`, PW - M, PH - 6.5, {align: "right"}); }
+  return Doc ? doc : doc.output("blob");
+}
+async function pdfAction(d, mode){
+  if(ui.pdfEnCours) return; ui.pdfEnCours = true;
+  if(!pdfPret(d)) toast("Création du PDF…");
+  try{
+    const blob = await pdfBlob(d), nom = nomPDF(d);
+    const dansCadre = window.top !== window.self;
+    if(mode === "share" && !dansCadre && navigator.share && window.File){
+      const f = new File([blob], nom, {type: "application/pdf"});
+      if(!navigator.canShare || navigator.canShare({files: [f]})){
+        try{ await navigator.share({files: [f], title: nom.replace(/\.pdf$/, "")}); }
+        catch(e){ if(!e || e.name !== "AbortError") telechargerBlob(blob, nom); }
+        return;
+      }
+    }
+    if(dansCadre && window.claude && claude.use){
+      const dl = await claude.use("downloads");
+      if(dl){ try{ await dl.save({filename: nom, data: blob}); }catch(e){ if(!e || e.code !== "declined") toast("Téléchargement impossible ici"); } return; }
+    }
+    telechargerBlob(blob, nom);
+  }catch(e){ toast(e && e.message === "Réseau" ? "Connexion nécessaire pour créer le PDF" : "Erreur pendant la création du PDF"); }
+  finally{ ui.pdfEnCours = false; }
+}
+/* PDF préparé à l'avance (le partage iPhone doit partir tout de suite après l'appui) */
+const pdfPret = d => ui.pdfCache && ui.pdfCache.id === d.id && ui.pdfCache.maj === d.maj && ui.pdfCache.blob;
+function pdfBlob(d){
+  if(pdfPret(d)) return Promise.resolve(ui.pdfCache.blob);
+  const c = {id: d.id, maj: d.maj}; ui.pdfCache = c;
+  c.p = recapPDF(d).then(b => { c.blob = b; return b; }, e => { if(ui.pdfCache === c) ui.pdfCache = null; throw e; });
+  return c.p;
+}
+/* Faux document qui reproduit les appels jsPDF sur un canvas : sert à l'aperçu à l'écran */
+class CanvasDoc{
+  constructor(){ this.pages = [[]]; this.cur = 0; this.fs = 16; this.st = "normal"; this.tc = "#000"; this.fc = "#000"; this.dc = "#000"; this.lw = .2;
+    this.m = document.createElement("canvas").getContext("2d"); }
+  _c(a){ return a.length === 1 && typeof a[0] === "string" ? a[0] : `rgb(${a[0]},${a[1]},${a[2]})`; }
+  _font(mul){ const s = this.st; return `${s === "italic" ? "italic " : ""}${s === "bold" ? "700 " : ""}${this.fs * .3528 * (mul || 1)}px Helvetica, Arial, sans-serif`; }
+  _op(f){ this.pages[this.cur].push(f); }
+  setFont(_, st){ this.st = st || "normal"; } setFontSize(s){ this.fs = s; }
+  setTextColor(...a){ this.tc = this._c(a); } setFillColor(...a){ this.fc = this._c(a); } setDrawColor(...a){ this.dc = this._c(a); } setLineWidth(w){ this.lw = w; }
+  getTextWidth(s){ this.m.font = this._font(10); return this.m.measureText(s).width / 10; }
+  splitTextToSize(s, max){ const out = []; String(s).split("\n").forEach(par => { let cur = "";
+      par.split(" ").forEach(w => { const t = cur ? cur + " " + w : w; if(cur && this.getTextWidth(t) > max){ out.push(cur); cur = w; } else cur = t; });
+      out.push(cur); }); return out; }
+  text(t, x, y, o){ const lines = Array.isArray(t) ? t : [t], font = this._font(), col = this.tc, lh = this.fs * .3528 * 1.15, al = (o && o.align) || "left";
+    this._op(c => { c.font = font; c.fillStyle = col; c.textAlign = al; c.textBaseline = "alphabetic"; lines.forEach((l, i) => c.fillText(l, x, y + i * lh)); }); }
+  roundedRect(x, y, w, h, r, _, s){ const fc = this.fc, dc = this.dc, lw = this.lw;
+    this._op(c => { c.beginPath(); if(c.roundRect) c.roundRect(x, y, w, h, r); else c.rect(x, y, w, h);
+      if(s === "F" || s === "FD"){ c.fillStyle = fc; c.fill(); } if(s !== "F"){ c.strokeStyle = dc; c.lineWidth = lw; c.stroke(); } }); }
+  rect(x, y, w, h, s){ const fc = this.fc, dc = this.dc, lw = this.lw;
+    this._op(c => { if(s === "F" || s === "FD"){ c.fillStyle = fc; c.fillRect(x, y, w, h); } if(s !== "F"){ c.strokeStyle = dc; c.lineWidth = lw; c.strokeRect(x, y, w, h); } }); }
+  line(x1, y1, x2, y2){ const dc = this.dc, lw = this.lw; this._op(c => { c.strokeStyle = dc; c.lineWidth = lw; c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke(); }); }
+  addImage(url, _, x, y, w, h){ const im = new Image(); im.src = url; this._op(c => { try{ c.drawImage(im, x, y, w, h); }catch(e){} }); (this.imgs = this.imgs || []).push(im); }
+  addPage(){ this.pages.push([]); this.cur = this.pages.length - 1; }
+  getNumberOfPages(){ return this.pages.length; } setPage(i){ this.cur = i - 1; }
+  async rendre(k){
+    await Promise.all((this.imgs || []).map(im => im.decode ? im.decode().catch(() => {}) : null));
+    return this.pages.map(ops => { const cv = document.createElement("canvas"); cv.width = Math.round(210 * k); cv.height = Math.round(297 * k);
+      const c = cv.getContext("2d"); c.fillStyle = "#fff"; c.fillRect(0, 0, cv.width, cv.height); c.scale(k, k); ops.forEach(f => f(c)); return cv; });
+  }
+}
+async function apercuPDF(d){
+  if(ui.pdfEnCours) return;
+  const v = document.createElement("div"); v.className = "pdfview"; v.id = "pdfview";
+  v.innerHTML = `<header class="top"><button class="retour" data-pv="close" aria-label="Fermer l'aperçu">‹</button><h1>Aperçu du PDF</h1></header>
+    <div class="pv-pages"><p class="muted" style="text-align:center;margin-top:40px">Préparation de l'aperçu…</p></div>
+    <div class="bottom"><button class="btn sec" data-pv="dl">⬇ Télécharger</button><button class="btn" data-pv="share">Partager PDF</button></div>`;
+  document.body.appendChild(v); document.body.classList.add("pv-open");
+  const fermer = () => { v.remove(); document.body.classList.remove("pv-open"); };
+  v.querySelector('[data-pv="close"]').onclick = fermer;
+  v.querySelector('[data-pv="dl"]').onclick = () => pdfAction(d, "dl");
+  v.querySelector('[data-pv="share"]').onclick = () => pdfAction(d, "share");
+  pdfBlob(d).catch(() => {});                           // prépare le vrai PDF en même temps
+  try{
+    const doc = await recapPDF(d, CanvasDoc), k = Math.min(8, Math.max(4, (window.devicePixelRatio || 2) * 1.9));
+    const pages = await doc.rendre(k), box = v.querySelector(".pv-pages"); box.innerHTML = "";
+    pages.forEach((cv, i) => { const im = new Image(); im.src = cv.toDataURL("image/png"); im.className = "pv-page"; im.alt = `Page ${i + 1}`; box.appendChild(im); });
+  }catch(e){ v.querySelector(".pv-pages").innerHTML = `<p class="muted" style="text-align:center;margin-top:40px">Aperçu impossible</p>`; }
+}
+function telechargerBlob(blob, nom){
+  const u = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = u; a.download = nom; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 60000);
+  toast("PDF téléchargé");
 }
 
 /* ---------- Feuilles modales ---------- */
@@ -637,10 +1841,10 @@ function addPieceSheet(){
   const habituel = t.pieces;
   const autres = PIECES_SUGGEREES.filter(n => !habituel.includes(n));
   const sel = new Set();
-  const item = n => `<button class="pick" data-n="${esc(n)}" ${deja.has(n)?"disabled":""}><span class="ck"></span>${esc(n)}${deja.has(n)?"<small>déjà ajoutée</small>":""}</button>`;
+  const item = n => `<button class="pick" data-n="${esc(n)}"><span class="ck"></span>${esc(n)}${deja.has(n)?"<small>déjà ajoutée · en ajouter une autre</small>":""}</button>`;
   const s = sheet(`<h3>Ajouter des pièces</h3>
-    ${habituel.length ? `<div class="pick-h">Habituel pour ce devis</div>${habituel.map(item).join("")}` : ""}
-    <div class="pick-h">${habituel.length ? "Autres pièces" : "Pièces"}</div>${autres.map(item).join("")}
+    ${habituel.length ? `<div class="pick-h">Pièces principales</div>${habituel.map(item).join("")}` : ""}
+    <details class="cat" style="margin-top:10px"><summary><span>🚪 Autres pièces</span><span class="cat-n"></span></summary><div class="cat-body">${autres.map(item).join("")}</div></details>
     <div class="pick-h">Nom libre</div>
     <input class="t" id="customPiece" placeholder="Ex. Chambre parents, Garage…" autocomplete="off">
     <div class="sheet-foot row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">Ajouter</button></div>`);
@@ -649,6 +1853,7 @@ function addPieceSheet(){
   s.querySelectorAll(".pick").forEach(b => b.onclick = () => {
     const n = b.dataset.n; sel.has(n) ? sel.delete(n) : sel.add(n);
     b.classList.toggle("sel", sel.has(n)); b.querySelector(".ck").textContent = sel.has(n) ? "✓" : ""; maj();
+    const det = b.closest("details"); if(det){ const k = det.querySelectorAll(".pick.sel").length; det.querySelector(".cat-n").textContent = k ? k + " ✓" : ""; }
   });
   custom.addEventListener("input", maj);
   s.querySelector('[data-s="no"]').onclick = closeSheet;
@@ -662,7 +1867,7 @@ function addPieceSheet(){
       let n = nom, i = 2; while(d.pieces.some(p=>p.nom===n)) n = `${nom} (${i++})`;
       const p = newPiece(n); d.pieces.push(p); premiere = premiere || p;
     });
-    ui.pieceId = premiere.id; touch(); closeSheet(); renderDevis();
+    ui.pieceId = premiere.id; ui.versPiece = premiere.id; touch(); closeSheet(); renderDevis();
   };
 }
 
@@ -670,32 +1875,40 @@ function pickPrestaSheet(){
   const d = cur(), p = piece(d);
   const deja = new Set(p.lignes.map(l=>l.presta).filter(Boolean));
   const t = typeOf(d.type);
-  const sugg = t.id === "intervention" ? [] : prestaFor(p.nom);
-  const autres = Object.keys(PRESTATIONS).filter(k => !sugg.includes(k));
-  const reno = t.id !== "intervention";
-  const lots = reno ? Object.entries(LOTS_TCE) : [];
+  const sugg = BASIQUES;   // même liste pour toutes les pièces
+  const autres = Object.keys(PRESTATIONS).filter(k => !sugg.includes(k) && !HORS_AUTRES.includes(k));
+  const tabs = Object.keys(TABLEAUX), alims = Object.keys(ALIMS);
+  const lots = t.tce ? Object.entries(LOTS_TCE) : [];   // tout corps d'état : seulement en rénovation complète
   const sel = new Set();
-  const item = k => `<button class="pick" data-k="${k}" ${deja.has(k)?"disabled":""}><span class="ck"></span>${esc(CATALOGUE[k].lib)}${deja.has(k)?"<small>déjà ajoutée</small>":(CATALOGUE[k].unite!=="u"?`<small>${esc(CATALOGUE[k].unite)}</small>`:"")}</button>`;
-  const s = sheet(`<h3>Ajouter dans « ${esc(p.nom)} »</h3>
-    ${sugg.length ? `<div class="pick-h">${reno?"Électricité · ":""}Habituel pour cette pièce</div>${sugg.map(item).join("")}` : ""}
-    <div class="pick-h">${reno ? "Électricité · autres" : sugg.length ? "Autres prestations" : "Prestations électriques"}</div>${autres.map(item).join("")}
-    ${lots.map(([lot,items]) => `<div class="pick-h">${esc(lot)}</div>${Object.keys(items).map(item).join("")}`).join("")}
+  const item = k => `<button class="pick" data-k="${k}"><span class="ck"></span>${esc(CATALOGUE[k].lib)}${deja.has(k)?"<small>déjà ajoutée · en ajouter une autre</small>":(CATALOGUE[k].unite!=="u"?`<small>${esc(CATALOGUE[k].unite)}</small>`:"")}</button>`;
+  // Une catégorie = un menu déroulant
+  const cat = (nom, ico, html, ouvert) => `<details class="cat" ${ouvert?"open":""}><summary><span>${ico} ${esc(nom)}</span><span class="cat-n"></span></summary><div class="cat-body">${html}</div></details>`;
+  const ICO_LOT = {"Démolition / dépose":"🔨","Plâtrerie / isolation":"🧱","Plomberie / sanitaire":"🚿","Revêtements de sol":"🟫","Revêtements muraux":"🧩","Peinture":"🎨","Menuiserie":"🚪"};
+  const elecTout = `<div class="pick-h">Basiques</div>${sugg.map(item).join("")}<div class="pick-h">Tableau</div>${tabs.map(item).join("")}<div class="pick-h">Alimentation <small>(longueur en m)</small></div>${alims.map(item).join("")}<div class="pick-h">Autres</div>${autres.map(item).join("")}`;
+  const corps = t.tce
+    // Rénovation complète / intervention : toute l'électricité dans un seul menu, puis les autres corps d'état
+    ? cat("Électricité", "⚡", elecTout, false) + lots.map(([lot,items]) => cat(lot, ICO_LOT[lot]||"•", Object.keys(items).map(item).join(""), false)).join("")
+    // Rénovation électrique : basiques visibles, le reste dans un menu
+    : `<div class="pick-h">⚡ Électricité de base</div>${sugg.map(item).join("")}<div class="pick-h">Autres prestations</div>` + cat("Tableau", "🔌", tabs.map(item).join(""), false) + cat("Alimentation", "🧵", alims.map(item).join(""), false) + cat("Électricité", "⚡", autres.map(item).join(""), false);
+  const s = sheet(`<h3>${t.sansPieces && d.pieces.length<=1 ? "Ajouter des prestations" : `Ajouter dans « ${esc(p.nom)} »`}</h3>
+    ${corps}
     <div class="sheet-foot row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">Ajouter</button></div>`);
   const okBtn = s.querySelector('[data-s="ok"]');
   s.querySelectorAll(".pick").forEach(b => b.onclick = () => {
     const k = b.dataset.k; sel.has(k) ? sel.delete(k) : sel.add(k);
     b.classList.toggle("sel", sel.has(k)); b.querySelector(".ck").textContent = sel.has(k) ? "✓" : "";
     okBtn.textContent = sel.size ? `Ajouter (${sel.size})` : "Ajouter";
+    const det = b.closest("details"); if(det){ const n = det.querySelectorAll(".pick.sel").length; det.querySelector(".cat-n").textContent = n ? n + " ✓" : ""; }
   });
   s.querySelector('[data-s="no"]').onclick = closeSheet;
   okBtn.onclick = () => {
     // On garde l'ordre du catalogue
-    [...sugg, ...autres, ...lots.flatMap(([,items])=>Object.keys(items))].filter(k => sel.has(k)).forEach(k => p.lignes.push(newLigne(k, p)));
+    [...sugg, ...tabs, ...alims, ...autres, ...lots.flatMap(([,items])=>Object.keys(items))].filter(k => sel.has(k)).forEach(k => p.lignes.push(newLigne(k, p)));
     touch(); closeSheet(); renderDevis();
   };
 }
 
-function infosSheet(){
+function infosSheet(ensuite){
   const d = cur();
   const s = sheet(`<h3>Infos client</h3>
     <label class="f"><span>Nom du client</span><input class="t" id="iClient" value="${esc(d.client)}" placeholder="Ex. M. Dupont"></label>
@@ -709,7 +1922,30 @@ function infosSheet(){
     d.tel = s.querySelector("#iTel").value.trim();
     d.note = s.querySelector("#iNote").value;
     touch(); closeSheet(); render();
+    if(ensuite) ensuite();
   };
+}
+
+function actDelPiece(d, p){
+  confirmSheet(`Supprimer la pièce « ${esc(p.nom)} » ?`, "Supprimer", () => {
+    const i = d.pieces.indexOf(p); d.pieces.splice(i,1);
+    ui.pieceId = (d.pieces[i] || d.pieces[i-1] || {}).id; touch(); renderDevis();
+  });
+}
+/* Paramètres d'une pièce : nom, surface, étage, suppression */
+function roomSheet(p){
+  const d = cur(), t = typeOf(d.type); if(!p) return;
+  const s = sheet(`<h3>Paramètres de la pièce</h3>
+    <label class="f"><span>Nom de la pièce</span><input class="t" id="rNom" value="${esc(p.nom)}"></label>
+    ${t.etage ? `<label class="f"><span>Étage</span><input class="t" id="rEtage" value="${esc(p.etage||"")}" placeholder="—" autocomplete="off"></label>` : ""}
+    <div class="row2"><button class="btn sec danger-t" data-s="del">🗑 Supprimer</button><button class="btn" data-s="ok">Enregistrer</button></div>`);
+  s.querySelector('[data-s="ok"]').onclick = () => {
+    p.nom = s.querySelector("#rNom").value.trim() || p.nom;
+    const et = s.querySelector("#rEtage"); if(et) p.etage = et.value.trim();
+    touch(); closeSheet(); renderDevis();
+  };
+  s.querySelector('[data-s="del"]').onclick = () => { ui.pieceId = p.id; closeSheet();
+    actDelPiece(d, p); };
 }
 
 /* ---------- Actions ---------- */
@@ -720,51 +1956,70 @@ function findLigne(el){
   const box = el.closest("[data-lid]"); if(!box) return {};
   const p = piece(cur()); return {box, l: p.lignes.find(x=>x.id===box.dataset.lid)};
 }
+function tabTxt(p){ const n = nbLignes(p); return esc(nomPiece(p)||"…") + (n?`<span class="n">${n} prest.</span>`:""); }
+function majTab(p){ const c = document.querySelector(`[data-room="${p.id}"] .rb-txt`); if(c) c.innerHTML = barTxt(p); }
 function majLigne(box, l){
   box.classList.toggle("has", l.qte>0);
   box.querySelector('[data-f="qte"]').value = String(l.qte).replace(".",",");
-  const p = piece(cur()), tab = document.querySelector(".tab.on");
-  if(tab){ const n = nbLignes(p); tab.innerHTML = esc(p.nom) + (n?`<span class="n">${n}</span>`:""); }
+  majTab(piece(cur()));
 }
 
+// La pièce touchée devient la pièce « en cours » pour les actions
+["click","focusin","input"].forEach(ev => document.addEventListener(ev, e => {
+  const r = e.target.closest && e.target.closest("[data-room]"); if(r) ui.pieceId = r.dataset.room; }, true));
+// Ferme le menu des pièces quand on touche ailleurs
+document.addEventListener("click", e => { const rs = document.getElementById("roomSel");
+  if(rs && rs.open && !rs.contains(e.target)) rs.open = false; });
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if(!b) return;
   const a = b.dataset.act, d = cur();
   switch(a){
     case "home": go("home"); break;
+    case "accueil": go("accueil"); break;
+    case "norme": go("norme"); break;
+    case "docs": ui.docs = {pile:[{id:GDRIVE.racine, nom:"AZEREM"}], cible:b.dataset.cible || "", q:""}; go("docs"); break;
+    case "gConnect": gConnecter(); break;
+    case "docDos": ui.docs.pile.push({id:b.dataset.id, nom:b.dataset.nom}); ui.docs.q = ""; renderDocs(); window.scrollTo(0,0); break;
+    case "docUp": if(ui.docs.pile.length > 1) ui.docs.pile.pop(); ui.docs.q = ""; renderDocs(); break;
+    case "docPdf": window.open(b.dataset.url, "_blank"); break;
+    case "bientot": toast((b.dataset.n || "Cette fonction") + " : bientôt disponible"); break;
+    case "catalogue": ui.catQ = ""; ui.catTce = false; go("catalogue"); break;
+    case "catalogueTce": ui.catQ = ""; ui.catTce = true; go("catalogue"); break;
+    case "catEdit": catSheet(b.dataset.k); break;
+    case "catAdd": catSheet(null); break;
     case "new": ui.newType = "reno-elec"; ui.nClient = ui.nAdr = ui.nTel = ""; go("new"); break;
     case "pickType":
-      ui.nClient = document.getElementById("nClient").value;
-      ui.nAdr = document.getElementById("nAdr").value;
-      ui.nTel = document.getElementById("nTel").value;
       ui.newType = b.dataset.id; renderNew(); break;
     case "create": {
       const t = typeOf(ui.newType || "reno-elec");
-      const nd = {id:uid(), type:t.id, client:document.getElementById("nClient").value.trim(),
-        adresse:document.getElementById("nAdr").value.trim(), tel:document.getElementById("nTel").value.trim(),
-        note:"", cree:Date.now(), maj:Date.now(), pieces:[]};
+      const nd = {id:uid(), type:t.id, client:"", adresse:"", tel:"",
+        note:"", cree:Date.now(), maj:Date.now(), pieces: t.sansPieces ? [newPiece("Intervention")] : []};
       db.devis.push(nd); save(); cloudSave(nd.id); ui.pieceId = nd.pieces[0]?.id; go("devis",{id:nd.id});
-      addPieceSheet();
+      infosSheet(() => t.sansPieces ? pickPrestaSheet() : addPieceSheet());   // d'abord le client, puis la suite
       break;
     }
     case "open": { ui.pieceId = null; go("devis",{id:b.dataset.id}); const o = cur(); if(o && (!o.client || !o.adresse)) infosSheet(); break; }
     case "pickPresta": pickPrestaSheet(); break;
+    case "notePiece": {
+      const p = piece(d); if(!p) return;
+      p.noteOn = !noteP(p); touch(); renderDevis();
+      if(p.noteOn){ const ta = document.querySelector(`#room-${p.id} [data-r="note"]`) || document.querySelector('[data-r="note"]'); if(ta) ta.focus(); }
+      break;
+    }
+    case "saillie": { const {l} = findLigne(b); if(!l) return; l.saillie = !l.saillie; touch(); renderDevis(); break; }
     case "noteLigne": {
       const {l} = findLigne(b); if(!l) return;
-      ui.noteOpen = (ui.noteOpen === l.id && !l.note) ? null : l.id; renderDevis();
+      l.noteOn = !noteActive(l); touch(); renderDevis();
       const ta = document.querySelector(`[data-lid="${l.id}"] [data-f="note"]`); if(ta) ta.focus();
       break;
     }
     case "tab": ui.pieceId = b.dataset.id; renderDevis(); window.scrollTo(0,0); break;
     case "addPiece": addPieceSheet(); break;
+    case "toggleRoom": { const p = piece(d); p.replie = !p.replie; save(); renderDevis(); break; }
+    case "toutReplier": { const v = !d.pieces.every(x => x.replie); d.pieces.forEach(x => x.replie = v); save(); renderDevis(); break; }
     case "infos": infosSheet(); break;
-    case "delPiece": {
-      const p = piece(d);
-      confirmSheet(`Supprimer la pièce « ${esc(p.nom)} » ?`, "Supprimer", () => {
-        const i = d.pieces.indexOf(p); d.pieces.splice(i,1);
-        ui.pieceId = (d.pieces[i] || d.pieces[i-1] || {}).id; touch(); renderDevis();
-      }); break;
-    }
+    case "roomSettings": roomSheet(piece(d)); break;
+    case "delPiece": actDelPiece(d, piece(d)); break;
     case "plus": case "moins": {
       const {box,l} = findLigne(b); if(!l) return;
       l.qte = Math.max(0, Math.round(((l.qte||0) + (a==="plus"?1:-1))*100)/100); majLigne(box,l); touch(); break;
@@ -775,7 +2030,7 @@ document.addEventListener("click", e => {
       box.querySelectorAll(".pose button").forEach(x=>x.classList.toggle("on", x.dataset.v===l.pose));
       touch(); break;
     }
-    case "allPose": piece(d).lignes.filter(l=>estElec(l,d)).forEach(l=>l.pose=b.dataset.v); touch(); renderDevis(); toast(b.dataset.v==="goulotte"?"Toute la pièce en goulotte":"Toute la pièce en encastré"); break;
+    case "allPose": piece(d).lignes.filter(l=>estElec(l,d)).forEach(l=>l.pose=b.dataset.v); touch(); renderDevis(); toast("Tout en " + POSE_NOM[b.dataset.v].toLowerCase()); break;
     case "addLigne": {
       const p = piece(d); const l = newLigne(null);
       p.lignes.push(l); touch(); renderDevis();
@@ -788,6 +2043,7 @@ document.addEventListener("click", e => {
       p.lignes = p.lignes.filter(x=>x!==l); touch(); renderDevis(); break;
     }
     case "recap": go("recap",{id:d.id}); break;
+    case "plan": ui.planSel = null; go("plan",{id:d.id}); break;
     case "back": go("devis",{id:d.id}); break;
     case "share": {
       const txt = recapTexte(d);
@@ -796,6 +2052,9 @@ document.addEventListener("click", e => {
       } else copier(txt);
       break;
     }
+    case "pdfDl": pdfAction(d, "dl"); break;
+    case "pdfApercu": apercuPDF(d); break;
+    case "pdfShare": pdfAction(d, "share"); break;
     case "delDevis": supprimerDevis(d); break;
     case "menuDevis": menuDevis(db.devis.find(x=>x.id===b.dataset.id)); break;
     case "diag": {
@@ -805,7 +2064,6 @@ document.addEventListener("click", e => {
         <button class="btn sec" data-s="no">Fermer</button>`);
       s2.querySelector('[data-s="no"]').onclick = closeSheet; break;
     }
-    case "filtre": ui.filtre = b.dataset.v; renderHome(); break;
   }
 });
 
@@ -823,16 +2081,12 @@ function copier(txt){
 }
 
 document.addEventListener("input", e => {
-  if(e.target.id === "recherche"){ ui.recherche = e.target.value; const f = ui.filtre||"cours", q = ui.recherche.toLowerCase();
-    document.getElementById("liste").innerHTML = listeHTML([...db.devis].filter(d => f==="cours" ? !d.termine : d.termine)
-      .filter(d => !q || [d.client,d.adresse,d.tel].join(" ").toLowerCase().includes(q)).sort((a,b)=>b.maj-a.maj), f); return; }
+  if(e.target.id === "recherche"){ ui.recherche = e.target.value; document.getElementById("liste").innerHTML = listeHTML(filtrer()); return; }
   const el = e.target, d = cur(); if(!d) return;
-  if(el.id === "roomName"){ const p = piece(d); p.nom = el.value; const tab = document.querySelector(".tab.on");
-    if(tab){ const n = nbLignes(p); tab.innerHTML = esc(nomPiece(p)||"…") + (n?`<span class="n">${n}</span>`:""); } touch(); return; }
-  if(el.id === "roomEtage"){ const p = piece(d); p.etage = el.value.trim(); const tab = document.querySelector(".tab.on");
-    if(tab){ const n = nbLignes(p); tab.innerHTML = esc(nomPiece(p)) + (n?`<span class="n">${n}</span>`:""); } touch(); return; }
-  if(el.id === "roomSurf"){ const p = piece(d); const v = parseFloat(el.value.replace(",",".")); p.surface = v > 0 ? v : null; touch(); return; }
-  if(el.id === "roomNote"){ piece(d).note = el.value; touch(); return; }
+  if(el.dataset.r === "name"){ const p = piece(d); p.nom = el.value; majTab(p); touch(); return; }
+  if(el.dataset.r === "etage"){ const p = piece(d); p.etage = el.value.trim(); majTab(p); touch(); return; }
+  if(el.dataset.r === "surf"){ const p = piece(d); const v = parseFloat(el.value.replace(",",".")); p.surface = v > 0 ? v : null; majTab(p); touch(); return; }
+  if(el.dataset.r === "note"){ piece(d).note = el.value; touch(); return; }
   if(el.dataset.f === "note"){ const {l} = findLigne(el); if(l){ l.note = el.value; touch(); } return; }
   if(el.dataset.f === "libelle"){ const {l} = findLigne(el); if(l){ l.libelle = el.value; touch(); } return; }
   if(el.dataset.f === "qte"){ const {box,l} = findLigne(el); if(l){ l.qte = Math.max(0, parseFloat(String(el.value).replace(",","."))||0);
