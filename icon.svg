@@ -32,7 +32,5 @@
     </g>
     <use href="#A" fill="none" stroke="#f3c6ff" stroke-width="12" stroke-linejoin="round"/>
     <use href="#A" fill="url(#chrome)" stroke="#2a1a6e" stroke-width="3" stroke-linejoin="round"/>
-    <!-- éclair qui traverse la barre du A -->
-    <path filter="url(#glowY)" d="M150 300 L268 282 L246 318 L372 304 L230 372 L254 336 L140 346 Z" fill="url(#bolt)" stroke="#2a0f45" stroke-width="5" stroke-linejoin="round"/>
   </g>
 </svg>
