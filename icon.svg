@@ -1,31 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <radialGradient id="bg" cx="50%" cy="28%" r="80%">
-      <stop offset="0" stop-color="#5a1d8c"/><stop offset=".55" stop-color="#25124f"/><stop offset="1" stop-color="#0e0b24"/>
+    <radialGradient id="bg" cx="50%" cy="30%" r="85%">
+      <stop offset="0" stop-color="#6a2a9c"/><stop offset=".5" stop-color="#2c1658"/><stop offset="1" stop-color="#120d2a"/>
     </radialGradient>
-    <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#e8fbff"/><stop offset=".42" stop-color="#46dcf6"/><stop offset=".5" stop-color="#1b4fb8"/><stop offset=".62" stop-color="#3fa9f5"/><stop offset="1" stop-color="#b9f3ff"/>
+    <radialGradient id="gris" cx="50%" cy="44%" r="42%">
+      <stop offset="0" stop-color="#d9dce3" stop-opacity=".38"/><stop offset=".6" stop-color="#b9bcc6" stop-opacity=".12"/><stop offset="1" stop-color="#b9bcc6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="chrome" x1="0" y1="92" x2="0" y2="412" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f4fdff"/><stop offset=".2" stop-color="#9fe9ff"/><stop offset=".46" stop-color="#3a7fe0"/>
+      <stop offset=".5" stop-color="#173c9e"/><stop offset=".54" stop-color="#21b6e8"/><stop offset=".8" stop-color="#5ff0ff"/><stop offset="1" stop-color="#d6fbff"/>
     </linearGradient>
-    <linearGradient id="bolt" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff6a8"/><stop offset=".5" stop-color="#ffd23a"/><stop offset="1" stop-color="#ff8a00"/>
-    </linearGradient>
-    <linearGradient id="grid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#46dcf6" stop-opacity="0"/><stop offset="1" stop-color="#46dcf6" stop-opacity=".55"/></linearGradient>
-    <filter id="glowP" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-    <filter id="glowY" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <linearGradient id="grid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfd3dc" stop-opacity="0"/><stop offset="1" stop-color="#cfd3dc" stop-opacity=".55"/></linearGradient>
+    <linearGradient id="bolt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffbd0"/><stop offset=".45" stop-color="#ffe04a"/><stop offset="1" stop-color="#ff9d00"/></linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="10"/></filter>
+    <filter id="glowY" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <path id="A" fill-rule="evenodd" d="M206 92 H306 L414 412 H326 L309 360 H203 L186 412 H98 Z M256 186 L222 290 H290 Z"/>
   </defs>
   <rect width="512" height="512" fill="url(#bg)"/>
-  <!-- sol en grille synthwave -->
+  <rect width="512" height="512" fill="url(#gris)"/>
   <g stroke="url(#grid)" stroke-width="2" fill="none">
-    <path d="M0 400H512M0 432H512M0 470H512M0 512H512"/>
-    <path d="M256 370L256 512M256 370L150 512M256 370L362 512M256 370L40 512M256 370L472 512M256 370L-70 512M256 370L582 512"/>
+    <path d="M0 420H512M0 446H512M0 476H512M0 510H512"/>
+    <path d="M256 392L256 512M256 392L160 512M256 392L352 512M256 392L60 512M256 392L452 512M256 392L-40 512M256 392L552 512"/>
   </g>
-  <rect y="368" width="512" height="3" fill="#e04cf5" opacity=".8"/>
-  <!-- A chromé -->
-  <g filter="url(#glowP)">
-    <path d="M256 70 L410 420 H332 L305 352 H207 L180 420 H102 Z M256 178 L226 290 H286 Z" fill="url(#chrome)" fill-rule="evenodd" stroke="#e04cf5" stroke-width="10" stroke-linejoin="round"/>
-  </g>
-  <!-- éclair -->
-  <g filter="url(#glowY)">
-    <path d="M300 118 L196 286 H258 L214 438 L340 236 H274 Z" fill="url(#bolt)" stroke="#2a0f45" stroke-width="7" stroke-linejoin="round"/>
+  <rect y="390" width="512" height="3" fill="#e2e4ea" opacity=".75"/>
+  <g transform="translate(36 0) skewX(-9)">
+    <!-- halo violet -->
+    <use href="#A" fill="#e04cf5" stroke="#e04cf5" stroke-width="26" stroke-linejoin="round" filter="url(#glow)" opacity=".9"/>
+    <!-- relief 3D -->
+    <g fill="#3b1a78" stroke="#3b1a78" stroke-width="10" stroke-linejoin="round">
+      <use href="#A" x="4" y="5"/><use href="#A" x="8" y="10"/><use href="#A" x="12" y="15"/><use href="#A" x="15" y="19"/>
+    </g>
+    <use href="#A" fill="none" stroke="#f3c6ff" stroke-width="12" stroke-linejoin="round"/>
+    <use href="#A" fill="url(#chrome)" stroke="#2a1a6e" stroke-width="3" stroke-linejoin="round"/>
+    <!-- éclair qui traverse la barre du A -->
+    <path filter="url(#glowY)" d="M150 300 L268 282 L246 318 L372 304 L230 372 L254 336 L140 346 Z" fill="url(#bolt)" stroke="#2a0f45" stroke-width="5" stroke-linejoin="round"/>
   </g>
 </svg>
