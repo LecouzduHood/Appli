@@ -1016,13 +1016,13 @@ function renderDocs(){
   const D = ui.docs || (ui.docs = {pile:[{id:GDRIVE.racine, nom:"AZEREM"}], cible:"", q:""});
   const ici = D.pile[D.pile.length - 1], horsSite = location.hostname !== GDRIVE.site;
   $app.innerHTML = `
-  <header class="top"><button class="retour" data-act="${D.pile.length > 1 ? "docUp" : "accueil"}" aria-label="Retour">‹</button><h1>${esc(D.pile.length > 1 ? ici.nom : (D.cible === "factur" ? "Factures" : D.cible === "devis" ? "Devis" : "Documents"))}</h1></header>
+  <header class="top"><button class="retour" data-act="${D.pile.length - 1 > (D.base || 0) ? "docUp" : "accueil"}" aria-label="Retour">‹</button><h1>${esc(D.pile.length > 1 ? ici.nom : (D.cible === "factur" ? "Factures" : D.cible === "devis" ? "Devis" : "Documents"))}</h1></header>
   <main class="docs">
     ${horsSite ? `<p class="cat-avert">La connexion Google ne marche que dans l'appli en ligne (lecouzduhood.github.io), pas dans l'aperçu.</p>` : ""}
     ${!gTok ? `<div class="empty"><div style="font-size:40px">🔐</div><p>Tes PDF de devis et factures sont dans ton Google Drive (dossier AZEREM).<br>Connecte-toi une fois pour les voir. Rien n'est copié ailleurs.</p>
       <button class="btn" data-act="gConnect" ${horsSite ? "disabled" : ""}>Se connecter à Google</button></div>` : `
     <input class="t" id="docQ" type="search" placeholder="🔍 Chercher un client, un n°… dans tout AZEREM" value="${esc(D.q)}" autocomplete="off" style="margin-bottom:8px">
-    ${D.pile.length > 1 ? `<div class="doc-fil">${D.pile.map(p => esc(p.nom)).join(" › ")}</div>` : ""}
+    ${D.pile.length - 1 > (D.base || 0) ? `<div class="doc-fil">${D.pile.slice(D.base || 0).map(p => esc(p.nom)).join(" › ")}</div>` : ""}
     <div id="docListe"><div class="empty">Chargement…</div></div>`}
   </main>`;
   if(!gTok){ if(!horsSite) gPreparer().catch(() => {}); return; }
@@ -1034,7 +1034,7 @@ async function docCharger(id){
     const fs = await gTout({q:`'${id}' in parents and trashed=false and (mimeType='${DOSSIER}' or mimeType='application/pdf')`, orderBy:"folder,modifiedTime desc"});
     // Depuis la tuile Devis / Factures : on entre directement dans le dossier correspondant s'il existe
     if(D.cible && D.pile.length === 1){ const c = fs.find(f => f.mimeType === DOSSIER && sansAccent(f.name).includes(D.cible));
-      D.cible = D.cible + "-fait"; if(c){ D.pile.push({id:c.id, nom:c.name}); return renderDocs(); } }
+      D.cible = D.cible + "-fait"; if(c){ D.pile.push({id:c.id, nom:c.name}); D.base = 1; return renderDocs(); } }
     if(view.name !== "docs" || D.q) return;
     box.innerHTML = fs.length ? fs.map(f => docLigne(f)).join("") : `<div class="empty">Aucun PDF ici.</div>`;
   }catch(e){ if(e.message === "connexion") return renderDocs(); box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
