@@ -34,7 +34,7 @@
 }
 [hidden]{display:none!important}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--text);
+html,body{margin:0;overflow-x:clip;background:var(--bg);color:var(--text);
   font:15px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 body{min-height:100vh;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 button,input,textarea{font:inherit;color:inherit}
@@ -463,6 +463,16 @@ body.pv-open{overflow:hidden}
 .doc-fil{color:var(--muted);font-size:12px;margin:0 2px 8px}
 .tuile.t-doc{min-height:0;flex-direction:row;align-items:center;gap:10px;padding:12px}
 .tuile.t-doc .ti{font-size:24px;margin:0}.tuile.t-doc b{font-size:14px;display:block}
+.logement{background:var(--card);border:1px solid rgba(224,76,245,.45);border-radius:14px;margin:4px 0 12px;overflow:hidden}
+.logement summary{display:flex;align-items:center;gap:8px;padding:12px 14px;font-weight:700;cursor:pointer;list-style:none;background:linear-gradient(90deg,rgba(224,76,245,.22),rgba(70,220,246,.08))}
+.logement summary::-webkit-details-marker{display:none}
+.logement summary small{margin-left:auto;color:var(--muted);font-weight:500;font-size:12px}
+.log-body{padding:10px 12px 12px}
+.log-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.log-chips .chip.on{background:rgba(224,76,245,.25);border-color:var(--primary);color:#fff}
+.dims{display:flex;align-items:center;gap:8px}.dims input{flex:1;min-width:0}
+.dims-r{display:block;margin-top:4px;color:var(--accent);font-weight:700;font-size:14px}
+.note-gen p{margin:6px 0 0;color:var(--muted);font-size:14px;line-height:1.45}
 .hero-cats{display:flex;gap:5px}
 .hero-cat{white-space:nowrap;margin-top:6px;padding:3px 8px;min-height:0;border:1px solid rgba(255,255,255,.18);border-radius:99px;background:rgba(255,255,255,.06);color:var(--muted);font-size:12px;font-weight:600}
 .cat-card{display:flex;align-items:center;gap:12px;width:100%;margin:4px 0 6px;padding:10px 12px;border-radius:12px;text-align:left;color:var(--text);
@@ -488,6 +498,50 @@ body.pv-open{overflow:hidden}
 .cat-regl label{display:flex;flex-direction:column;gap:2px;font-size:11px;color:var(--muted)}
 .cat-regl input{width:74px;height:32px;padding:2px 8px;border:1px solid var(--line);border-radius:8px;background:rgba(20,20,24,.55);color:var(--text);font-size:16px;text-align:right}
 .cr-in input.auto{color:var(--accent);border-style:dashed}
+
+/* Devis général : barre de pièce L / l / H + lignes fines pastel */
+.room-bar.gen{gap:5px;padding-left:10px}
+.rb-dims{flex:none;display:flex;gap:3px}
+.rb-dims input{width:40px;height:30px;padding:2px 3px;border:1px solid rgba(70,220,246,.4);border-radius:7px;background:rgba(20,20,24,.55);color:var(--text);font-size:16px;text-align:center}
+.rb-dims input::placeholder{color:rgba(200,200,215,.45)}
+.room-bar.gen .rb-tog{gap:5px}
+.room-bar.gen .rb-txt{gap:6px;align-items:baseline}
+.room-bar.gen .rb-txt b{font-size:16px}
+.rb-m2{font-size:12.5px;color:var(--accent);white-space:nowrap;font-weight:600}
+.rb-n{font-size:12px;color:var(--muted);white-space:nowrap}
+.room-bar.gen .rb-set{width:30px;height:30px;font-size:15px}
+.ligne.lc,.ligne.lc.has{background:hsla(var(--h),70%,80%,.09);border:1px solid hsla(var(--h),60%,80%,.28);border-radius:8px;
+  box-shadow:inset 3px 0 0 hsl(var(--h),65%,80%);padding:3px 4px 3px 9px;margin-bottom:4px}
+.lc1{display:flex;align-items:center;gap:4px;min-height:30px}
+.lc1 .lib{flex:0 1 auto;min-width:5.5em;max-width:52%;font-size:13.5px;font-weight:600;color:hsl(var(--h),70%,88%);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lc1 .lib input{width:100%;border:0;border-bottom:1px dashed var(--line);background:transparent;padding:2px 0;font-size:16px;color:var(--text)}
+.lc-g{font-size:11px;opacity:.8}
+.ops{flex:1 1 0;justify-content:flex-start;display:flex;gap:3px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.ops::-webkit-scrollbar{display:none}
+.ops .op{flex:none;font-size:11px;line-height:1;padding:5px 6px;border-radius:99px;border:1px solid hsla(var(--h),60%,80%,.35);background:transparent;color:hsl(var(--h),40%,78%)}
+.ops .op.on{background:hsl(var(--h),65%,82%);border-color:hsl(var(--h),65%,82%);color:#1d1a2b;font-weight:700}
+.lc-q{flex:none;display:flex;align-items:center;gap:2px;font-size:11px;color:var(--muted)}
+.lc-q input{width:36px;height:26px;padding:0 2px;text-align:center;font-size:16px;font-weight:700;border:1px solid var(--line);border-radius:6px;background:rgba(20,20,24,.55);color:var(--text)}
+.lc-n,.lc-x{flex:none;width:26px;height:26px;border-radius:6px;font-size:14px;padding:0;display:flex;align-items:center;justify-content:center;background:transparent;border:0;color:var(--muted)}
+.lc-n.on{color:hsl(var(--h),70%,85%);background:hsla(var(--h),60%,80%,.15)}
+.lc-x{color:rgba(255,120,140,.75)}
+.ligne.lc .lnote{margin:2px 0 3px}
+.ligne.lc .lnote textarea{min-height:32px;padding:5px 8px;font-size:16px;line-height:1.3;resize:none;overflow:hidden}
+.opt-pastille{display:inline-block;width:12px;height:12px;border-radius:50%;background:hsl(var(--h),65%,80%);margin-right:8px;vertical-align:1px}
+.ops .op-plus{color:var(--muted);border-style:dashed}
+.log-m2{font-size:14px;margin:2px 0 10px;color:var(--text)}.log-m2 b{color:var(--accent)}.log-m2 small{color:var(--muted);font-size:12px}
+.log-chips .chip small{font-size:11px;opacity:.85}
+.plan-leg{font-size:12px;font-style:italic;color:var(--muted);margin:8px 4px 0;line-height:1.35}
+
+/* Triangles des menus plus grands (doigt) */
+.rb-ico,.room-bar .rb-ico{width:26px;flex:none;font-size:24px;line-height:1;text-align:center}
+.logement summary::before{content:"▸";font-size:24px;line-height:1;color:var(--primary);width:22px;text-align:center}
+.logement[open] summary::before{content:"▾"}
+.cat summary::after{font-size:28px;color:var(--primary)}
+/* Bouton pour fermer le clavier (iPhone) */
+#kbClose{position:fixed;right:10px;z-index:60;display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:99px;
+  border:1px solid rgba(70,220,246,.6);background:rgba(30,26,60,.96);color:#fff;font-size:15px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.45)}
+#kbClose.on{display:flex}
 </style>
 </head>
 <body>
@@ -547,7 +601,7 @@ SAILLIE.forEach(k => VARIANTES[k + "_s"] = PRESTATIONS[k] + " — saillie");
 const libK = k => PRESTATIONS[k] || VARIANTES[k] || (CATALOGUE[k] && CATALOGUE[k].lib) || k;
 const avecVar = ks => ks.flatMap(k => VARIANTES[k + "_s"] ? [k, k + "_s"] : [k]);
 const saillieOK = l => !!l.presta && SAILLIE.includes(l.presta);
-const libL = l => (l.libelle || "Ligne libre") + (l.saillie && saillieOK(l) ? " (saillie)" : "");
+const libL = l => (l.libelle || "Ligne libre") + (l.saillie && saillieOK(l) ? " (saillie)" : "") + (l.opts && l.opts.length ? " — " + l.opts.join(", ") : "");
 
 /* Prestations proposées par défaut selon le nom de la pièce */
 const PIECES_PRESTA = {
@@ -566,7 +620,25 @@ const PIECES_PRESTA = {
 const BASIQUES = ["prise","prise2","inter","vv","pl","applique","spot","rj45","tv","remplInter","remplPrise"];
 
 /* Prestations qui affichent d'office un encart de note */
-const NOTE_AUTO = ["alAutre","tableau","tab1","tab2","tab3","tab4","tabSpe","clim","solaire","irve"];
+/* Rénovation complète : prestations simples, à compléter par un commentaire (note ouverte d'office) */
+const BASIQUES_RENO = {rElec:"Électricité", rPlomb:"Plomberie", rPeint:"Peinture", rCarrel:"Carrelage", rPlaco:"Placo",
+  rDemo:"Démolition", rIsol:"Isolation", rCuis:"Cuisine", rMenuis:"Menuiserie", rSipo:"Création Siporex",
+  rSol:"Sol", rSdb:"Salle de bain complète", rPlaf:"Faux plafond", rGravats:"Évacuation des gravats"};
+
+/* Choix de type par prestation (devis général) */
+const OPTS_RENO = {rElec:["Prise","Inter","Éclairage","VMC","Radiateur","Volet roulant","RJ45 / TV"],
+  rPlomb:["Cabine de douche","Baignoire","Évier","WC","Lavabo / vasque","Chauffe-eau","Arrivées lave-linge / lave-vaisselle"],
+  rSol:["Parquet","Vinyle"], rSdb:["Douche","Baignoire","WC","Vasque"], rPlaf:["Placo","Dalles"],
+  rPeint:["Murs","Plafond","Sol","Portes","Enduit","Enlever tapisserie","Préparation murs"], rCarrel:["Faïence","Sol"],
+  rPlaco:["Murs","Plafond","Coffre vertical","Coffre horizontal"], rDemo:["Cloison","Sol","Cuisine","Placard"],
+  rIsol:["Murs","Plafond","Sol"], rCuis:["Pose","Dépose"], rMenuis:["Porte","Fenêtre","Volet"], rSipo:["Lit","Rangement"]};
+const OPTS_POSE = {rElec:["Encastré","Goulotte","Placo"]};   // 2e groupe dans la fenêtre de choix
+const optsDe = k => [...(OPTS_RENO[k]||[]), ...(OPTS_POSE[k]||[])];
+const TEINTE_RENO = {rElec:50, rPlomb:215, rPeint:200, rCarrel:170, rPlaco:35, rDemo:20, rIsol:90, rCuis:140, rMenuis:12, rSipo:300, rSol:28, rSdb:190, rPlaf:240, rGravats:0};
+function teinte(k){ if(!k) return 260; if(TEINTE_RENO[k] !== undefined) return TEINTE_RENO[k];
+  let h = 0; for(const c of k) h = (h * 31 + c.charCodeAt(0)) % 360; return h; }
+const NOTE_AUTO = [...Object.keys(BASIQUES_RENO), "alAutre","tableau","tab1","tab2","tab3","tab4","tabSpe","clim","solaire","irve"];
+const NOTE_AIDE_RENO = "Détail : quoi, combien, état existant…";
 const NOTE_AIDE = { tableau: "Type de tableau, nb de rangées, différentiels, disjoncteurs…",
   tab1: "Différentiels, disjoncteurs, emplacement…", tab2: "Différentiels, disjoncteurs, emplacement…",
   tab3: "Différentiels, disjoncteurs, emplacement…", tab4: "Différentiels, disjoncteurs, emplacement…",
@@ -585,8 +657,8 @@ const PIECES_SUGGEREES = ["Entrée","WC","WC 2","Salon","Séjour","Salle à mang
 const TYPES = [
   {id:"reno-elec", ico:"⚡", nom:"Rénovation électrique", desc:"Électricité uniquement, pièce par pièce", etage:true,
    pieces:["Entrée","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain","Bureau","Cage d'escalier","Extérieur"]},
-  {id:"reno-complete", ico:"🏠", nom:"Rénovation complète", desc:"Électricité + tout corps d'état, pièce par pièce", tce:true,
-   pieces:["Entrée","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain","Bureau","Cage d'escalier","Extérieur"]},
+  {id:"reno-complete", ico:"🏠", nom:"Rénovation complète", desc:"Électricité + tout corps d'état, pièce par pièce", tce:true, general:true,
+   pieces:["Entrée","Couloir","WC","Salon","Cuisine","Chambre 1","Chambre 2","Salle de bain","Bureau","Cage d'escalier","Extérieur"]},
   {id:"intervention", ico:"🔧", nom:"Intervention", desc:"Prestations au choix, sans pièces", tce:true, sansPieces:true, pieces:[]},
   {id:"acces", ico:"🔐", nom:"Contrôle d'accès", desc:"Interphone, digicode, badges, gâche… (à développer)", sansPieces:true, pieces:[]},
   {id:"vrd", ico:"🚧", nom:"VRD", desc:"Tranchées, fourreaux, réseaux extérieurs… (à développer)", sansPieces:true, pieces:[]},
@@ -623,6 +695,7 @@ const CATALOGUE = {};
 Object.entries(PRESTATIONS).forEach(([k,v]) => CATALOGUE[k] = {lib:v, lot:"Électricité", unite:"u", elec:true});
 Object.entries(LOTS_TCE).forEach(([lot,items]) => Object.entries(items).forEach(([k,[lib,unite]]) => CATALOGUE[k] = {lib, lot, unite, elec:false}));
 Object.keys(ALIMS).forEach(k => CATALOGUE[k].unite = "m");
+Object.entries(BASIQUES_RENO).forEach(([k, lib]) => CATALOGUE[k] = {lib, lot:"Rénovation", unite:"u", elec:false});
 /* ===================================================================== */
 
 const KEY = "devis-notes-v1";
@@ -1057,6 +1130,67 @@ document.addEventListener("input", e => { if(e.target.id !== "docQ") return;
   ui.docs.q = e.target.value.trim(); clearTimeout(docMinuteur);
   docMinuteur = setTimeout(() => ui.docs.q ? docChercher(ui.docs.q) : docCharger(ui.docs.pile[ui.docs.pile.length - 1].id), 450); });
 
+/* ---------- Rénovation complète : infos et prestations pour tout le logement ---------- */
+const logement = d => d.logement || (d.logement = {hsp:"", etages:"", note:"", prest:[]});
+/* Surface totale du logement = somme des pièces (l'extérieur est indiqué à part) */
+const EXT = /ext[ée]rieur|terrasse|balcon|jardin|cour\b/i;
+function surfTotale(d){ let t = 0, e = 0; d.pieces.forEach(p => { if(p.surface > 0){ t += p.surface; if(EXT.test(p.nom || "")) e += p.surface; } });
+  t = Math.round(t * 100) / 100; e = Math.round(e * 100) / 100;
+  return t ? m2(t) + (e ? ` (dont ${m2(e)} extérieur)` : "") : ""; }
+function majLogM2(d){ const e = document.getElementById("logM2"); if(e) e.textContent = surfTotale(d) || "—"; }
+function logementHTML(d){
+  const L = logement(d), ouvert = !!ui.logOuvert;
+  const resume = [surfTotale(d).replace(/ \(.*/, ""), L.hsp && "HSP " + L.hsp + " m", L.etages && L.etages + " étage" + (L.etages > 1 ? "s" : ""), L.prest.length && L.prest.length + " prest. partout"].filter(Boolean).join(" · ");
+  return `<details class="logement" ${ouvert ? "open" : ""}><summary><span>🏠 Tout le logement</span><small>${esc(resume)}</small></summary>
+    <div class="log-body">
+      <div class="log-m2">Surface totale : <b id="logM2">${esc(surfTotale(d) || "—")}</b> <small>(somme des pièces)</small></div>
+      <div class="row2"><label class="f" style="flex:1"><span>Hauteur sous plafond</span><span class="cr-in"><input class="t" data-g="hsp" inputmode="decimal" value="${esc(L.hsp)}" placeholder="2,50" autocomplete="off">m</span></label>
+        <label class="f" style="flex:1"><span>Nombre d'étages</span><input class="t" data-g="etages" inputmode="numeric" value="${esc(L.etages)}" placeholder="—" autocomplete="off"></label></div>
+      <div class="f"><span>Prestations pour tout le logement <small>(ajoutées dans chaque pièce)</small></span>
+        <div class="log-chips">${Object.entries(BASIQUES_RENO).map(([k, lib]) => { const on = L.prest.includes(k), o = (L.opts || {})[k] || [];
+          return `<button class="chip ${on ? "on" : ""}" data-act="globPrest" data-k="${k}">${on ? "✓ " : ""}${esc(lib)}${on && o.length ? ` <small>· ${esc(o.join(", "))}</small>` : ""}</button>`; }).join("")}</div></div>
+      <label class="f" style="margin-top:10px"><span>Commentaire sur l'ensemble</span><textarea class="t" data-g="note" placeholder="Ex. tout le sol démoli, plafonds à refaire, accès difficile…">${esc(L.note)}</textarea></label>
+    </div></details>`;
+}
+/* Prestations « tout le logement » : une ligne par pièce, avec les mêmes choix (Murs, Plafond…).
+   Changer les choix ici met à jour la prestation dans toutes les pièces. */
+function globAjoute(d, p){ const L = d.logement; if(!L || !typeOf(d.type).general) return;
+  L.prest.forEach(k => { const o = (L.opts || {})[k] || [];
+    let l = p.lignes.find(x => x.glob && x.presta === k) || p.lignes.find(x => x.presta === k);   // déjà ajoutée à la main : on la reprend
+    if(!l){ l = newLigne(k, p); l.noteOn = false; p.lignes.push(l); }
+    l.glob = true; l.opts = [...o]; }); }
+function globRetire(d, k){ const L = logement(d); L.prest = L.prest.filter(x => x !== k); if(L.opts) delete L.opts[k];
+  d.pieces.forEach(p => p.lignes = p.lignes.filter(l => { if(!(l.glob && l.presta === k)) return true; if(l.note){ delete l.glob; return true; } return false; })); }
+function globSheet(d, k){
+  const L = logement(d), on = L.prest.includes(k), sel = new Set(on ? (L.opts || {})[k] || [] : []);
+  const box = ops => ops.map(o => `<button class="pick ${sel.has(o)?"sel":""}" data-o="${esc(o)}"><span class="ck">${sel.has(o)?"✓":""}</span>${esc(o)}</button>`).join("");
+  const s = sheet(`<h3 style="--h:${teinte(k)}"><span class="opt-pastille"></span>${esc(BASIQUES_RENO[k])} <small style="font-weight:400;color:var(--muted)">· tout le logement</small></h3>
+    <p class="hint" style="margin:-4px 0 8px;font-size:13px;color:var(--muted)">Ajoutée dans chaque pièce avec ces choix. Si tu les changes ici, toutes les pièces suivent.</p>
+    ${OPTS_RENO[k] ? `<div class="pick-h">Quoi ?</div>${box(OPTS_RENO[k])}` : ""}
+    ${OPTS_POSE[k] ? `<div class="pick-h">Pose</div>${box(OPTS_POSE[k])}` : ""}
+    ${on ? `<button class="btn sec danger-t" data-s="del" style="width:100%;margin-top:10px">Retirer de tout le logement</button>` : ""}
+    <div class="sheet-foot row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">${on ? "Mettre à jour partout" : "Ajouter partout"}</button></div>`);
+  s.querySelectorAll(".pick").forEach(b => b.onclick = () => { const o = b.dataset.o; sel.has(o) ? sel.delete(o) : sel.add(o);
+    b.classList.toggle("sel", sel.has(o)); b.querySelector(".ck").textContent = sel.has(o) ? "✓" : ""; });
+  const fin = () => { ui.logOuvert = true; touch(); closeSheet(); const y = window.scrollY; renderDevis(); window.scrollTo(0, y); };
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  const del = s.querySelector('[data-s="del"]'); if(del) del.onclick = () => { globRetire(d, k); fin(); };
+  s.querySelector('[data-s="ok"]').onclick = () => { L.opts = L.opts || {}; L.opts[k] = optsDe(k).filter(o => sel.has(o));
+    if(!on) L.prest.push(k); d.pieces.forEach(p => globAjoute(d, p)); fin(); };
+}
+document.addEventListener("toggle", e => { if(e.target.classList && e.target.classList.contains("logement")) ui.logOuvert = e.target.open; }, true);
+/* Texte des infos générales (récap + PDF) */
+function noteGenerale(d){
+  const L = d.logement, out = [];
+  if(L && typeOf(d.type).general){
+    const a = [surfTotale(d) && "Surface totale : " + surfTotale(d), L.hsp && "Hauteur sous plafond : " + L.hsp + " m", L.etages && "Étages : " + L.etages].filter(Boolean).join(" · "); if(a) out.push(a);
+    if(L.prest.length) out.push("Pour tout le logement : " + L.prest.map(k => { const o = (L.opts || {})[k] || []; return BASIQUES_RENO[k] + (o.length ? " (" + o.join(", ") + ")" : ""); }).join(", "));
+    if(L.note && L.note.trim()) out.push(L.note.trim());
+  }
+  if(d.note && d.note.trim()) out.push(d.note.trim());
+  return out.join("\n");
+}
+
 function filtrer(){
   const q = (ui.recherche||"").toLowerCase();
   return [...db.devis].filter(d => !q || [d.client,d.adresse,d.tel].join(" ").toLowerCase().includes(q)).sort((a,b)=>b.maj-a.maj);
@@ -1175,7 +1309,16 @@ function roomBody(p, d, t, simple){
 }
 function barTxt(p){ const n = nbLignes(p), d = cur(), t = d ? typeOf(d.type) : {};
   const meta = t.etage && p.etage ? `<span class="rb-meta">Ét. ${esc(p.etage)}</span>` : "";
+  if(t.general) return `<b>${esc(p.nom||"…")}</b>${meta}<span class="rb-m2">${p.surface ? m2(p.surface) + (p.surfForce ? " 📌" : "") : ""}</span><span class="rb-n">${n ? `${n} prest.` : ""}</span>`;
   return `<b>${esc(p.nom||"…")}</b>${meta}<span class="rb-info">${n ? `${n} prest.` : ""}</span>`; }
+function grandit(t){ if(!t.closest(".lc")) return; t.style.height = "auto"; t.style.height = (t.scrollHeight + 2) + "px"; }
+/* Mesure tapée en m ou en cm : au-delà de ce qu'une pièce d'habitation peut faire, c'est des cm */
+function metres(txt, max){ const v = parseFloat(String(txt || "").replace(",", ".")); if(!(v > 0)) return null;
+  return Math.round((v >= max ? v / 100 : v) * 100) / 100; }
+const nb = v => v ? String(v).replace(".", ",") : "";
+const hspTxt = d => d.logement && d.logement.hsp ? nb(metres(String(d.logement.hsp).replace(/\s*m$/i, ""), 10)) : "";
+function dimsHTML(p, d){ const auto = !p.haut;
+  return `<span class="rb-dims"><input data-r="long" inputmode="decimal" autocomplete="off" placeholder="L" value="${nb(p.long)}" aria-label="Longueur (m)"><input data-r="larg" inputmode="decimal" autocomplete="off" placeholder="l" value="${nb(p.larg)}" aria-label="Largeur (m)"><input data-r="haut" ${auto ? "data-auto" : ""} inputmode="decimal" autocomplete="off" placeholder="H" value="${auto ? esc(hspTxt(d)) : nb(p.haut)}" aria-label="Hauteur (m)"></span>`; }
 function renderDevis(){
   const d = cur(); if(!d){ go("home"); return; }
   const p = piece(d); if(p) ui.pieceId = p.id;
@@ -1190,13 +1333,13 @@ function renderDevis(){
     <button data-act="infos" aria-label="Infos client">✎</button></header>
   <main>
     ${simple ? `<h2 style="margin-top:4px">Prestations</h2><div data-room="${p.id}">${roomBody(p, d, t, true)}</div>`
-    : `<div class="rooms-top"><b>${d.pieces.length} pièce${d.pieces.length>1?"s":""}</b>
+    : `${t.general ? logementHTML(d) : ""}<div class="rooms-top"><b>${d.pieces.length} pièce${d.pieces.length>1?"s":""}</b>
         ${d.pieces.length > 1 ? `<button class="chip" data-act="toutReplier">${toutReplie ? "Tout ouvrir" : "Tout réduire"}</button>` : ""}
         <span class="sp"></span><button class="tab add" data-act="addPiece">＋ Pièce</button></div>
       ${d.pieces.map(x => `<section class="room ${x.replie?"replie":""}" data-room="${x.id}" id="room-${x.id}">
-        <div class="room-bar"><button class="rb-tog" data-act="toggleRoom"><span class="rb-ico">${x.replie?"▸":"▾"}</span><span class="rb-txt">${barTxt(x)}</span></button>
-          ${t.sansPieces ? "" : `<label class="rb-surf"><input data-r="surf" type="text" inputmode="decimal" autocomplete="off" value="${x.surface ? String(x.surface).replace(".",",") : ""}" placeholder="—" aria-label="Surface en m²"><span>m²</span></label>`}
-          <button class="rb-set" data-act="roomSettings" aria-label="Paramètres de la pièce">⚙</button></div>
+        <div class="room-bar ${t.general ? "gen" : ""}"><button class="rb-tog" data-act="toggleRoom"><span class="rb-ico">${x.replie?"▸":"▾"}</span><span class="rb-txt">${barTxt(x)}</span></button>${t.general ? dimsHTML(x, d) : ""}
+          ${t.sansPieces || t.general ? "" : `<label class="rb-surf"><input data-r="surf" type="text" inputmode="decimal" autocomplete="off" value="${x.surface ? String(x.surface).replace(".",",") : ""}" placeholder="—" aria-label="Surface en m²"><span>m²</span></label>`}
+          <button class="rb-set" data-act="roomSettings" aria-label="Dimensions et paramètres de la pièce">${t.sansPieces || t.general ? "⚙" : "📐"}</button></div>
         ${x.replie ? "" : `<div class="room-body">${roomBody(x, d, t, false)}</div>`}
       </section>`).join("") || `<div class="empty">Aucune pièce. Ajoutez-en une avec « ＋ Pièce ».</div>`}`}
   </main>
@@ -1205,6 +1348,7 @@ function renderDevis(){
     <button class="btn sec btn-plan" data-act="plan" style="flex:0 0 auto;width:auto">🗺 Plan</button>`}
     <button class="btn" data-act="recap">Récapitulatif</button>
   </div>`;
+  document.querySelectorAll(".lc .lnote textarea").forEach(grandit);
   if(ui.versPiece){ const el = document.getElementById("room-" + ui.versPiece); ui.versPiece = null;
     if(el) el.scrollIntoView({block:"start"}); window.scrollBy(0, -60); }
 }
@@ -1230,7 +1374,7 @@ function catListeHTML(){
   const q = (ui.catQ || "").toLowerCase().trim();
   const ok = k => { if(!q) return true; const p = prixDe(k); return (libK(k) + " " + p.ref).toLowerCase().includes(q); };
   const perso = cat.perso.map(a => a.k);
-  const groupes = ui.catTce ? Object.entries(LOTS_TCE).map(([lot, items]) => [lot, Object.keys(items)]) : [["Basiques", BASIQUES], ["Tableau", Object.keys(TABLEAUX)], ["Alimentation", Object.keys(ALIMS)], ["Autres prestations", catKeys().filter(k => !BASIQUES.includes(k) && !perso.includes(k) && !HORS_AUTRES.includes(k))], ["Mes articles", perso]];
+  const groupes = ui.catTce ? [["Basiques rénovation", Object.keys(BASIQUES_RENO)], ...Object.entries(LOTS_TCE).map(([lot, items]) => [lot, Object.keys(items)])] : [["Basiques", BASIQUES], ["Tableau", Object.keys(TABLEAUX)], ["Alimentation", Object.keys(ALIMS)], ["Autres prestations", catKeys().filter(k => !BASIQUES.includes(k) && !perso.includes(k) && !HORS_AUTRES.includes(k))], ["Mes articles", perso]];
   const html = groupes.map(([nom, ks]) => { const l = avecVar(ks).filter(k => libK(k) !== k && ok(k)); if(!l.length) return "";
     return `<h2>${nom} <span class="cnt">${l.length}</span></h2>${l.map(catRowHTML).join("")}`; }).join("");
   return html || `<div class="empty">Aucun article ne correspond.</div>`;
@@ -1290,10 +1434,11 @@ document.addEventListener("input", e => {
 
 /* Note d'une prestation : option activable (activée d'office pour tableau, clim, solaire, borne) */
 function noteP(p){ return p.noteOn !== undefined ? p.noteOn : !!p.note; }
-function noteActive(l){ return l.noteOn !== undefined ? l.noteOn : (NOTE_AUTO.includes(l.presta) || !!l.note); }
+function noteActive(l){ return l.noteOn !== undefined ? l.noteOn : ((NOTE_AUTO.includes(l.presta) && !BASIQUES_RENO[l.presta]) || !!l.note); }
 function ligneHTML(l){
   const libre = !l.presta, d = cur(), elec = estElec(l, d), u = unite(l);
   const noteOuverte = noteActive(l);
+  if(d && typeOf(d.type).general) return ligneCompacte(l, libre, elec, u, noteOuverte);
   return `<div class="ligne ${l.qte>0?"has":""}" data-lid="${l.id}">
     <div class="l1">
       <div class="lib">${libre
@@ -1311,13 +1456,31 @@ function ligneHTML(l){
         <button class="e ${l.pose==="encastre"?"on":""}" data-act="pose" data-v="encastre">Encastré</button>
         <button class="g ${l.pose==="goulotte"?"on":""}" data-act="pose" data-v="goulotte">Goulotte</button>
         <button class="p ${l.pose==="placo"?"on":""}" data-act="pose" data-v="placo">Placo</button>
-      </div>` : `<span class="lot">${esc(l.presta ? CATALOGUE[l.presta].lot : "Ligne libre")}</span>`}
+      </div>` : `<span class="lot">${l.glob ? "🏠 Tout le logement" : esc(l.presta ? CATALOGUE[l.presta].lot : "Ligne libre")}</span>`}
       ${saillieOK(l) ? `<button class="nbtn sail ${l.saillie?"on":""}" data-act="saillie" aria-pressed="${!!l.saillie}">${l.saillie?"☑":"☐"} Saillie</button>` : ""}
       <button class="nbtn sw-btn ${noteOuverte?"on":""}" data-act="noteLigne" aria-pressed="${noteOuverte}"><span class="sw"></span>Note</button>
       <span class="sp"></span>
       <button class="del" data-act="delLigne" aria-label="Retirer la ligne">✕</button>
     </div>
-    ${noteOuverte ? `<div class="lnote"><textarea data-f="note" placeholder="${esc(NOTE_AIDE[l.presta] || "Note…")}">${esc(l.note||"")}</textarea></div>` : ""}
+    ${noteOuverte ? `<div class="lnote"><textarea data-f="note" placeholder="${esc(NOTE_AIDE[l.presta] || (BASIQUES_RENO[l.presta] ? NOTE_AIDE_RENO : "Note…"))}">${esc(l.note||"")}</textarea></div>` : ""}
+  </div>`;
+}
+
+/* Devis général : une prestation = une ligne fine, couleur pastel, choix du type à cocher */
+function ligneCompacte(l, libre, elec, u, noteOuverte){
+  const ops = optsDe(l.presta).length ? optsDe(l.presta) : null, sel = l.opts || [];
+  const choix = ops ? sel.filter(o => ops.includes(o)).map(o => `<button class="op on" data-act="optEdit">${esc(o)}</button>`).join("") + `<button class="op op-plus" data-act="optEdit" aria-label="Choisir">${sel.length ? "＋" : "＋ choisir"}</button>`
+    : elec ? Object.entries(POSE_NOM).map(([k, n]) => `<button class="op ${l.pose===k?"on":""}" data-act="pose" data-v="${k}">${n}</button>`).join("") : "";
+  const qte = BASIQUES_RENO[l.presta] ? "" : `<label class="lc-q"><input data-f="qte" type="text" inputmode="decimal" autocomplete="off" value="${String(l.qte).replace(".",",")}" aria-label="Quantité"><span>${u === "u" ? "u" : esc(u)}</span></label>`;
+  return `<div class="ligne lc ${l.qte>0?"has":""}" data-lid="${l.id}" style="--h:${teinte(l.presta)}">
+    <div class="lc1">
+      <div class="lib">${libre ? `<input data-f="libelle" value="${esc(l.libelle)}" placeholder="Prestation…">` : esc(l.libelle)}${l.glob ? ` <span class="lc-g" title="Tout le logement">🏠</span>` : ""}</div>
+      ${choix ? `<div class="ops">${choix}</div>` : ""}
+      ${qte}
+      <button class="lc-n ${noteOuverte?"on":""}" data-act="noteLigne" aria-pressed="${noteOuverte}" aria-label="Note">✎</button>
+      <button class="lc-x" data-act="delLigne" aria-label="Retirer la ligne">✕</button>
+    </div>
+    ${noteOuverte ? `<div class="lnote"><textarea data-f="note" rows="1" placeholder="${esc(NOTE_AIDE[l.presta] || (BASIQUES_RENO[l.presta] ? NOTE_AIDE_RENO : "Note…"))}">${esc(l.note||"")}</textarea></div>` : ""}
   </div>`;
 }
 
@@ -1342,6 +1505,7 @@ function renderRecap(){
       <span class="muted">Relevé du ${fmtDate(d.cree)}</span>
       ${surfTot(d) ? `<br><span class="muted">Surface relevée : <b>${m2(surfTot(d))}</b></span>` : ""}
     </div>
+    ${noteGenerale(d) ? `<div class="card note-gen"><b>${t.general ? "🏠 Tout le logement" : "📝 Notes générales"}</b><p>${esc(noteGenerale(d)).replace(/\n/g, "<br>")}</p></div>` : ""}
     <h2>${simple ? "Prestations" : "Par pièce"}</h2>
     ${d.pieces.filter(p=>p.lignes.some(l=>l.qte>0)||p.note||p.surface).map(p=>{
       const ls = p.lignes.filter(l=>l.qte>0);
@@ -1355,7 +1519,7 @@ function renderRecap(){
       return `<tr><td>${esc(lib)}</td><td class="p">${pose?poseTag(pose):""}</td><td class="q">${qteTxt({qte:Math.round(tot[k]*100)/100}, u)}</td></tr>`;}).join("")}</table>`
       : `<span class="muted">Aucune quantité saisie.</span>`}</div>`}
     ${planSVG(d) ? `<h2>Plan</h2><div class="card" style="padding:6px">${planSVG(d)}
-      <p class="muted" style="font-size:12px;margin:6px 4px 0">Plan approximatif, dessiné à partir des surfaces. Un carreau = 1 m. <button class="chip" data-act="plan" style="margin-left:4px">Modifier le plan</button></p></div>` : ""}
+      <p class="plan-leg">${LEGENDE_PLAN}</p><p class="muted" style="font-size:12px;margin:6px 4px 0">Un carreau = 1 m. <button class="chip" data-act="plan" style="margin-left:4px">Modifier le plan</button></p></div>` : ""}
     <div class="row2" style="margin-top:16px">
       <button class="btn sec" data-act="share">Copier en texte</button>
       <button class="btn danger" data-act="delDevis">Supprimer le devis</button>
@@ -1369,6 +1533,7 @@ function renderRecap(){
 }
 
 /* ---------- Plan des pièces (à l'échelle de la surface) ---------- */
+const LEGENDE_PLAN = "Schéma de principe, donné à titre indicatif : la disposition et les proportions des pièces ne sont pas à l'échelle. Seules les mesures relevées sur place font foi.";
 const PLAN_M = 30;                     // taille du plan : 30 m × 30 m
 const SURF_DEF = 9;                    // surface supposée si non renseignée
 function dimsPiece(p, pl){
@@ -1434,6 +1599,7 @@ function renderPlan(){
     <div class="plan-wrap" id="planWrap"><div class="plan-grid" id="planGrid"
       style="width:${PLAN_M*z}px;height:${PLAN_M*z}px;background-size:${z}px ${z}px">
       ${d.pieces.filter(p => d.plan[p.id]).map(roomHTML).join("")}</div></div>
+    <p class="plan-leg">${LEGENDE_PLAN}</p>
     ${aPlacer.length ? `<div class="plan-tray"><span class="lbl">À placer :</span>${aPlacer.map(p =>
       `<button class="chip" data-pa="place" data-pid="${p.id}">＋ ${esc(p.nom)}${p.surface ? ` · ${m2(p.surface)}` : ""}</button>`).join("")}</div>`
       : (d.pieces.length ? "" : `<div class="empty">Aucune pièce dans ce devis.</div>`)}
@@ -1631,8 +1797,9 @@ async function recapPDF(d, Doc){
   y += hB + 6;
 
   // ---- Notes générales
-  if(d.note && d.note.trim()){
-    police(9.5, "normal"); const n = doc.splitTextToSize(pdfTxt(d.note), W - 10);
+  const ng = noteGenerale(d);
+  if(ng){
+    police(9.5, "normal"); const n = ng.split("\n").flatMap(x => doc.splitTextToSize(pdfTxt(x), W - 10));
     const h = 9 + n.length * 4.4; place(h);
     fill([255,248,225]); draw([240,215,140]); doc.roundedRect(M, y, W, h, 2, 2, "FD");
     police(7.5, "bold", [170,120,0]); doc.text("NOTES GÉNÉRALES", M + 4, y + 5.5);
@@ -1652,7 +1819,7 @@ async function recapPDF(d, Doc){
     rows.forEach((r, i) => {
       if(r.groupe){ place(9); y += 1; police(8.5, "bold", ROSE); doc.text(pdfTxt(r.groupe).toUpperCase(), M + 2, y + 3.5); y += 6; return; }
       police(10, "normal"); const lib = doc.splitTextToSize(pdfTxt(r.lib), LW);
-      police(8.5, "italic"); const note = r.note ? doc.splitTextToSize(pdfTxt(r.note), LW - 6) : [];
+      police(8.5, "italic"); const note = r.note ? String(r.note).split("\n").flatMap(x => doc.splitTextToSize(pdfTxt(x), LW - 6)) : [];
       const h = lib.length * 4.5 + (note.length ? note.length * 3.9 + 1.2 : 0) + 3; place(h);
       if(r.zebre) { fill([250,250,252]); doc.rect(M, y, W, h, "F"); }
       police(10, "normal"); doc.text(lib, M + 2, y + 4.2);
@@ -1692,7 +1859,7 @@ async function recapPDF(d, Doc){
       const sub = [p.surface && m2(p.surface), p.etage && "Étage " + p.etage, ls.length && ls.length + " prest."].filter(Boolean).join("  ·  ");
       police(9, "normal", GRIS); doc.text(pdfTxt(sub), M + W - 3, y + 5.5, {align: "right"}); y += 10; }
     if(ls.length) tableau(ls.map(ligneRow), simple ? "" : p.nom);
-    if(p.note && noteP(p)){ police(9, "italic"); const n = doc.splitTextToSize(pdfTxt(p.note), W - 10); const h = n.length * 4.1 + 4;
+    if(p.note && noteP(p)){ police(9, "italic"); const n = String(p.note).split("\n").flatMap(x => doc.splitTextToSize(pdfTxt(x), W - 10)); const h = n.length * 4.1 + 4;
       place(h + 2); draw([232,232,238]); fill([248,248,250]); doc.roundedRect(M, y, W, h, 1.5, 1.5, "FD");
       police(9, "italic", GRIS); doc.text(n, M + 4, y + 4.8); y += h + 2; }
     y += 4;
@@ -1706,7 +1873,7 @@ async function recapPDF(d, Doc){
     const x0 = Math.min(...ps.map(o => o.q.x)) - .5, y0 = Math.min(...ps.map(o => o.q.y)) - .5;
     const x1 = Math.max(...ps.map(o => o.q.x + o.w)) + .5, y1 = Math.max(...ps.map(o => o.q.y + o.h)) + .5;
     const k = Math.min(W / (x1 - x0), 150 / (y1 - y0)), pw = (x1 - x0) * k, ph = (y1 - y0) * k;
-    place(ph + 26); titre("Plan", "approximatif, d'après les surfaces · 1 carreau = 1 m");
+    place(ph + 36); titre("Plan", "schéma indicatif, non à l'échelle");
     const ox = M + (W - pw) / 2, oy = y, X = v => ox + (v - x0) * k, Y = v => oy + (v - y0) * k;
     draw([232,232,238], .15);
     for(let x = Math.ceil(x0); x <= x1; x++) doc.line(X(x), Y(y0), X(x), Y(y1));
@@ -1719,6 +1886,7 @@ async function recapPDF(d, Doc){
       police(fs * .85, "normal", GRIS); doc.text(o.p.surface ? m2(o.S) : "? m²", X(o.q.x + o.w/2), Y(o.q.y + o.h/2) + fs * .42, {align: "center"});
     });
     y += ph + 4;
+    police(8, "italic", GRIS); const lg = doc.splitTextToSize(pdfTxt(LEGENDE_PLAN), W); doc.text(lg, M, y + 3); y += lg.length * 3.6 + 3;
   }
 
   // ---- Pied de page
@@ -1865,7 +2033,7 @@ function addPieceSheet(){
     noms.forEach(nom => {
       // Évite les doublons : « Garage » existe → « Garage (2) »
       let n = nom, i = 2; while(d.pieces.some(p=>p.nom===n)) n = `${nom} (${i++})`;
-      const p = newPiece(n); d.pieces.push(p); premiere = premiere || p;
+      const p = newPiece(n); d.pieces.push(p); premiere = premiere || p; globAjoute(d, p);
     });
     ui.pieceId = premiere.id; ui.versPiece = premiere.id; touch(); closeSheet(); renderDevis();
   };
@@ -1885,7 +2053,11 @@ function pickPrestaSheet(){
   const cat = (nom, ico, html, ouvert) => `<details class="cat" ${ouvert?"open":""}><summary><span>${ico} ${esc(nom)}</span><span class="cat-n"></span></summary><div class="cat-body">${html}</div></details>`;
   const ICO_LOT = {"Démolition / dépose":"🔨","Plâtrerie / isolation":"🧱","Plomberie / sanitaire":"🚿","Revêtements de sol":"🟫","Revêtements muraux":"🧩","Peinture":"🎨","Menuiserie":"🚪"};
   const elecTout = `<div class="pick-h">Basiques</div>${sugg.map(item).join("")}<div class="pick-h">Tableau</div>${tabs.map(item).join("")}<div class="pick-h">Alimentation <small>(longueur en m)</small></div>${alims.map(item).join("")}<div class="pick-h">Autres</div>${autres.map(item).join("")}`;
-  const corps = t.tce
+  const renos = Object.keys(BASIQUES_RENO);
+  const corps = t.general
+    // Rénovation complète : prestations simples (+ commentaire), électricité détaillée repliée
+    ? `<div class="pick-h">Basiques</div>${renos.map(item).join("")}` + cat("Électricité détaillée", "⚡", elecTout, false)
+    : t.tce
     // Rénovation complète / intervention : toute l'électricité dans un seul menu, puis les autres corps d'état
     ? cat("Électricité", "⚡", elecTout, false) + lots.map(([lot,items]) => cat(lot, ICO_LOT[lot]||"•", Object.keys(items).map(item).join(""), false)).join("")
     // Rénovation électrique : basiques visibles, le reste dans un menu
@@ -1900,12 +2072,30 @@ function pickPrestaSheet(){
     okBtn.textContent = sel.size ? `Ajouter (${sel.size})` : "Ajouter";
     const det = b.closest("details"); if(det){ const n = det.querySelectorAll(".pick.sel").length; det.querySelector(".cat-n").textContent = n ? n + " ✓" : ""; }
   });
+  if(t.general) s.querySelectorAll(".pick").forEach(b => { if(BASIQUES_RENO[b.dataset.k] && optsDe(b.dataset.k).length) b.onclick = () => {
+    if(sel.size){ sel.forEach(k => p.lignes.push(newLigne(k, p))); touch(); renderDevis(); }   // ne pas perdre ce qui était déjà coché
+    optSheet(b.dataset.k, p); }; });
   s.querySelector('[data-s="no"]').onclick = closeSheet;
   okBtn.onclick = () => {
     // On garde l'ordre du catalogue
-    [...sugg, ...tabs, ...alims, ...autres, ...lots.flatMap(([,items])=>Object.keys(items))].filter(k => sel.has(k)).forEach(k => p.lignes.push(newLigne(k, p)));
+    [...(t.general ? renos : []), ...sugg, ...tabs, ...alims, ...autres, ...lots.flatMap(([,items])=>Object.keys(items))].filter(k => sel.has(k)).forEach(k => p.lignes.push(newLigne(k, p)));
     touch(); closeSheet(); renderDevis();
   };
+}
+
+/* Devis général : fenêtre de présélection avant d'ajouter une prestation */
+function optSheet(k, p, ligne){
+  const sel = new Set(ligne ? ligne.opts || [] : []), box = ops => ops.map(o => `<button class="pick ${sel.has(o)?"sel":""}" data-o="${esc(o)}"><span class="ck">${sel.has(o)?"✓":""}</span>${esc(o)}</button>`).join("");
+  const s = sheet(`<h3 style="--h:${teinte(k)}"><span class="opt-pastille"></span>${esc(BASIQUES_RENO[k])} <small style="font-weight:400;color:var(--muted)">· ${esc(p.nom)}</small></h3>
+    ${OPTS_RENO[k] ? `<div class="pick-h">Quoi ?</div>${box(OPTS_RENO[k])}` : ""}
+    ${OPTS_POSE[k] ? `<div class="pick-h">Pose</div>${box(OPTS_POSE[k])}` : ""}
+    <div class="sheet-foot row2"><button class="btn sec" data-s="no">${ligne ? "Annuler" : "‹ Retour"}</button><button class="btn" data-s="ok">${ligne ? "Enregistrer" : "Ajouter"}</button></div>`);
+  s.querySelectorAll(".pick").forEach(b => b.onclick = () => { const o = b.dataset.o; sel.has(o) ? sel.delete(o) : sel.add(o);
+    b.classList.toggle("sel", sel.has(o)); b.querySelector(".ck").textContent = sel.has(o) ? "✓" : ""; });
+  s.querySelector('[data-s="no"]').onclick = () => { closeSheet(); if(!ligne) pickPrestaSheet(); };
+  s.querySelector('[data-s="ok"]').onclick = () => { if(ligne){ ligne.opts = optsDe(k).filter(o => sel.has(o)); touch(); closeSheet(); renderDevis(); return; }
+    const l = newLigne(k, p); l.opts = optsDe(k).filter(o => sel.has(o));
+    p.lignes.push(l); touch(); closeSheet(); renderDevis(); };
 }
 
 function infosSheet(ensuite){
@@ -1937,11 +2127,24 @@ function roomSheet(p){
   const d = cur(), t = typeOf(d.type); if(!p) return;
   const s = sheet(`<h3>Paramètres de la pièce</h3>
     <label class="f"><span>Nom de la pièce</span><input class="t" id="rNom" value="${esc(p.nom)}"></label>
+    ${t.sansPieces || t.general ? "" : `<div class="f"><span>Dimensions → surface</span>
+      <div class="dims"><input class="t" id="rLong" inputmode="decimal" placeholder="Longueur" value="${p.long ? String(p.long).replace(".",",") : ""}" autocomplete="off"><b>×</b>
+      <input class="t" id="rLarg" inputmode="decimal" placeholder="Largeur" value="${p.larg ? String(p.larg).replace(".",",") : ""}" autocomplete="off"><b>m</b></div>
+      <small class="dims-r" id="rM2">${p.surface ? "= " + m2(p.surface) : "Tape la longueur et la largeur en mètres"}</small></div>`}
+    ${t.general ? `<label class="f"><span>Forcer la surface <small>(remplace L × l)</small></span><span class="cr-in"><input class="t" id="rForce" inputmode="decimal" autocomplete="off" placeholder="${p.long && p.larg ? nb(Math.round(p.long * p.larg * 100) / 100) : "—"}" value="${p.surfForce ? nb(p.surfForce) : ""}">m²</span>
+      <small style="color:var(--muted)">Laisse vide pour reprendre le calcul L × l.</small></label>` : ""}
     ${t.etage ? `<label class="f"><span>Étage</span><input class="t" id="rEtage" value="${esc(p.etage||"")}" placeholder="—" autocomplete="off"></label>` : ""}
     <div class="row2"><button class="btn sec danger-t" data-s="del">🗑 Supprimer</button><button class="btn" data-s="ok">Enregistrer</button></div>`);
+  const num = id => { const e = s.querySelector(id); const v = e ? parseFloat(e.value.replace(",", ".")) : NaN; return v > 0 ? v : null; };
+  const calc = () => { const L = num("#rLong"), l = num("#rLarg"); return L && l ? Math.round(L * l * 100) / 100 : null; };
+  s.querySelectorAll("#rLong, #rLarg").forEach(e => e.addEventListener("input", () => { const v = calc();
+    s.querySelector("#rM2").textContent = v ? "= " + m2(v) : (p.surface ? "= " + m2(p.surface) : "Tape la longueur et la largeur en mètres"); }));
   s.querySelector('[data-s="ok"]').onclick = () => {
     p.nom = s.querySelector("#rNom").value.trim() || p.nom;
+    if(s.querySelector("#rLong")){ p.long = num("#rLong"); p.larg = num("#rLarg"); const v = calc(); if(v) p.surface = v; }
     const et = s.querySelector("#rEtage"); if(et) p.etage = et.value.trim();
+    const fo = s.querySelector("#rForce"); if(fo){ const v = parseFloat(fo.value.replace(",", ".")); p.surfForce = v > 0 ? Math.round(v * 100) / 100 : null;
+      p.surface = p.surfForce || (p.long && p.larg ? Math.round(p.long * p.larg * 100) / 100 : null); }
     touch(); closeSheet(); renderDevis();
   };
   s.querySelector('[data-s="del"]').onclick = () => { ui.pieceId = p.id; closeSheet();
@@ -1957,10 +2160,10 @@ function findLigne(el){
   const p = piece(cur()); return {box, l: p.lignes.find(x=>x.id===box.dataset.lid)};
 }
 function tabTxt(p){ const n = nbLignes(p); return esc(nomPiece(p)||"…") + (n?`<span class="n">${n} prest.</span>`:""); }
-function majTab(p){ const c = document.querySelector(`[data-room="${p.id}"] .rb-txt`); if(c) c.innerHTML = barTxt(p); }
+function majTab(p){ const c = document.querySelector(`[data-room="${p.id}"] .rb-txt`); if(c) c.innerHTML = barTxt(p); const d = cur(); if(d) majLogM2(d); }
 function majLigne(box, l){
   box.classList.toggle("has", l.qte>0);
-  box.querySelector('[data-f="qte"]').value = String(l.qte).replace(".",",");
+  const q = box.querySelector('[data-f="qte"]'); if(q) q.value = String(l.qte).replace(".",",");
   majTab(piece(cur()));
 }
 
@@ -1974,7 +2177,7 @@ document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if(!b) return;
   const a = b.dataset.act, d = cur();
   switch(a){
-    case "home": go("home"); break;
+    case "home": { const dv = view.name === "devis" && cur(); if(dv){ dv.pieces.forEach(x => x.replie = true); ui.logOuvert = false; save(); } go("home"); break; }
     case "accueil": go("accueil"); break;
     case "norme": go("norme"); break;
     case "docs": ui.docs = {pile:[{id:GDRIVE.racine, nom:"AZEREM"}], cible:b.dataset.cible || "", q:""}; go("docs"); break;
@@ -1995,10 +2198,11 @@ document.addEventListener("click", e => {
       const nd = {id:uid(), type:t.id, client:"", adresse:"", tel:"",
         note:"", cree:Date.now(), maj:Date.now(), pieces: t.sansPieces ? [newPiece("Intervention")] : []};
       db.devis.push(nd); save(); cloudSave(nd.id); ui.pieceId = nd.pieces[0]?.id; go("devis",{id:nd.id});
-      infosSheet(() => t.sansPieces ? pickPrestaSheet() : addPieceSheet());   // d'abord le client, puis la suite
+      ui.logOuvert = undefined;
+      infosSheet(() => t.sansPieces ? pickPrestaSheet() : t.general ? null : addPieceSheet());   // d'abord le client, puis la suite
       break;
     }
-    case "open": { ui.pieceId = null; go("devis",{id:b.dataset.id}); const o = cur(); if(o && (!o.client || !o.adresse)) infosSheet(); break; }
+    case "open": { ui.pieceId = null; ui.logOuvert = undefined; go("devis",{id:b.dataset.id}); const o = cur(); if(o && (!o.client || !o.adresse)) infosSheet(); break; }
     case "pickPresta": pickPrestaSheet(); break;
     case "notePiece": {
       const p = piece(d); if(!p) return;
@@ -2015,6 +2219,11 @@ document.addEventListener("click", e => {
     }
     case "tab": ui.pieceId = b.dataset.id; renderDevis(); window.scrollTo(0,0); break;
     case "addPiece": addPieceSheet(); break;
+    case "globPrest": { const d = cur(); const k = b.dataset.k;
+      if(optsDe(k).length) globSheet(d, k);
+      else { ui.logOuvert = true; if(logement(d).prest.includes(k)) globRetire(d, k); else { logement(d).prest.push(k); d.pieces.forEach(p => globAjoute(d, p)); }
+        touch(); const y = window.scrollY; renderDevis(); window.scrollTo(0, y); }
+      break; }
     case "toggleRoom": { const p = piece(d); p.replie = !p.replie; save(); renderDevis(); break; }
     case "toutReplier": { const v = !d.pieces.every(x => x.replie); d.pieces.forEach(x => x.replie = v); save(); renderDevis(); break; }
     case "infos": infosSheet(); break;
@@ -2027,9 +2236,12 @@ document.addEventListener("click", e => {
     case "pose": {
       const {box,l} = findLigne(b); if(!l) return;
       l.pose = b.dataset.v;
-      box.querySelectorAll(".pose button").forEach(x=>x.classList.toggle("on", x.dataset.v===l.pose));
+      box.querySelectorAll(".pose button, .ops [data-act=pose]").forEach(x=>x.classList.toggle("on", x.dataset.v===l.pose));
       touch(); break;
     }
+    case "optEdit": { const {l} = findLigne(b); if(l) optSheet(l.presta, piece(d), l); break; }
+    case "opt": { const {box, l} = findLigne(b); if(!l) break; const v = b.dataset.v; l.opts = l.opts || [];
+      l.opts = l.opts.includes(v) ? l.opts.filter(x => x !== v) : [...l.opts, v]; b.classList.toggle("on", l.opts.includes(v)); touch(); break; }
     case "allPose": piece(d).lignes.filter(l=>estElec(l,d)).forEach(l=>l.pose=b.dataset.v); touch(); renderDevis(); toast("Tout en " + POSE_NOM[b.dataset.v].toLowerCase()); break;
     case "addLigne": {
       const p = piece(d); const l = newLigne(null);
@@ -2044,7 +2256,7 @@ document.addEventListener("click", e => {
     }
     case "recap": go("recap",{id:d.id}); break;
     case "plan": ui.planSel = null; go("plan",{id:d.id}); break;
-    case "back": go("devis",{id:d.id}); break;
+    case "back": d.pieces.forEach(x => x.replie = true); ui.logOuvert = false; save(); go("devis",{id:d.id}); break;
     case "share": {
       const txt = recapTexte(d);
       if(navigator.share && window.top === window.self){
@@ -2085,17 +2297,44 @@ document.addEventListener("input", e => {
   const el = e.target, d = cur(); if(!d) return;
   if(el.dataset.r === "name"){ const p = piece(d); p.nom = el.value; majTab(p); touch(); return; }
   if(el.dataset.r === "etage"){ const p = piece(d); p.etage = el.value.trim(); majTab(p); touch(); return; }
+  if(el.dataset.g){ const L = logement(d); L[el.dataset.g] = el.value; touch();
+    if(el.dataset.g === "hsp") document.querySelectorAll("[data-r=haut][data-auto]").forEach(x => x.value = hspTxt(d)); return; }
+  if(el.dataset.r === "haut"){ if(el.value.trim()) el.removeAttribute("data-auto"); else el.setAttribute("data-auto", ""); }
+  if(["long","larg","haut"].includes(el.dataset.r)){ const p = piece(d); p[el.dataset.r] = metres(el.value, el.dataset.r === "haut" ? 10 : 30);
+    if(p.surfForce) p.surface = p.surfForce; else if(p.long && p.larg) p.surface = Math.round(p.long * p.larg * 100) / 100; else if(el.dataset.r !== "haut") p.surface = null;
+    majTab(p); touch(); return; }
   if(el.dataset.r === "surf"){ const p = piece(d); const v = parseFloat(el.value.replace(",",".")); p.surface = v > 0 ? v : null; majTab(p); touch(); return; }
   if(el.dataset.r === "note"){ piece(d).note = el.value; touch(); return; }
-  if(el.dataset.f === "note"){ const {l} = findLigne(el); if(l){ l.note = el.value; touch(); } return; }
+  if(el.dataset.f === "note"){ grandit(el); const {l} = findLigne(el); if(l){ l.note = el.value; touch(); } return; }
   if(el.dataset.f === "libelle"){ const {l} = findLigne(el); if(l){ l.libelle = el.value; touch(); } return; }
   if(el.dataset.f === "qte"){ const {box,l} = findLigne(el); if(l){ l.qte = Math.max(0, parseFloat(String(el.value).replace(",","."))||0);
     box.classList.toggle("has", l.qte>0); touch(); } }
 });
 document.addEventListener("change", e => {
+  const r = e.target.dataset.r, g = e.target.dataset.g, d = cur();
+  if(d && ["long","larg","haut"].includes(r)){ const p = piece(d); if(p[r]) e.target.value = nb(p[r]); else if(r === "haut" && !e.target.value.trim()) e.target.value = hspTxt(d); }
+  if(d && g === "hsp"){ const m = metres(e.target.value, 10); if(m){ const L = logement(d); L.hsp = nb(m); e.target.value = L.hsp; touch();
+    document.querySelectorAll("[data-r=haut][data-auto]").forEach(x => x.value = hspTxt(d)); } }
   if(e.target.dataset.f === "qte"){ const {box,l} = findLigne(e.target); if(l) majLigne(box,l); }
 });
 document.addEventListener("focusin", e => { if(e.target.dataset.f === "qte") e.target.select(); });
+/* Clavier iPhone : touche « OK » qui ferme le clavier sur les champs d'une ligne, et bouton « Fermer le clavier » au-dessus du clavier */
+const kb = document.createElement("button"); kb.id = "kbClose"; kb.type = "button"; kb.textContent = "⌄ Fermer le clavier";
+document.body.appendChild(kb);
+kb.addEventListener("pointerdown", e => e.preventDefault());
+kb.addEventListener("click", () => { const a = document.activeElement; if(a && a.blur) a.blur(); kb.classList.remove("on"); });
+const champ = el => el && (el.tagName === "TEXTAREA" || (el.tagName === "INPUT" && !["checkbox","radio","button","file"].includes(el.type)));
+// Le bouton n'apparaît que quand le clavier est vraiment ouvert (l'écran visible rétrécit)
+function placeKb(){ const v = window.visualViewport; const bas = v ? v.offsetTop + v.height : window.innerHeight; kb.style.top = (bas - 48) + "px";
+  if(v && !champ(document.activeElement)) kbMax = Math.max(kbMax, v.height);
+  kb.classList.toggle("on", !!v && champ(document.activeElement) && (v.height < kbMax - 120 || v.height < window.innerHeight - 120)); }
+let kbMax = window.visualViewport ? visualViewport.height : 0;
+document.addEventListener("focusin", e => { const el = e.target; if(!champ(el)) return;
+  if(el.tagName === "INPUT" && !el.getAttribute("enterkeyhint")) el.setAttribute("enterkeyhint", "done");
+  placeKb(); setTimeout(placeKb, 350); });
+document.addEventListener("focusout", () => setTimeout(() => { if(!champ(document.activeElement)) kb.classList.remove("on"); }, 80));
+if(window.visualViewport){ visualViewport.addEventListener("resize", placeKb); visualViewport.addEventListener("scroll", placeKb); }
+document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.tagName === "INPUT" && !e.isComposing){ e.preventDefault(); e.target.blur(); } });
 
 try{ const v = JSON.parse(localStorage.getItem(KEY+"-vue"));
   if(v && v.name === "devis" && db.devis.some(d => d.id === v.id)) view = v; }catch(e){}
