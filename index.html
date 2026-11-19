@@ -542,6 +542,173 @@ body.pv-open{overflow:hidden}
 #kbClose{position:fixed;right:10px;z-index:60;display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:99px;
   border:1px solid rgba(70,220,246,.6);background:rgba(30,26,60,.96);color:#fff;font-size:15px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.45)}
 #kbClose.on{display:flex}
+
+/* Tableau électrique */
+.tb-rg{background:rgba(54,55,62,.94);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:12px}
+.tb-rg-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}.tb-rg-h b{font-size:16px}.tb-rg-h span{font-size:12.5px;color:var(--muted)}
+.tb-rg-h .tb-trop{color:var(--danger)}.tb-x{width:32px;height:30px;border-radius:8px;font-size:15px;color:var(--muted)}
+.tb-rail{padding:6px 4px;border-radius:8px;background:linear-gradient(180deg,#d9dbe1,#b9bcc6);min-height:124px;box-shadow:inset 0 2px 6px rgba(0,0,0,.35)}
+.tb-mod{min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 1px;border-radius:4px;border:1px solid rgba(0,0,0,.25);
+  background:linear-gradient(180deg,#fbfbfd,#e9eaf0);color:#1d1a2b;overflow:hidden;box-shadow:inset 0 3px 0 hsl(var(--h),70%,72%)}
+.tb-mod.vide{background:repeating-linear-gradient(135deg,#d5d7de,#d5d7de 4px,#c6c8d0 4px,#c6c8d0 8px);box-shadow:none}
+.tb-c{font-size:10px;font-weight:800;line-height:1.1;white-space:nowrap;margin-top:3px}.tb-s{font-size:8px;font-weight:700;color:hsl(var(--h),55%,35%);line-height:1}
+.tb-man{width:9px;height:16px;border-radius:2px;background:#2b2c31;flex:none;margin:2px 0}.tb-mod.vide .tb-man{display:none}
+.tb-n{flex:1;writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:600;line-height:1.05;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-height:64px;color:#3a3550}
+.tb-libre{min-width:0;border:1.5px dashed rgba(60,60,80,.55);border-radius:4px;color:#4a4b5a;font-size:20px;background:rgba(255,255,255,.25)}
+.tb-nom{display:flex;align-items:center;gap:6px;padding:2px 4px 2px 8px;border-radius:8px;background:hsla(var(--h),70%,80%,.09);border:1px solid hsla(var(--h),60%,80%,.28);box-shadow:inset 3px 0 0 hsl(var(--h),65%,80%)}
+.tb-num{width:34px;font-size:12px;color:var(--muted);text-align:right;flex:none}.tb-ty{width:74px;flex:none;font-size:12.5px;font-weight:700;color:hsl(var(--h),70%,88%);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-nom input{flex:1;min-width:0;height:32px;border:0;border-bottom:1px dashed var(--line);background:transparent;color:var(--text);font-size:16px;padding:0 2px}
+.tb-add{width:100%;margin-top:8px}.tb-add:disabled,.bottom .btn:disabled{opacity:.45}
+.tb-bas{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 12px}
+.tb-reste{font-size:13px;color:var(--accent);margin:-4px 0 4px}
+.tb-choix{display:flex;flex-direction:column;gap:4px}
+.tb-ch{display:flex;align-items:center;gap:8px;text-align:left;padding:9px 10px;border-radius:9px;background:hsla(var(--h),70%,80%,.09);border:1px solid hsla(var(--h),60%,80%,.28);box-shadow:inset 3px 0 0 hsl(var(--h),65%,80%);color:var(--text)}
+.tb-ch b{flex:1;font-size:14.5px;font-weight:600}.tb-ch small{color:var(--muted);font-size:12px;white-space:nowrap}.tb-ch:disabled{opacity:.35}
+.tuile.t-tab{grid-column:1 / -1;flex-direction:row;align-items:center;gap:12px;min-height:0;padding:14px;background:linear-gradient(160deg,rgba(255,176,58,.22),rgba(224,76,245,.10));border-color:rgba(255,176,58,.5)}
+.tuile.t-tab .ti{margin:0}.tuile.t-tab .tt{display:flex;flex-direction:column;gap:2px}
+
+.tb-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
+.tb-nums{display:grid;padding:0 4px;margin-bottom:2px}.tb-nums span{grid-column:span 2;text-align:center;font-size:10.5px;font-weight:700;color:var(--accent);line-height:1.4}
+.tb-rail{display:grid;gap:0;align-items:stretch}
+.tb-mod{margin:0 1px;touch-action:pan-y;user-select:none;-webkit-user-select:none;transition:box-shadow .1s}
+.tb-mod.drag{z-index:5;position:relative;opacity:.92;box-shadow:0 6px 18px rgba(0,0,0,.5), inset 0 3px 0 hsl(var(--h),70%,72%)}
+.tb-mod.ici{box-shadow:-4px 0 0 var(--primary), inset 0 3px 0 hsl(var(--h),70%,72%)}
+.tb-rail.fin .tb-mod:not(.drag):last-of-type{box-shadow:4px 0 0 var(--primary), inset 0 3px 0 hsl(var(--h),70%,72%)}
+.tb-libre{margin:0 1px}
+.tb-larg{display:flex;gap:8px;flex-wrap:wrap}.tb-larg .chip{padding:8px 14px;font-size:14px}.tb-larg .chip.on{border-color:var(--primary);background:rgba(224,76,245,.2)}.tb-larg .chip:disabled{opacity:.35}
+div.tb-ch{padding:0;gap:0;margin-bottom:4px}
+.tb-ck{flex:1;min-width:0;display:flex;align-items:center;gap:8px;text-align:left;padding:9px 6px 9px 10px;color:var(--text);background:none;border:0}
+.tb-ck .ck{flex:none;width:22px;height:22px;border-radius:6px;border:2px solid hsla(var(--h),60%,80%,.6);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#1d1a2b}
+.tb-ch.sel .ck{background:hsl(var(--h),65%,82%);border-color:hsl(var(--h),65%,82%)}
+.tb-ch.plein{opacity:.4}
+.tb-q{display:flex;align-items:center;gap:2px;padding-right:6px;visibility:hidden}.tb-ch.sel .tb-q{visibility:visible}
+.tb-q button{width:30px;height:30px;border-radius:8px;font-size:18px;font-weight:700;background:rgba(224,76,245,.14);color:var(--primary)}
+.tb-q i{min-width:20px;text-align:center;font-style:normal;font-weight:800}
+select.t{appearance:none;-webkit-appearance:none;width:100%;font-size:16px;min-height:40px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:rgba(20,20,24,.55);color:var(--text)}
+
+/* Tableau électrique — visuel v3 */
+.tb-rg{padding:10px 10px 12px;background:linear-gradient(180deg,rgba(62,63,72,.96),rgba(46,47,54,.96))}
+.tb-rg-h b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}
+.tb-rn{flex:1;min-width:0;height:34px;border:0;border-bottom:1px dashed var(--line);background:transparent;color:var(--text);font-size:17px;font-weight:700;padding:0 2px}
+.tb-rn::placeholder{color:var(--muted);font-weight:500}
+.tb-rail{min-height:190px;padding:8px 4px 10px;border-radius:10px;background:linear-gradient(180deg,#eceef3,#c9ccd6);border:1px solid #9a9dab;box-shadow:inset 0 2px 8px rgba(0,0,0,.3), 0 2px 0 rgba(255,255,255,.08)}
+.tb-mod{padding:0 0 4px;gap:0;border-radius:5px;border:1px solid #8f93a3;background:linear-gradient(180deg,#ffffff 0%,#f1f2f6 55%,#dfe1e9 100%);box-shadow:0 2px 3px rgba(0,0,0,.28)}
+.tb-tete{align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:30px;padding:2px 0;background:hsl(var(--h),62%,80%);border-bottom:1px solid hsl(var(--h),35%,62%)}
+.tb-c{margin:0;font-size:10.5px;letter-spacing:-.2px}.tb-mod.large .tb-c{font-size:12px}.tb-s{color:hsl(var(--h),55%,28%)}
+.tb-man{width:12px;height:22px;border-radius:3px;background:#3a3c46;margin:6px 0 3px;display:flex;justify-content:center;padding-top:2px;box-shadow:inset 0 -3px 4px rgba(0,0,0,.45)}
+.tb-man i{width:8px;height:8px;border-radius:2px;background:hsl(var(--h),70%,62%)}
+.tb-ico{font-size:13px;line-height:1;min-height:14px}.tb-mod.large .tb-ico{font-size:16px}
+.tb-n{font-size:11.5px;font-weight:800;color:#1d1a2b;max-height:none;flex:1;margin-top:3px;letter-spacing:.1px}
+.tb-mod.large .tb-n{font-size:13px}.tb-n.anom{font-weight:500;color:#9a9cab;font-style:italic}.tb-n.long{white-space:normal;font-size:10px;line-height:1.02}
+.tb-libre{border-radius:5px;background:rgba(255,255,255,.3)}
+.tb-mod.ici{box-shadow:-4px 0 0 var(--primary), 0 2px 3px rgba(0,0,0,.28)}
+.tb-rail.fin .tb-mod:not(.drag):last-of-type{box-shadow:4px 0 0 var(--primary), 0 2px 3px rgba(0,0,0,.28)}
+.tb-mod.drag{box-shadow:0 8px 20px rgba(0,0,0,.55)}
+/* Fiche en pop-up : centrée, fond transparent */
+.sheet-bg.pop{align-items:center;justify-content:center;padding:16px;background:rgba(10,8,24,.18);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.sheet-bg.pop .sheet{max-width:360px;border-radius:20px;padding:14px 14px 16px;max-height:86vh;background:rgba(44,45,54,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(224,76,245,.5);box-shadow:0 18px 50px rgba(0,0,0,.6)}
+.tb-pop-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tb-pop-b{flex:none;min-width:46px;padding:8px 6px;border-radius:8px;text-align:center;font-weight:800;font-size:13px;color:#1d1a2b;background:hsl(var(--h),62%,80%)}
+.tb-pop-h div{flex:1;min-width:0}.tb-pop-h b{display:block;font-size:15px}.tb-pop-h small{color:var(--muted);font-size:12px}
+.tb-pop-x{flex:none;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);color:var(--text);font-size:15px}
+.tb-syms{display:flex;flex-wrap:wrap;gap:5px}.tb-syms .chip{padding:5px 9px;font-size:15px}.tb-syms .chip.on{border-color:var(--primary);background:rgba(224,76,245,.25)}
+
+/* Tableau électrique — v4 : menu, coffret, emplacements libres, aperçu, scan */
+.tb-menu{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.tb-menu button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 8px 14px;border-radius:16px;border:1px solid rgba(224,76,245,.45);background:linear-gradient(180deg,rgba(224,76,245,.2),rgba(90,60,200,.14));color:var(--text);font-size:15.5px;font-weight:800;text-align:center}
+.tb-menu button span{font-size:34px;line-height:1}.tb-menu small{font-weight:500;color:var(--muted);font-size:12px;line-height:1.25}
+.tb-titre{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:0 2px 8px}
+.tb-aide{font-size:12.5px;color:var(--muted);margin:0 2px 12px}
+.tb-coffret{position:relative;background:linear-gradient(180deg,#f7f8fb,#dde0e8);border:1px solid #a9adba;border-radius:16px;padding:16px 8px 8px;margin-bottom:12px;box-shadow:0 8px 22px rgba(0,0,0,.5), inset 0 1px 0 #fff, inset 0 -3px 0 rgba(0,0,0,.08)}
+.tb-coffret::before,.tb-coffret::after{content:"";position:absolute;top:5px;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff,#8d91a0);box-shadow:inset 0 0 0 1px #7b7f8d}
+.tb-coffret::before{left:8px}.tb-coffret::after{right:8px}
+.tb-coffret .tb-rg{background:none;border:0;border-radius:0;padding:6px 0 12px;margin:0;border-bottom:2px groove #c9ccd6}
+.tb-coffret .tb-rg:last-child{border-bottom:0;padding-bottom:4px}
+.tb-coffret .tb-rg-h{margin-bottom:4px;padding:0 2px}.tb-coffret .tb-rg-h span{color:#5d6070}
+.tb-coffret .tb-rn{color:#1d1a2b;border-bottom-color:#a9adba}.tb-coffret .tb-rn::placeholder{color:#8a8d9b}
+.tb-coffret .tb-nums span{color:#3d57b8}.tb-coffret .tb-x{color:#6b6e7d}
+.tb-coffret .tb-add{flex:none;width:auto;margin:0;height:34px;padding:0 12px;border-radius:99px;background:var(--primary);border:0;color:#fff;font-size:14px;font-weight:800;white-space:nowrap;box-shadow:0 2px 5px rgba(0,0,0,.25)}
+.tb-coffret .tb-add:disabled{opacity:.35}.tb-coffret .tb-rg-h{gap:6px}.tb-coffret .tb-rg-h span{white-space:nowrap}.tb-coffret .tb-x{width:28px}
+.tb-rail{position:relative;padding:5px 3px 6px;border-radius:6px;border:2px solid #868a98;background:linear-gradient(180deg,#23252d 0,#23252d 40%,#7f8390 40%,#d3d6de 43%,#9da1ad 50%,#6d717e 52%,#23252d 52%,#23252d 100%);box-shadow:inset 0 3px 10px rgba(0,0,0,.7)}
+.tb-rail>*{grid-row:1}
+.tb-libre{border:1px solid #c2c5d0;border-radius:3px;background:linear-gradient(180deg,#eef0f4,#d9dce4);color:#a2a5b3;font-size:14px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.tb-mod{z-index:1}.tb-mod::after{content:"";flex:none;width:7px;height:7px;border-radius:50%;margin-top:3px;background:radial-gradient(circle at 40% 40%,#8a8d99,#2b2d35 70%)}
+.tb-mod.vide::after{display:none}
+.tb-cible{z-index:3;pointer-events:none;margin:0 1px;border:2px dashed var(--primary);border-radius:5px;background:rgba(224,76,245,.28)}
+.tb-cible.occ{border-color:#ff9f43;background:rgba(255,159,67,.3)}
+.tb-mod.drag{z-index:6}
+.tb-ap{position:fixed;inset:0;z-index:45;background:#15161b;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+.tb-ap-h{display:flex;align-items:center;gap:10px;padding:10px 12px}.tb-ap-h div{flex:1;min-width:0}.tb-ap-h b{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tb-ap-h small{color:var(--muted);font-size:12px}
+.tb-ap-h button{flex:none;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);color:var(--text);font-size:16px}
+.tb-ap-c{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:4px 8px calc(20px + env(safe-area-inset-bottom))}
+.tb-coffret.ap .tb-rail{min-height:150px}.tb-coffret.ap .tb-rn{border:0;height:auto;font-size:14px;display:block}
+.tb-coffret.ap .tb-rg{padding-bottom:8px}.tb-coffret.ap .tb-rg-h b{width:22px;height:22px;font-size:12px}
+.tb-coffret.ap.n18 .tb-c,.tb-coffret.ap.n24 .tb-c{font-size:7.5px;letter-spacing:-.4px}.tb-coffret.ap.n24 .tb-c{font-size:6px}
+.tb-coffret.ap.n18 .tb-s,.tb-coffret.ap.n24 .tb-s{font-size:6px}
+.tb-coffret.ap.n18 .tb-tete,.tb-coffret.ap.n24 .tb-tete{min-height:20px}
+.tb-coffret.ap.n18 .tb-man,.tb-coffret.ap.n24 .tb-man{width:8px;height:14px;margin:3px 0 2px}.tb-coffret.ap.n18 .tb-man i,.tb-coffret.ap.n24 .tb-man i{width:5px;height:5px}
+.tb-coffret.ap.n18 .tb-ico{font-size:10px;min-height:10px}.tb-coffret.ap.n24 .tb-ico{font-size:8px;min-height:8px}
+.tb-coffret.ap.n18 .tb-n,.tb-coffret.ap.n18 .tb-mod.large .tb-n{font-size:9.5px}.tb-coffret.ap.n24 .tb-n,.tb-coffret.ap.n24 .tb-mod.large .tb-n{font-size:8px}
+.tb-coffret.ap.n18 .tb-n.long,.tb-coffret.ap.n24 .tb-n.long{white-space:nowrap;font-size:7.5px}
+.tb-coffret.ap.n18 .tb-nums span{font-size:8.5px}.tb-coffret.ap.n24 .tb-nums span{font-size:7px}
+.tb-coffret.ap.n18 .tb-mod::after,.tb-coffret.ap.n24 .tb-mod::after{width:4px;height:4px}
+.tb-ap-ph{display:block;width:100%;border-radius:12px;border:1px solid var(--line)}
+.tb-photo{background:rgba(54,55,62,.94);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.tb-photo summary{padding:10px 12px;font-weight:700;font-size:14px;cursor:pointer}.tb-photo img{display:block;width:100%;max-height:46vh;object-fit:contain;background:#000}
+.tb-phv .tb-ap-c{padding:0}.tb-phv img{display:block;width:100%}.tb-phv img.zoom{width:260%;max-width:none}
+.tb-scan-note{display:flex;gap:8px;align-items:flex-start;background:rgba(255,190,80,.14);border:1px solid rgba(255,190,80,.5);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13px;line-height:1.35}
+.tb-scan-note div{flex:1}.tb-scan-note b{display:block;font-size:14px;margin-bottom:2px}.tb-scan-note i{display:block;margin-top:6px;color:var(--muted)}
+.tb-scan-note button{flex:none;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);color:var(--text)}
+.tb-file{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.tb-file input{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:0}
+.tb-scan-img{position:relative;border-radius:10px;overflow:hidden;background:#000;max-height:38vh}
+.tb-scan-img img{display:block;width:100%;max-height:38vh;object-fit:contain;opacity:.85}
+.tb-scan-img i{position:absolute;left:0;right:0;height:3px;background:var(--primary);box-shadow:0 0 14px 4px rgba(224,76,245,.7);animation:tbScan 1.8s ease-in-out infinite alternate}
+@keyframes tbScan{from{top:4%}to{top:94%}}
+
+.tb-coffret button.tb-rn{flex:0 1 auto;display:flex;align-items:center;gap:6px;border:0;text-align:left;overflow:hidden;padding:0 2px}.tb-coffret .tb-rg-h .tb-add{margin-left:4px}.tb-coffret .tb-rg-h .tb-add+span{margin-left:auto}
+.tb-coffret button.tb-rn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1d1a2b;font-size:17px;font-weight:700}
+.tb-coffret button.tb-rn i{flex:none;font-style:normal;font-size:15px;color:#7a2fc4}
+.tb-svg{display:block;width:20px;height:20px}.tb-ico{color:#1d1a2b;min-height:20px;margin-top:1px}.tb-mod.large .tb-ico .tb-svg{width:26px;height:26px}
+.tb-syms .chip{padding:5px 7px;line-height:0}.tb-syms .chip .tb-svg{width:26px;height:26px}.tb-syms .chip[data-y=""],.tb-syms .chip[data-y="aucun"]{line-height:1.2;padding:5px 10px}
+.tb-coffret.ap.n18 .tb-svg{width:13px;height:13px}.tb-coffret.ap.n24 .tb-svg{width:10px;height:10px}.tb-coffret.ap.n18 .tb-ico,.tb-coffret.ap.n24 .tb-ico{min-height:10px}
+.tb-coffret.ap.n18 .tb-mod.large .tb-svg{width:18px;height:18px}.tb-coffret.ap.n24 .tb-mod.large .tb-svg{width:14px;height:14px}
+
+.tb-plaque{display:flex;align-items:baseline;gap:8px;margin:-4px 16px 6px;padding:5px 12px;border-radius:8px;background:rgba(255,255,255,.75);border:1px solid #b9bcc8;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)}
+.tb-plaque b{flex:1;min-width:0;font-size:15px;color:#1d1a2b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-plaque span{flex:none;font-size:11.5px;font-weight:700;color:#5d6070;white-space:nowrap}
+.tb-coffret.scan{background:linear-gradient(180deg,#fbf3d6,#ecdcae);border-color:#c2ad74}
+.tb-coffret.scan .tb-rg{border-bottom-color:#d6c492}.tb-coffret.scan .tb-plaque{background:rgba(255,252,238,.8);border-color:#c8b47a}.tb-coffret.scan .tb-plaque span{color:#8a6a14}
+.tb-coffret.scan .tb-libre{background:linear-gradient(180deg,#f6eed2,#e6d8ae);border-color:#cdbb86;color:#b3a274}
+.note.tb-fiche{background:linear-gradient(180deg,#f7f8fb,#dde0e8);border-color:#a9adba}
+.note.tb-fiche.scan{background:linear-gradient(180deg,#fbf3d6,#ecdcae);border-color:#c2ad74}
+.note.tb-fiche .note-client{color:#1d1a2b}.note.tb-fiche .note-adr{color:#5d6070}.note.tb-fiche.scan .note-adr{color:#7a6426}.note.tb-fiche .note-menu{color:#5d6070}
+.tuile.c-devis{background:linear-gradient(160deg,rgba(120,205,255,.34),rgba(120,205,255,.12));border-color:rgba(130,210,255,.7)}
+.tuile.c-fact{background:linear-gradient(160deg,rgba(236,110,220,.34),rgba(150,90,240,.16));border-color:rgba(236,120,225,.7)}
+.tuile.c-doc{background:linear-gradient(160deg,rgba(255,214,80,.3),rgba(255,214,80,.1));border-color:rgba(255,214,80,.7)}
+.tuile.t-norme2{background:linear-gradient(160deg,rgba(40,70,190,.6),rgba(25,40,120,.45));border-color:rgba(80,110,235,.8)}
+
+/* Outils : tâches, codes, documentation */
+.tuile.c-taches{background:linear-gradient(160deg,rgba(95,211,141,.3),rgba(95,211,141,.1));border-color:rgba(95,211,141,.65)}
+.tuile.c-codes{background:linear-gradient(160deg,rgba(255,150,90,.3),rgba(255,150,90,.1));border-color:rgba(255,160,100,.65)}
+.tuile.c-doc{grid-column:auto}
+.ls-titre{width:100%;border:0;background:transparent;color:var(--text);font-size:24px;font-weight:800;padding:4px 2px 10px;outline:0}
+.ls-titre::placeholder{color:var(--muted)}
+.ls-l{display:flex;align-items:flex-start;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.ls-c{flex:none;width:26px;height:26px;margin-top:5px;border-radius:50%;border:2px solid var(--muted);color:#12131a;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.ls-l.ok .ls-c{background:#5fd38d;border-color:#5fd38d}
+.ls-t{flex:1;min-width:0;border:0;background:transparent;color:var(--text);font-size:17px;line-height:1.35;padding:6px 0;resize:none;outline:0;overflow:hidden;font-family:inherit}
+.ls-l.ok .ls-t{color:var(--muted);text-decoration:line-through}
+.ls-x{flex:none;width:30px;height:36px;color:var(--muted);font-size:14px;opacity:.6}
+.ls-add{display:flex;align-items:center;gap:10px;width:100%;padding:12px 0;color:var(--primary);font-size:16px;font-weight:700;text-align:left}
+.ls-add span{width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
+.cd{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:inset 4px 0 0 #ff9a5a}
+.cd-h{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}.cd-h div{flex:1;min-width:0}.cd-h b{display:block;font-size:17px}.cd-h small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.cd-h button{flex:none;width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.07);font-size:16px}
+.cd-l{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;margin-top:6px;border-radius:10px;background:rgba(20,20,24,.55);border:1px solid var(--line);text-align:left}
+.cd-l span{flex:1;min-width:0;color:var(--muted);font-size:13.5px}.cd-l b{font-size:21px;letter-spacing:1.5px;font-family:ui-monospace,Menlo,monospace;word-break:break-all;text-align:right}
+.cd-n{margin:8px 2px 0;font-size:13.5px;color:var(--muted);white-space:pre-wrap}
+.cd-e{display:flex;gap:6px;margin-bottom:6px}.cd-e input{flex:1;min-width:0}.cd-e button{flex:none;width:34px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -802,6 +969,8 @@ function load(){
   return {devis:[]};
 }
 let saveT;
+let tabs = [];
+let listes = [], codes = [];   // notes de tableau électrique (chargées plus bas : tbLoad)
 function save(){
   try{ localStorage.setItem(KEY, JSON.stringify(db)); }catch(e){}
 }
@@ -815,7 +984,7 @@ function cloudSave(id){
   cloud.dirty.add(id);
   clearTimeout(cloud.timers[id]);
   cloud.timers[id] = setTimeout(() => {
-    const d = db.devis.find(x => x.id === id);
+    const d = db.devis.find(x => x.id === id) || tabs.find(x => x.id === id) || listes.find(x => x.id === id);
     const prev = cloud.chain[id] || Promise.resolve();
     cloud.chain[id] = prev.then(() => d ? cloud.ref.doc(id).set(JSON.parse(JSON.stringify(d))) : cloud.ref.doc(id).delete())
       .then(() => { cloud.dirty.delete(id); setSync("ok"); })
@@ -824,7 +993,7 @@ function cloudSave(id){
 }
 function cloudFlush(){
   Object.keys(cloud.timers).forEach(id => { clearTimeout(cloud.timers[id]); delete cloud.timers[id];
-    const d = db.devis.find(x => x.id === id);
+    const d = db.devis.find(x => x.id === id) || tabs.find(x => x.id === id) || listes.find(x => x.id === id);
     if(cloud.ref) (d ? cloud.ref.doc(id).set(JSON.parse(JSON.stringify(d))) : cloud.ref.doc(id).delete())
       .then(() => { cloud.dirty.delete(id); setSync("ok"); }, e => { cloud.diag.err = e && e.code; setSync("err"); });
   });
@@ -864,19 +1033,26 @@ async function initCloud(){
       if(first){
         // 1re fois : on envoie les devis qui n'existent que sur ce téléphone
         db.devis.forEach(d => { if(!serveur.has(d.id)) cloudSave(d.id); });
+        tabs.forEach(d => { if(!serveur.has(d.id)) cloudSave(d.id); });
+        listes.forEach(d => { if(!serveur.has(d.id)) cloudSave(d.id); });
         first = false;
       }
       serveur.forEach((data, id) => {
         if(cloud.dirty.has(id) || !data || !data.id) return;
+        if(data.kind === "liste"){ const c = JSON.parse(JSON.stringify(data)), j = listes.findIndex(x => x.id === id);
+          if(j < 0) listes.push(c); else if((listes[j].maj||0) < (c.maj||0)) listes[j] = c; return; }
+        if(data.kind === "tableau"){ const c = JSON.parse(JSON.stringify(data)), j = tabs.findIndex(x => x.id === id);
+          if(j < 0) tabs.push(c); else if((tabs[j].maj||0) < (c.maj||0)) tabs[j] = c; return; }
         const i = db.devis.findIndex(x => x.id === id);
         const copie = JSON.parse(JSON.stringify(data));
         if(i < 0) db.devis.push(copie);
         else if((db.devis[i].maj||0) < (copie.maj||0)) db.devis[i] = copie;
       });
       snap.docChanges().forEach(ch => {
-        if(ch.type === "removed" && !cloud.dirty.has(ch.doc.id)) db.devis = db.devis.filter(x => x.id !== ch.doc.id);
+        if(ch.type === "removed" && !cloud.dirty.has(ch.doc.id)){ db.devis = db.devis.filter(x => x.id !== ch.doc.id); tabs = tabs.filter(x => x.id !== ch.doc.id); listes = listes.filter(x => x.id !== ch.doc.id); }
       });
-      save(); setSync("ok");
+      save(); try{ localStorage.setItem(KEY + "-tableaux", JSON.stringify(tabs)); localStorage.setItem(KEY + "-listes", JSON.stringify(listes)); }catch(e){}
+      setSync("ok");
       const saisie = document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName);
       if(!saisie && !document.getElementById("sheet")) render();
     }, e => { cloud.diag.err = e && e.code; setSync("err"); });
@@ -914,6 +1090,12 @@ function render(){
   else if(view.name === "recap") renderRecap();
   else if(view.name === "plan") renderPlan();
   else if(view.name === "catalogue") renderCatalogue();
+  else if(view.name === "listes") renderListes();
+  else if(view.name === "liste") renderListe();
+  else if(view.name === "codes") renderCodes();
+  else if(view.name === "doct") renderDoct();
+  else if(view.name === "tableaux") renderTableaux();
+  else if(view.name === "tableau") renderTableau();
 }
 
 
@@ -928,11 +1110,13 @@ function renderAccueil(){
   </header>
   <main class="acc">
     <button class="tuile t-notes" data-act="home"><span class="ti">📝</span><b>Notes de devis</b><small>${n ? n + " note" + (n > 1 ? "s" : "") + " en cours" : "Relevé chez le client"}</small></button>
-    <button class="tuile t-norme" data-act="norme"><span class="ti">📘</span><b>Norme NF C 15‑100</b><small>Édition 2024 · l'essentiel</small></button>
-    <button class="tuile t-doc" data-act="docs" data-cible="devis"><span class="ti">🧾</span><span class="tt"><b>Devis</b><small>PDF · Google Drive</small></span></button>
-    <button class="tuile t-doc" data-act="docs" data-cible="factur"><span class="ti">💶</span><span class="tt"><b>Factures</b><small>PDF · Google Drive</small></span></button>
-    ${[["🔌","Tableau électrique"],["✅","Liste de tâches"],["🔑","Codes","digicodes + adresses"],["📚","Documentation technique"]]
-      .map(([i, n, d]) => `<button class="tuile off" data-act="bientot" data-n="${n}"><span class="ti">${i}</span><span class="tt"><b>${n}</b><small>${d ? d + " · " : ""}bientôt</small></span></button>`).join("")}
+    <button class="tuile t-doc t-tab" data-tb="liste"><span class="ti">🔌</span><span class="tt"><b>Tableau électrique</b><small>${tabs.length ? tabs.length + " tableau" + (tabs.length > 1 ? "x" : "") : "Rangées, disjoncteurs, bande"}</small></span></button>
+    <button class="tuile t-doc c-devis" data-act="docs" data-cible="devis"><span class="ti">🧾</span><span class="tt"><b>Devis</b><small>PDF · Google Drive</small></span></button>
+    <button class="tuile t-doc c-fact" data-act="docs" data-cible="factur"><span class="ti">💶</span><span class="tt"><b>Factures</b><small>PDF · Google Drive</small></span></button>
+    <button class="tuile t-doc c-taches" data-o="listes"><span class="ti">✅</span><span class="tt"><b>Liste de tâches</b><small>${listes.length ? listes.length + " liste" + (listes.length > 1 ? "s" : "") : "Listes à cocher"}</small></span></button>
+    <button class="tuile t-doc c-codes" data-o="codes"><span class="ti">🔑</span><span class="tt"><b>Codes</b><small>${codes.length ? codes.length + " adresse" + (codes.length > 1 ? "s" : "") : "Résidences, chantiers"}</small></span></button>
+    <button class="tuile t-doc c-doc" data-o="doct"><span class="ti">📚</span><span class="tt"><b>Documentation technique</b><small>PDF gardés dans l'appli</small></span></button>
+    <button class="tuile t-doc t-norme2" data-act="norme"><span class="ti">📘</span><span class="tt"><b>Norme NF C 15‑100</b><small>Édition 2024</small></span></button>
   </main>`;
 }
 
@@ -2336,6 +2520,707 @@ document.addEventListener("focusout", () => setTimeout(() => { if(!champ(documen
 if(window.visualViewport){ visualViewport.addEventListener("resize", placeKb); visualViewport.addEventListener("scroll", placeKb); }
 document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.tagName === "INPUT" && !e.isComposing){ e.preventDefault(); e.target.blur(); } });
 
+/* ====================== Tableau électrique ======================
+   Une note = un chantier. Un tableau = des rangées ; les modules (disjoncteurs, différentiels…) se posent dans une rangée.
+   Largeurs en modules (1 module = 17,5 mm). */
+const TB_KEY = KEY + "-tableaux";
+const TB_TYPES = {
+  id40ac:{lib:"Inter. différentiel 40A 30mA type AC", c:"ID 40A", s:"AC", w:2, g:"Différentiels"},
+  id40a: {lib:"Inter. différentiel 40A 30mA type A",  c:"ID 40A", s:"A",  w:2, g:"Différentiels"},
+  id63ac:{lib:"Inter. différentiel 63A 30mA type AC", c:"ID 63A", s:"AC", w:2, g:"Différentiels"},
+  id63a: {lib:"Inter. différentiel 63A 30mA type A",  c:"ID 63A", s:"A",  w:2, g:"Différentiels"},
+  id40f: {lib:"Inter. différentiel 40A 30mA type F",  c:"ID 40A", s:"F",  w:2, g:"Différentiels"},
+  dd16:  {lib:"Disjoncteur différentiel 16A 30mA",    c:"DD 16A", s:"30mA", w:2, g:"Différentiels"},
+  dd20:  {lib:"Disjoncteur différentiel 20A 30mA",    c:"DD 20A", s:"30mA", w:2, g:"Différentiels"},
+  d2:  {lib:"Disjoncteur 2A",  c:"2A",  w:1, g:"Disjoncteurs"},
+  d10: {lib:"Disjoncteur 10A", c:"10A", w:1, g:"Disjoncteurs"},
+  d16: {lib:"Disjoncteur 16A", c:"16A", w:1, g:"Disjoncteurs"},
+  d20: {lib:"Disjoncteur 20A", c:"20A", w:1, g:"Disjoncteurs"},
+  d25: {lib:"Disjoncteur 25A", c:"25A", w:1, g:"Disjoncteurs"},
+  d32: {lib:"Disjoncteur 32A", c:"32A", w:1, g:"Disjoncteurs"},
+  d40: {lib:"Disjoncteur 40A", c:"40A", w:1, g:"Disjoncteurs"},
+  tele:{lib:"Télérupteur",           c:"TL",  w:1, g:"Commande"},
+  cjn: {lib:"Contacteur jour / nuit", c:"J/N", w:1, g:"Commande"},
+  cont:{lib:"Contacteur",            c:"CT",  w:1, g:"Commande"},
+  minu:{lib:"Minuterie",             c:"MIN", w:1, g:"Commande"},
+  horl:{lib:"Horloge",               c:"HOR", w:2, g:"Commande"},
+  dele:{lib:"Délesteur",             c:"DEL", w:2, g:"Commande"},
+  para:{lib:"Parafoudre",            c:"PF",  w:2, g:"Divers"},
+  sect:{lib:"Interrupteur sectionneur", c:"IS", w:2, g:"Divers"},
+  prise:{lib:"Prise modulaire",      c:"PC",  w:2.5, g:"Divers"},
+  sonn:{lib:"Transfo sonnette",      c:"TR",  w:2, g:"Divers"},
+  vide:{lib:"Obturateur (emplacement vide)", c:"", w:1, g:"Divers"},
+  autre:{lib:"Autre module…",        c:"?",   w:1, g:"Divers"}
+};
+const TB_GROUPES = ["Différentiels", "Disjoncteurs", "Commande", "Divers"];
+const TB_TEINTE = {"Différentiels":330, "Disjoncteurs":205, "Commande":140, "Divers":40};
+/* Symbole d'un circuit : choisi à la main, sinon deviné d'après le nom, sinon d'après le type */
+/* Pictogrammes au trait, dessinés pour l'appli (cadre arrondi 24×24) : [libellé, tracé SVG] */
+const TB_SYM = {
+  prise:["Prise", `<circle cx="12" cy="12" r="6.3"/><circle cx="9.6" cy="12" r=".9" fill="currentColor"/><circle cx="14.4" cy="12" r=".9" fill="currentColor"/><path d="M12 5.7v1.9"/>`],
+  lum:["Éclairage", `<path d="M12 5.6a3.9 3.9 0 0 0-2.4 7c.6.5.9 1.1.9 1.8v.3h3v-.3c0-.7.3-1.3.9-1.8a3.9 3.9 0 0 0-2.4-7z"/><path d="M10.6 16.6h2.8M11.2 18.4h1.6"/>`],
+  four:["Four", `<path d="M2 7.4h20"/><circle cx="6" cy="4.8" r=".7" fill="currentColor"/><circle cx="9" cy="4.8" r=".7" fill="currentColor"/><path d="M14 4.8h4.5"/><rect x="5.5" y="10" width="13" height="8.5" rx="1.2"/><path d="M9.5 16c-.7-.9.7-1.6 0-2.6M12 16c-.7-.9.7-1.6 0-2.6M14.5 16c-.7-.9.7-1.6 0-2.6"/>`],
+  plaque:["Plaque", `<circle cx="8" cy="8" r="2.6"/><circle cx="16" cy="8" r="2.6"/><circle cx="8" cy="16" r="2.6"/><circle cx="16" cy="16" r="2.6"/><circle cx="8" cy="8" r=".6" fill="currentColor"/><circle cx="16" cy="8" r=".6" fill="currentColor"/><circle cx="8" cy="16" r=".6" fill="currentColor"/><circle cx="16" cy="16" r=".6" fill="currentColor"/>`],
+  ll:["Lave-linge", `<path d="M2 7h20"/><circle cx="5.6" cy="4.6" r=".7" fill="currentColor"/><path d="M13 4.6h5.5"/><circle cx="12" cy="13.8" r="4.9"/><path d="M7.6 14.2c1.5-1.1 2.9 1.1 4.4 0s2.9 1.1 4.4 0"/>`],
+  sl:["Sèche-linge", `<path d="M2 7h20"/><circle cx="5.6" cy="4.6" r=".7" fill="currentColor"/><path d="M13 4.6h5.5"/><circle cx="12" cy="13.8" r="4.9"/><path d="M10 15.8c-.8-1 .8-1.8 0-3.2M12 15.8c-.8-1 .8-1.8 0-3.2M14 15.8c-.8-1 .8-1.8 0-3.2"/>`],
+  lv:["Lave-vaisselle", `<path d="M2 7h20"/><circle cx="5.6" cy="4.6" r=".7" fill="currentColor"/><path d="M13 4.6h5.5"/><circle cx="15" cy="14.2" r="3.4"/><circle cx="15" cy="14.2" r="1.4"/><path d="M6 10.2h4c0 2.4-.7 3.6-2 3.6s-2-1.200-2-3.600zM8 13.800v3.900M6.600 17.800h2.800"/>`],
+  eau:["Chauffe-eau", `<rect x="7.6" y="4.200" width="8.800" height="13.200" rx="3.600"/><path d="M12 7.800c1.300 1.600 1.900 2.700 1.900 3.600a1.900 1.900 0 0 1-3.800 0c0-.9.600-2 1.900-3.600zM10 17.400v2.400M14 17.400v2.400"/>`],
+  chauf:["Chauffage", `<rect x="4.600" y="6.500" width="2.600" height="11" rx="1.200"/><rect x="8.300" y="6.500" width="2.600" height="11" rx="1.200"/><rect x="12" y="6.500" width="2.600" height="11" rx="1.200"/><rect x="15.700" y="6.500" width="2.600" height="11" rx="1.200"/><path d="M18.300 9h1.400M4.600 15h-1"/>`],
+  chaud:["Chaudière", `<path d="M12 5.400c2.400 2.500 3.900 4.500 3.900 6.900a3.900 3.900 0 0 1-7.800 0c0-1.300.500-2.400 1.400-3.500.300 1.100.9 1.700 1.600 1.800-.3-1.800.1-3.500.9-5.200z"/><path d="M8 18.600h8"/>`],
+  vmc:["VMC", `<circle cx="12" cy="12" r="1.300"/><g id="b"><path d="M12 10.700c-2-1.100-2.700-3.300-1.400-4.800 1.400-1.500 3.700-.7 3.700 1.300 0 1.500-1.100 2.700-2.300 3.500z"/></g><path transform="rotate(120 12 12)" d="M12 10.700c-2-1.100-2.700-3.300-1.400-4.800 1.400-1.500 3.700-.7 3.700 1.300 0 1.500-1.100 2.700-2.300 3.500z"/><path transform="rotate(240 12 12)" d="M12 10.700c-2-1.100-2.700-3.300-1.400-4.800 1.400-1.500 3.700-.7 3.700 1.300 0 1.500-1.100 2.700-2.300 3.500z"/>`],
+  clim:["Climatisation", `<rect x="4.200" y="6" width="15.600" height="5.600" rx="1.300"/><path d="M7 9.300h10M8 14c-.7.900.7 1.600 0 2.600s.7 1.600 0 2.200M12 14c-.7.900.7 1.600 0 2.600s.7 1.600 0 2.200M16 14c-.7.900.7 1.600 0 2.600s.7 1.600 0 2.200"/>`],
+  froid:["Frigo / congélateur", `<path d="M12 5v14M5.900 8.500l12.200 7M5.900 15.500l12.200-7M10.300 6.300l1.700 1.700 1.700-1.700M10.300 17.700l1.700-1.700 1.700 1.700"/>`],
+  volet:["Volet roulant", `<rect x="4.600" y="4.600" width="14.800" height="3.200" rx=".8"/><path d="M6 7.800v11.400M18 7.800v11.400M6 10.300h12M6 12.800h12M6 15.300h12M10 19.200h4"/>`],
+  portail:["Portail", `<path d="M5 19V8.500c2.300-2 4.700-2 7 0V19M19 19V8.500c-2.300-2-4.700-2-7 0M7.300 9.500V19M9.700 9.500V19M14.300 9.500V19M16.700 9.500V19M5 13.500h14"/>`],
+  borne:["Borne de recharge", `<rect x="6.200" y="4.400" width="8" height="12.600" rx="1.400"/><path d="M10.900 7l-2 3.300h2.600l-2 3.300M5 19.600h10.400M10.200 17v2.600M14.200 9c2.400 0 3.600 1.200 3.600 3.200V16a1.200 1.200 0 0 0 2.400 0v-5.500"/>`],
+  alarme:["Alarme", `<path d="M12 5.400a4 4 0 0 0-4 4v3.200L6.600 15.400h10.800L16 12.600V9.400a4 4 0 0 0-4-4zM10.600 17.600a1.500 1.500 0 0 0 2.800 0M5 7.600c-.6 1-.9 2-.9 3.100M19 7.600c.6 1 .9 2 .9 3.100"/>`],
+  inter:["Interphone / sonnette", `<rect x="7" y="4.200" width="10" height="15.600" rx="1.600"/><circle cx="12" cy="8.600" r="1.900"/><path d="M9.600 13.200h4.800M9.600 15.200h4.800"/><circle cx="12" cy="17.600" r=".7" fill="currentColor"/>`],
+  diff:["Différentiel", `<path d="M12 4.800l5.600 2.100v4.200c0 3.500-2.300 6.200-5.600 7.700-3.300-1.500-5.600-4.200-5.600-7.700V6.900z"/><path d="M9.500 11.700l1.900 1.900 3.300-3.500"/>`],
+  foudre:["Parafoudre", `<path d="M13.400 4.600l-5.600 8h3.900l-1.100 6.800 5.600-8h-3.900z"/>`]
+};
+// Pictogramme en SVG ; seul = fichier SVG complet (pour l'image de la bande imprimée)
+function tbIco(k, seul){ const v = TB_SYM[k]; if(!v) return "";
+  return `<svg ${seul ? `xmlns="http://www.w3.org/2000/svg" width="192" height="192" color="#111"` : `class="tb-svg"`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3.6"/>${v[1]}</svg>`; }
+const tbIcoPNG = {};
+function tbIcoImg(k){ if(tbIcoPNG[k]) return Promise.resolve(tbIcoPNG[k]);
+  return new Promise(ok => { const im = new Image(); im.onload = () => { try{ const c = document.createElement("canvas"); c.width = c.height = 192; const x = c.getContext("2d");
+      x.fillStyle = "#fff"; x.fillRect(0, 0, 192, 192); x.drawImage(im, 0, 0, 192, 192); ok(tbIcoPNG[k] = c.toDataURL("image/png")); }catch(e){ ok(""); } };
+    im.onerror = () => ok(""); im.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(tbIco(k, true)); }); }
+const TB_SYM_MOTS = [["lv", /lave.?vaiss|\blv\b/i], ["sl", /s[eè]che.?linge|\bsl\b/i], ["ll", /lave.?linge|machine|\bll\b/i], ["eau", /chauffe.?eau|ballon|cumulus|\becs\b/i],
+  ["four", /four/i], ["plaque", /plaque|cuisson/i], ["vmc", /vmc|ventil|extract/i], ["volet", /volet|store/i], ["portail", /portail|portillon|garage/i],
+  ["borne", /borne|irve|recharge|voiture|v[ée]hicule/i], ["alarme", /alarme|sir[eè]ne/i], ["inter", /interphone|visiophone|sonnette|carillon/i],
+  ["clim", /clim|\bpac\b|pompe [aà] chaleur/i], ["froid", /frigo|cong[eé]l|r[eé]frig/i], ["chaud", /chaudi[eè]re/i],
+  ["chauf", /chauff|radiat|convect|s[eè]che.?serv/i], ["lum", /lum|[eé]clair|spot|lamp|applique|dcl|plafon/i], ["prise", /prise|\bpc\b/i]];
+function tbSym(m){ if(m.sym) return m.sym === "aucun" || !TB_SYM[m.sym] ? "" : m.sym;
+  const n = m.nom || ""; for(const [k, re] of TB_SYM_MOTS) if(re.test(n)) return k;
+  return /^(id|dd)/.test(m.t) ? "diff" : m.t === "para" ? "foudre" : ""; }
+function tbLoad(){ try{ const a = JSON.parse(localStorage.getItem(TB_KEY)); if(Array.isArray(a)) return a; }catch(e){} return []; }
+function tbSave(t){ if(t){ t.maj = Date.now(); cloudSave(t.id); } try{ localStorage.setItem(TB_KEY, JSON.stringify(tabs)); }catch(e){} }
+const tbCur = () => tabs.find(t => t.id === view.tid);
+const tbType = m => TB_TYPES[m.t] || TB_TYPES.autre;
+const tbW = m => m.w || tbType(m).w;
+const tbLib = m => m.t === "autre" && m.lib ? m.lib : tbType(m).lib;
+const tbCourt = m => m.t === "autre" && m.lib ? m.lib.slice(0, 6) : tbType(m).c;
+const tbRgNom = (t, r) => r.nom ? r.nom : "la rangée " + (t.rangees.indexOf(r) + 1);
+const tbPlein = r => r.mods.reduce((s, m) => s + tbW(m), 0);
+const tbNb = v => String(Math.round(v * 10) / 10).replace(".", ",");
+/* Chaque module a une position p (en demi-modules depuis la gauche) : on peut laisser des emplacements libres */
+const tbW2 = m => Math.round(tbW(m) * 2);
+// Range la rangée : trie, pousse à droite ce qui se chevauche, puis ramène à gauche ce qui dépasse (prio garde sa place à égalité)
+function tbRange(r, L, prio){ r.mods.sort((a, b) => a.p - b.p || (a === prio ? -1 : b === prio ? 1 : 0));
+  let fin = 0; r.mods.forEach(m => { if(m.p < fin) m.p = fin; fin = m.p + tbW2(m); });
+  let deb = L; for(let i = r.mods.length - 1; i >= 0; i--){ const m = r.mods[i]; if(m.p + tbW2(m) > deb) m.p = deb - tbW2(m); deb = m.p; }
+  return deb >= 0; }
+function tbNorm(t){ const L = t.larg * 2; t.rangees.forEach(r => {
+  let fin = r.mods.reduce((a, m) => typeof m.p === "number" ? Math.max(a, m.p + tbW2(m)) : a, 0);
+  r.mods.forEach(m => { if(typeof m.p !== "number" || m.p < 0){ m.p = fin; fin += tbW2(m); } }); tbRange(r, L); }); }
+const tbLibre = (r, p, w2, L, sauf) => p >= 0 && p + w2 <= L && !r.mods.some(m => m !== sauf && m.p < p + w2 && p < m.p + tbW2(m));
+// Première place libre à partir de p0 (puis depuis le début) ; -1 si aucun trou assez large
+function tbPlace(r, w2, L, p0){ p0 = p0 || 0; for(let p = p0; p + w2 <= L; p++) if(tbLibre(r, p, w2, L)) return p; for(let p = 0; p < p0; p++) if(tbLibre(r, p, w2, L)) return p; return -1; }
+// Pose un module dans la rangée (la place totale doit avoir été vérifiée) ; renvoie la position suivante
+function tbAjoute(t, r, m, p0){ const L = t.larg * 2, w2 = tbW2(m), q = tbPlace(r, w2, L, p0); m.p = q < 0 ? L : q; r.mods.push(m); tbRange(r, L, m); return m.p + w2; }
+// Emplacement(s) occupé(s) par le module n° i de la rangée : « 3 » ou « 4-5 »
+function tbPos(r, i){ const m = r.mods[i], a = Math.floor(m.p / 2) + 1, b = Math.ceil((m.p + tbW2(m)) / 2); return b > a ? a + "-" + b : String(a); }
+// Tableau parti d'une photo (scan) ou créé de zéro
+const tbScanne = t => t.origine === "scan" || !!t.scan || !!tbPhoto(t.id);
+const tbPlaque = t => `<div class="tb-plaque"><b>${esc(t.chantier || "Tableau")}</b><span>${tbScanne(t) ? "📷 À partir d'un scan" : "➕ Création"}</span></div>`;
+function tbRang(t, mid){ for(const r of t.rangees){ const i = r.mods.findIndex(m => m.id === mid); if(i >= 0) return {r, i, m: r.mods[i]}; } return {}; }
+
+function renderTableaux(){
+  const liste = [...tabs].sort((a, b) => (b.maj || 0) - (a.maj || 0));
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-act="accueil" aria-label="Retour">‹</button><h1>Tableau électrique</h1></header>
+  <main>
+    <div class="tb-menu">
+      <button data-tb="nouveau"><span>➕</span>Nouveau tableau<small>Je le construis rangée par rangée</small></button>
+      <button data-tb="scan"><span>📷</span>Scan tableau<small>Je pars d'une photo d'un tableau existant</small></button>
+    </div>
+    ${liste.length ? `<p class="tb-titre">Mes tableaux</p>` + liste.map(t => { const nm = t.rangees.reduce((s, r) => s + r.mods.length, 0);
+      return `<div class="note tb-fiche ${tbScanne(t) ? "scan" : ""}"><button class="note-main" data-tb="ouvrir" data-id="${t.id}" style="flex:1;text-align:left;padding:12px 14px;min-width:0">
+        <b class="note-client" style="display:block">${tbScanne(t) ? "📷" : "🔌"} ${esc(t.chantier || "Chantier sans nom")}</b>
+        <span class="note-adr">${tbScanne(t) ? "Scan" : "Création"} · ${t.rangees.length} rangée${t.rangees.length > 1 ? "s" : ""} · ${nm} module${nm > 1 ? "s" : ""} · ${ilya(t.maj || t.cree)}</span></button>
+        <button class="note-menu" data-tb="suppr" data-id="${t.id}" aria-label="Supprimer">🗑</button></div>`; }).join("")
+    : `<p class="tb-titre" style="text-transform:none;letter-spacing:0;text-align:center;margin-top:24px">Aucun tableau enregistré pour l'instant.</p>`}
+  </main>`;
+}
+function tbNomSheet(t){
+  let larg = 13;
+  const s = sheet(`<h3>${t ? "Nom du chantier" : "Nouveau tableau"}</h3>
+    <label class="f"><span>Nom du chantier</span><input class="t" id="tbNom" value="${esc(t ? t.chantier : "")}" placeholder="Ex. Dupont — cuisine" autocomplete="off"></label>
+    ${t ? "" : `<div class="f"><span>Modules par rangée</span><div class="tb-larg">${[13, 18, 24].map(n => `<button class="chip ${n === 13 ? "on" : ""}" data-l="${n}">${n} modules</button>`).join("")}</div></div>`}
+    <div class="row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">${t ? "Enregistrer" : "Créer"}</button></div>`);
+  s.querySelectorAll("[data-l]").forEach(b => b.onclick = () => { larg = +b.dataset.l; s.querySelectorAll("[data-l]").forEach(x => x.classList.toggle("on", x === b)); });
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  s.querySelector('[data-s="ok"]').onclick = () => { const nom = s.querySelector("#tbNom").value.trim();
+    if(!nom){ toast("Donne un nom au chantier"); return; }
+    if(t){ t.chantier = nom; tbSave(t); closeSheet(); render(); return; }
+    const n = {id: uid(), kind: "tableau", chantier: nom, cree: Date.now(), maj: Date.now(), larg, rangees: []};
+    tabs.push(n); tbSave(n); closeSheet(); go("tableau", {tid: n.id}); };
+}
+function tbRgSheet(t, r){ const def = "Rangée " + (t.rangees.indexOf(r) + 1);
+  const s = sheet(`<h3>Nom de la rangée</h3>
+    <label class="f"><span>Nom</span><input class="t" id="tbRn" value="${esc(r.nom || "")}" placeholder="${def}" autocomplete="off"></label>
+    <div class="row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">Enregistrer</button></div>`);
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  s.querySelector('[data-s="ok"]').onclick = () => { const v = s.querySelector("#tbRn").value.trim(); r.nom = v === def ? "" : v; tbSave(t); closeSheet(); const y = window.scrollY; renderTableau(); window.scrollTo(0, y); };
+  s.querySelector("#tbRn").addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); e.stopImmediatePropagation(); s.querySelector('[data-s="ok"]').click(); } });
+}
+function tbLargSheet(t){
+  const max = Math.max(0, ...t.rangees.map(tbPlein));
+  const s = sheet(`<h3>Taille du tableau</h3><p style="font-size:13px;color:var(--muted);margin:-4px 0 10px">Nombre de modules par rangée.</p>
+    <div class="tb-larg">${[13, 18, 24].map(n => `<button class="chip ${n === t.larg ? "on" : ""}" data-l="${n}" ${n < max ? "disabled" : ""}>${n} modules</button>`).join("")}</div>
+    ${max > 13 ? `<p style="font-size:12.5px;color:var(--muted);margin:10px 0 0">Une rangée contient déjà ${tbNb(max)} modules : impossible de descendre en dessous.</p>` : ""}`);
+  s.querySelectorAll("[data-l]").forEach(b => b.onclick = () => { t.larg = +b.dataset.l; tbNorm(t); tbSave(t); closeSheet(); renderTableau(); });
+}
+function tbModHTML(t, m, ro){ const ty = tbType(m), h = TB_TEINTE[ty.g] || 260, sy = tbSym(m), large = tbW(m) >= 2, tag = ro ? "div" : "button";
+  return `<${tag} class="tb-mod ${m.t === "vide" ? "vide" : ""} ${large ? "large" : ""}" ${ro ? "" : `data-tb="mod"`} data-mid="${m.id}" style="--h:${h};grid-column:${m.p + 1} / span ${tbW2(m)}">
+    <span class="tb-tete"><span class="tb-c">${esc(tbCourt(m))}</span>${ty.s ? `<span class="tb-s">${esc(ty.s)}</span>` : ""}</span>
+    <span class="tb-man"><i></i></span>
+    <span class="tb-ico">${sy ? tbIco(sy) : ""}</span>
+    <span class="tb-n ${m.nom ? ((m.nom.length > 11 && tbW(m) < 2) ? "long" : "") : "anom"}">${esc(m.nom || (m.t === "vide" || ro ? "" : "à nommer"))}</span></${tag}>`; }
+/* Une rangée : numéros d'emplacement, rail, modules à leur position et emplacements libres */
+function tbRailHTML(t, r, ro){ const L = t.larg * 2, occ = new Array(L).fill(false);
+  r.mods.forEach(m => { for(let k = Math.max(0, m.p); k < m.p + tbW2(m) && k < L; k++) occ[k] = true; });
+  let libres = ""; for(let k = 0; k < t.larg; k++) if(!occ[2 * k] && !occ[2 * k + 1]) libres += ro ? `<span class="tb-libre" style="grid-column:${2 * k + 1} / span 2"></span>`
+    : `<button class="tb-libre" data-tb="ajout" data-p="${2 * k}" style="grid-column:${2 * k + 1} / span 2" aria-label="Ajouter à l'emplacement ${k + 1}">＋</button>`;
+  return `<div class="tb-nums" style="grid-template-columns:repeat(${L},1fr)">${Array.from({length: t.larg}, (_, k) => `<span>${k + 1}</span>`).join("")}</div>
+    <div class="tb-rail" style="grid-template-columns:repeat(${L},1fr)">${libres}${r.mods.map(m => tbModHTML(t, m, ro)).join("")}</div>`; }
+function renderTableau(){
+  const t = tbCur(); if(!t){ go("tableaux"); return; }
+  tbNorm(t);
+  const nm = t.rangees.reduce((s, r) => s + r.mods.length, 0), ph = tbPhoto(t.id);
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-tb="liste" aria-label="Retour">‹</button>
+    <button class="hclient" data-tb="renommer"><b>🔌 ${esc(t.chantier)}</b><small>${t.rangees.length} rangée${t.rangees.length > 1 ? "s" : ""} · ${nm} module${nm > 1 ? "s" : ""}</small></button>
+    <button data-tb="renommer" aria-label="Renommer">✎</button></header>
+  <main>
+    ${t.scan ? `<div class="tb-scan-note"><div><b>📷 Tableau lu sur la photo</b>Vérifie chaque module : touche-le pour corriger son type ou son nom, glisse-le pour le déplacer.${t.note ? `<i>${esc(t.note)}</i>` : ""}</div><button data-tb="scanOk" aria-label="Fermer">✕</button></div>` : ""}
+    ${ph ? `<details class="tb-photo" ${t.scan || !nm ? "open" : ""}><summary>📷 Photo du tableau</summary><img src="${ph}" data-tb="photo" alt="Photo du tableau"></details>` : ""}
+    ${t.rangees.length ? "" : `<div class="vide"><div class="vide-ico">🔌</div><b>Tableau vide</b><p>Commence par ajouter une rangée. Tu pourras ensuite y poser les disjoncteurs.</p></div>`}
+    ${t.rangees.length ? `<div class="tb-coffret ${tbScanne(t) ? "scan" : ""}">${tbPlaque(t)}${t.rangees.map((r, ri) => { const plein = tbPlein(r), reste = t.larg - plein;
+      return `<section class="tb-rg" data-rid="${r.id}">
+        <div class="tb-rg-h"><b>${ri + 1}</b><button class="tb-rn" data-tb="nomRg"><span>${esc(r.nom || "Rangée " + (ri + 1))}</span><i>✎</i></button>
+          <button class="tb-add" data-tb="ajout" ${reste <= 0 ? "disabled" : ""} aria-label="Ajouter un disjoncteur ou un module">＋ Disj.</button><span class="${reste < 0 ? "tb-trop" : ""}">${tbNb(plein)}/${t.larg}</span>
+          <button class="tb-x" data-tb="supprRg" aria-label="Supprimer la rangée">🗑</button></div>
+        <div class="tb-scroll"><div class="tb-in" style="min-width:${t.larg > 13 ? t.larg * 22 : 0}px">${tbRailHTML(t, r)}</div></div>
+      </section>`; }).join("")}</div>` : ""}
+    <div class="tb-bas"><button class="tab add" data-tb="rangee">＋ Rangée</button>
+      <button class="chip" data-tb="larg">Tableau ${t.larg} modules ▾</button></div>
+    ${nm ? `<p class="tb-aide">Glisse un disjoncteur pour le poser où tu veux sur la ligne. Touche un emplacement libre pour y ajouter un module.</p>` : ""}
+  </main>
+  <div class="bottom"><button class="btn sec" data-tb="apercu" ${nm ? "" : "disabled"}>👁 Aperçu</button>
+    <button class="btn" data-tb="bande" ${nm ? "" : "disabled"}>🖨 Bande à imprimer</button></div>`;
+}
+/* Vue d'ensemble : tout le tableau sur un seul écran, sans rien modifier */
+function tbApercu(t){
+  const o = document.createElement("div"); o.className = "tb-ap"; const nm = t.rangees.reduce((s, r) => s + r.mods.length, 0);
+  o.innerHTML = `<div class="tb-ap-h"><div><b>${esc(t.chantier)}</b><small>${t.rangees.length} rangée${t.rangees.length > 1 ? "s" : ""} · ${nm} module${nm > 1 ? "s" : ""} · ${t.larg} modules par rangée</small></div><button data-x aria-label="Fermer">✕</button></div>
+    <div class="tb-ap-c"><div class="tb-coffret ap n${t.larg} ${tbScanne(t) ? "scan" : ""}">${tbPlaque(t)}${t.rangees.map((r, ri) => `<section class="tb-rg"><div class="tb-rg-h"><b>${ri + 1}</b><span class="tb-rn">${esc(r.nom || "Rangée " + (ri + 1))}</span><span>${tbNb(tbPlein(r))} / ${t.larg}</span></div>${tbRailHTML(t, r, true)}</section>`).join("")}</div>
+      ${tbPhoto(t.id) ? `<p class="tb-titre" style="margin:14px 2px 8px">📷 Photo du tableau</p><img class="tb-ap-ph" src="${tbPhoto(t.id)}" alt="Photo du tableau">` : ""}</div>`;
+  document.body.appendChild(o); o.querySelector("[data-x]").onclick = () => o.remove();
+  const ph = o.querySelector(".tb-ap-ph"); if(ph) ph.onclick = () => tbPhotoVue(ph.src);
+}
+/* Liste des modules à poser : familles en menus déroulants, on coche (avec la quantité) puis « Ajouter » */
+function tbAjoutSheet(t, r, p0){
+  const ri = t.rangees.indexOf(r), qte = {};
+  const s = sheet(`<h3>Ajouter dans ${esc(tbRgNom(t, r))}${p0 ? ` <small style="font-weight:500;color:var(--muted)">· à partir de l'emplacement ${p0 / 2 + 1}</small>` : ""}</h3><p class="tb-reste" id="tbReste"></p>
+    ${TB_GROUPES.map((g, gi) => `<details class="cat" ${gi === 1 ? "open" : ""}><summary><span>${g}</span><span class="cat-n"></span></summary><div class="cat-body">${Object.entries(TB_TYPES).filter(([, v]) => v.g === g).map(([k, v]) =>
+      `<div class="tb-ch" data-k="${k}" style="--h:${TB_TEINTE[g]}"><button class="tb-ck" data-q="t"><span class="ck"></span><b>${esc(v.lib)}</b><small>${tbNb(v.w)} mod.</small></button>
+        ${k === "autre" ? "" : `<span class="tb-q"><button data-q="m" aria-label="Moins">−</button><i>0</i><button data-q="p" aria-label="Plus">+</button></span>`}</div>`).join("")}</div></details>`).join("")}
+    <div class="sheet-foot row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">Ajouter</button></div>`);
+  const pris = () => Object.entries(qte).reduce((a, [k, n]) => a + n * TB_TYPES[k].w, 0);
+  const maj = () => { const reste = t.larg - tbPlein(r) - pris(), n = Object.values(qte).reduce((a, b) => a + b, 0);
+    s.querySelector("#tbReste").textContent = reste > 0 ? `Place restante : ${tbNb(reste)} module${reste > 1 ? "s" : ""}` : "Rangée pleine";
+    s.querySelector('[data-s="ok"]').textContent = n ? `Ajouter (${n})` : "Ajouter";
+    s.querySelectorAll(".tb-ch").forEach(row => { const k = row.dataset.k, q = qte[k] || 0; row.classList.toggle("sel", q > 0);
+      row.querySelector(".ck").textContent = q > 0 ? "✓" : ""; const i = row.querySelector("i"); if(i) i.textContent = q;
+      row.classList.toggle("plein", !q && TB_TYPES[k].w > reste); });
+    s.querySelectorAll("details").forEach(d => { const c = [...d.querySelectorAll(".tb-ch")].reduce((a, row) => a + (qte[row.dataset.k] || 0), 0); d.querySelector(".cat-n").textContent = c ? c + " ✓" : ""; }); };
+  s.querySelectorAll("[data-q]").forEach(b => b.onclick = () => { const k = b.closest(".tb-ch").dataset.k, a = b.dataset.q, q = qte[k] || 0;
+    if(k === "autre"){ closeSheet(); tbAutreSheet(t, r, null, p0); return; }
+    const reste = t.larg - tbPlein(r) - pris(), w = TB_TYPES[k].w;
+    if(a === "m" || (a === "t" && q)){ if(a === "t") delete qte[k]; else if(q > 1) qte[k] = q - 1; else delete qte[k]; }
+    else if(w > reste){ toast("Plus assez de place dans la rangée"); return; }
+    else qte[k] = q + 1;
+    maj(); });
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  s.querySelector('[data-s="ok"]').onclick = () => { let pos = p0 || 0; Object.keys(TB_TYPES).forEach(k => { for(let n = 0; n < (qte[k] || 0); n++) pos = tbAjoute(t, r, {id: uid(), t: k, nom: ""}, pos); });
+    tbSave(t); closeSheet(); const y = window.scrollY; renderTableau(); window.scrollTo(0, y); };
+  maj();
+}
+function tbAutreSheet(t, r, m, p0){
+  const reste = t.larg - tbPlein(r) + (m ? tbW(m) : 0);
+  const s = sheet(`<h3>Autre module</h3>
+    <label class="f"><span>Désignation</span><input class="t" id="tbLib" value="${esc(m && m.lib || "")}" placeholder="Ex. Disjoncteur 6A, Gestionnaire…" autocomplete="off"></label>
+    <label class="f"><span>Largeur (en modules)</span><input class="t" id="tbLg" inputmode="decimal" value="${m ? tbNb(tbW(m)) : "1"}" autocomplete="off"></label>
+    <div class="row2"><button class="btn sec" data-s="no">Annuler</button><button class="btn" data-s="ok">${m ? "Enregistrer" : "Ajouter"}</button></div>`);
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  s.querySelector('[data-s="ok"]').onclick = () => { const lib = s.querySelector("#tbLib").value.trim(), w = Math.round(parseFloat(s.querySelector("#tbLg").value.replace(",", ".")) * 2) / 2;
+    if(!lib){ toast("Donne une désignation"); return; } if(!(w >= .5)){ toast("Largeur invalide"); return; }
+    if(w > reste){ toast("Pas assez de place dans la rangée"); return; }
+    if(m){ m.lib = lib; m.w = w; tbRange(r, t.larg * 2, m); } else tbAjoute(t, r, {id: uid(), t: "autre", lib, w, nom: ""}, p0);
+    tbSave(t); closeSheet(); renderTableau(); };
+}
+function tbModSheet(t, mid){
+  const {r, i, m} = tbRang(t, mid); if(!m) return;
+  let sym = m.sym || "";
+  const suivant = r.mods[i + 1] || ((t.rangees[t.rangees.indexOf(r) + 1] || {}).mods || [])[0];
+  const s = sheet(`<div class="tb-pop-h" style="--h:${TB_TEINTE[tbType(m).g] || 260}"><span class="tb-pop-b">${esc(tbCourt(m) || "—")}</span>
+      <div><b>${esc(tbLib(m))}</b><small>${esc(r.nom || "Rangée " + (t.rangees.indexOf(r) + 1))} · emplacement ${tbPos(r, i)}</small></div>
+      <button class="tb-pop-x" data-s="no" aria-label="Fermer">✕</button></div>
+    <label class="f"><span>Nom du circuit</span><input class="t" id="tbMn" value="${esc(m.nom || "")}" placeholder="Ex. Four" autocomplete="off"></label>
+    <label class="f"><span>Type</span><select class="t" id="tbMt">${TB_GROUPES.map(g => `<optgroup label="${g}">${Object.entries(TB_TYPES).filter(([, v]) => v.g === g).map(([k, v]) =>
+      `<option value="${k}" ${k === m.t ? "selected" : ""}>${esc(v.lib)}</option>`).join("")}</optgroup>`).join("")}</select></label>
+    <div id="tbMa" ${m.t === "autre" ? "" : "hidden"}><label class="f"><span>Désignation</span><input class="t" id="tbLib" value="${esc(m.lib || "")}" placeholder="Ex. Disjoncteur 6A" autocomplete="off"></label>
+      <label class="f"><span>Largeur (en modules)</span><input class="t" id="tbLg" inputmode="decimal" value="${tbNb(tbW(m))}" autocomplete="off"></label></div>
+    <div class="f"><span>Symbole <small>(sur la bande imprimée)</small></span><div class="tb-syms">
+      <button class="chip" data-y="">Auto</button>${Object.entries(TB_SYM).map(([k, v]) => `<button class="chip" data-y="${k}" title="${v[0]}" aria-label="${v[0]}">${tbIco(k)}</button>`).join("")}<button class="chip" data-y="aucun">Aucun</button></div></div>
+    ${t.rangees.length > 1 ? `<label class="f"><span>Rangée</span><select class="t" id="tbMr">${t.rangees.map((x, k) => `<option value="${x.id}" ${x === r ? "selected" : ""}>${k + 1}${x.nom ? " · " + esc(x.nom) : ""}</option>`).join("")}</select></label>` : ""}
+    <div class="row2" style="margin-top:10px"><button class="btn sec danger-t" data-s="del" style="flex:0 0 auto;width:auto;padding:0 14px">🗑</button>
+      <button class="btn sec" data-s="ok">OK</button>${suivant ? `<button class="btn" data-s="suiv">Suivant ›</button>` : ""}</div>`);
+  s.classList.add("pop");
+  const majSym = () => s.querySelectorAll("[data-y]").forEach(b => b.classList.toggle("on", b.dataset.y === sym));
+  s.querySelectorAll("[data-y]").forEach(b => b.onclick = () => { sym = b.dataset.y; majSym();
+    // La vignette choisie préremplit le nom, tant qu'il est vide ou qu'il vient d'une vignette
+    const n = s.querySelector("#tbMn"), v = n.value.trim(); if(TB_SYM[sym] && (!v || Object.values(TB_SYM).some(x => x[0] === v))) n.value = TB_SYM[sym][0]; }); majSym();
+  const fin = () => { tbSave(t); closeSheet(); const y = window.scrollY; renderTableau(); window.scrollTo(0, y); };
+  s.querySelector("#tbMt").onchange = e => { s.querySelector("#tbMa").hidden = e.target.value !== "autre"; };
+  s.querySelector('[data-s="no"]').onclick = closeSheet;
+  s.querySelector('[data-s="del"]').onclick = () => { r.mods.splice(i, 1); fin(); };
+  const valide = () => {
+    const ty = s.querySelector("#tbMt").value, sel = s.querySelector("#tbMr"), cible = sel ? t.rangees.find(x => x.id === sel.value) : r;
+    let w = TB_TYPES[ty].w, lib = "";
+    if(ty === "autre"){ lib = s.querySelector("#tbLib").value.trim(); w = Math.round(parseFloat(s.querySelector("#tbLg").value.replace(",", ".")) * 2) / 2;
+      if(!lib){ toast("Donne une désignation"); return false; } if(!(w >= .5)){ toast("Largeur invalide"); return false; } }
+    const place = t.larg - tbPlein(cible) + (cible === r ? tbW(m) : 0);
+    if(w > place){ toast("Pas assez de place dans cette rangée"); return false; }
+    m.nom = s.querySelector("#tbMn").value.trim(); m.t = ty; if(ty === "autre"){ m.lib = lib; m.w = w; } else { delete m.lib; delete m.w; }
+    if(sym) m.sym = sym; else delete m.sym;
+    if(cible !== r){ r.mods.splice(i, 1); tbAjoute(t, cible, m, 0); } else tbRange(r, t.larg * 2, m);
+    return true; };
+  s.querySelector('[data-s="ok"]').onclick = () => { if(valide()) fin(); };
+  const sv = s.querySelector('[data-s="suiv"]'); if(sv) sv.onclick = () => { if(valide()){ fin(); tbModSheet(t, suivant.id); } };
+  s.querySelector("#tbMn").addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); e.stopImmediatePropagation(); (sv || s.querySelector('[data-s="ok"]')).click(); } });
+}
+
+/* Glisser un module avec le doigt : il se pose où on le lâche (les emplacements peuvent rester libres) */
+const tbDrag = {};
+// Position visée : sur un emplacement entier, ou collée à un voisin décalé d'un demi-module
+function tbAimant(r, m, brut, L){ const w2 = tbW2(m); let p = Math.round(brut / 2) * 2;
+  r.mods.forEach(x => { if(x === m) return; for(const c of [x.p + tbW2(x), x.p - w2]) if(c % 2 && Math.abs(brut - c) <= .9) p = c; });
+  return Math.max(0, Math.min(L - w2, p)); }
+document.addEventListener("pointerdown", e => { const el = e.target.closest && e.target.closest("button.tb-mod"); if(!el || view.name !== "tableau") return;
+  Object.assign(tbDrag, {el, x: e.clientX, y: e.clientY, on: false, id: e.pointerId, p: null, g: null}); });
+document.addEventListener("pointermove", e => { const d = tbDrag; if(!d.el || e.pointerId !== d.id) return;
+  const dx = e.clientX - d.x, dy = e.clientY - d.y;
+  if(!d.on){ if(Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy)) return;
+    const t = tbCur(), o = t ? tbRang(t, d.el.dataset.mid) : {}; if(!o.m){ d.el = null; return; }
+    Object.assign(d, {on: true, t, r: o.r, m: o.m, cell: (d.el.offsetWidth + 2) / tbW2(o.m)});
+    d.g = document.createElement("div"); d.g.className = "tb-cible"; d.el.parentNode.appendChild(d.g);
+    d.el.classList.add("drag"); try{ d.el.setPointerCapture(d.id); }catch(_){} }
+  e.preventDefault(); d.el.style.transform = `translateX(${dx}px) scale(1.04)`;
+  d.p = tbAimant(d.r, d.m, d.m.p + dx / d.cell, d.t.larg * 2);
+  d.g.style.gridColumn = `${d.p + 1} / span ${tbW2(d.m)}`; d.g.classList.toggle("occ", !tbLibre(d.r, d.p, tbW2(d.m), d.t.larg * 2, d.m)); });
+function tbDragFin(e){ const d = tbDrag; if(!d.el || (e && e.pointerId !== d.id)) return;
+  const on = d.on, p = d.p; d.el = null; d.on = false;
+  if(!on) return; d.fini = Date.now();
+  if(d.m && p !== null && p !== d.m.p && e.type !== "pointercancel"){ d.m.p = p; tbRange(d.r, d.t.larg * 2, d.m); tbSave(d.t); }
+  const y = window.scrollY, sc = [...document.querySelectorAll(".tb-scroll")].map(x => x.scrollLeft); renderTableau(); window.scrollTo(0, y);
+  document.querySelectorAll(".tb-scroll").forEach((x, k) => { x.scrollLeft = sc[k] || 0; }); }
+document.addEventListener("pointerup", tbDragFin); document.addEventListener("pointercancel", tbDragFin);
+
+/* ---- Bande de repérage à imprimer (PDF A4 paysage, à l'échelle 1) ---- */
+const tbReg = t => Object.assign({pas: 17.5, haut: 16, sym: true}, t.bande || {});
+function tbNomFichier(t){ return ("Bande tableau " + (t.chantier || "chantier")).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9 _-]/g, "").replace(/\s+/g, " ").trim().slice(0, 70) + ".pdf"; }
+async function tbBandePDF(t){
+  const lib = await chargerJsPDF(), doc = new lib.jsPDF({unit: "mm", format: "a4", orientation: "landscape"});
+  const {pas, haut, sym} = tbReg(t), PW = 297, PH = 210, M = 10, W = PW - 2 * M; let y = M;
+  const pol = (s, st, c) => { doc.setFont("helvetica", st || "normal"); doc.setFontSize(s); doc.setTextColor(...(c || [20, 20, 25])); };
+  pol(12, "bold"); doc.text(pdfTxt("Bande de repérage — " + t.chantier), M, y + 4);
+  pol(8.5, "normal", [110, 110, 120]); doc.text(pdfTxt(`Imprimer à 100 % (taille réelle, sans « ajuster à la page »). 1 module = ${tbNb(pas)} mm (pas standard) · hauteur ${tbNb(haut)} mm. Découper sur le cadre.`), M, y + 9);
+  y += 15;
+  // Règle de contrôle : doit mesurer 100 mm une fois imprimée
+  doc.setDrawColor(120, 120, 130); doc.setLineWidth(.2); doc.line(M, y, M + 100, y); for(let i = 0; i <= 10; i++) doc.line(M + i * 10, y - (i % 5 ? 1 : 2), M + i * 10, y);
+  pol(7.5, "normal", [110, 110, 120]); doc.text("Contrôle : ce trait doit mesurer 100 mm", M + 103, y + .8); y += 8;
+  tbNorm(t);
+  const ics = {}; if(sym) for(const r of t.rangees) for(const m of r.mods){ const k = tbSym(m); if(k && !(k in ics)) ics[k] = await tbIcoImg(k); }
+  const maxH = Math.floor(W / pas) * 2, L = t.larg * 2;   // en demi-modules
+  t.rangees.forEach((r, ri) => {
+    if(!r.mods.length) return;
+    // La bande couvre toute la rangée (emplacements libres compris). Trop large pour la feuille : coupée en morceaux, jamais au milieu d'un module
+    const coupes = [0]; let a = 0;
+    while(L - a > maxH){ let b = a + maxH; const x = r.mods.find(m => m.p < b && m.p + tbW2(m) > b); if(x && x.p > a) b = x.p; coupes.push(b); a = b; }
+    coupes.push(L);
+    for(let k = 0; k < coupes.length - 1; k++){ const a = coupes[k], b = coupes[k + 1], ms = r.mods.filter(m => m.p >= a && m.p < b); if(!ms.length) continue;
+      if(y + haut + 10 > PH - M){ doc.addPage(); y = M; }
+      pol(8.5, "bold", [90, 90, 100]); doc.text(pdfTxt(`Rangée ${ri + 1}` + (r.nom ? " — " + r.nom : "") + (coupes.length > 2 ? ` (${k + 1}/${coupes.length - 1})` : "")), M, y + 3); y += 5;
+      const X = h => M + (h - a) * pas / 2;
+      // repères légers des emplacements libres
+      doc.setDrawColor(205, 205, 212); doc.setLineWidth(.1);
+      for(let h = Math.ceil(a / 2) * 2; h < b; h += 2) if(h > a && !r.mods.some(m => m.p < h && m.p + tbW2(m) > h)) doc.line(X(h), y, X(h), y + haut);
+      ms.forEach(m => { const x = X(m.p), w = tbW2(m) * pas / 2, nom = pdfTxt(m.nom || "");
+        doc.setDrawColor(120, 120, 130); doc.setLineWidth(.15); doc.line(x, y, x, y + haut); doc.line(x + w, y, x + w, y + haut);
+        const pk = sym && ics[tbSym(m)] ? tbSym(m) : "", ap = pk ? Math.min(2.8, haut * .19, w / 2 - .8) : 0, hp = pk ? ap * 2 + 1.4 : 0;   // place du pictogramme en haut
+        if(pk) doc.addImage(ics[pk], "PNG", x + w / 2 - ap, y + .9, ap * 2, ap * 2, "ico-" + pk, "FAST");
+        if(nom){ const ht = haut - hp - 1.4; let fs = 9, lignes; const coupe = () => nom.split(" ").some(mot => doc.getTextWidth(mot) > w - 1.4);
+          for(;;){ pol(fs, "bold"); lignes = doc.splitTextToSize(nom, w - 1.4); if(fs <= 5 || (lignes.length * fs * .3528 * 1.12 <= ht && !coupe())) break; fs -= .5; }
+          const lh = fs * .3528 * 1.12, y0 = y + hp + (haut - hp) / 2 - (lignes.length - 1) * lh / 2 + fs * .3528 * .35;
+          lignes.forEach((l, q) => doc.text(l, x + w / 2, y0 + q * lh, {align: "center"})); } });
+      doc.setDrawColor(20, 20, 25); doc.setLineWidth(.3); doc.rect(M, y, (b - a) * pas / 2, haut);
+      y += haut + 7; }
+  });
+  return doc.output("blob");
+}
+function tbBandeSheet(t){
+  const g = tbReg(t); let pret = null, jeton = 0;
+  const s = sheet(`<h3>Bande à imprimer</h3>
+    <p style="font-size:13px;color:var(--muted);margin:-4px 0 10px">Une bande par rangée, à l'échelle réelle, avec le nom de chaque circuit. Imprime à 100 %, découpe et glisse-la dans le porte-étiquettes.</p>
+    <div class="row2"><label class="f" style="flex:1"><span>Largeur d'un module</span><span class="cr-in"><input class="t" id="tbPas" inputmode="decimal" value="${tbNb(g.pas)}" autocomplete="off">mm</span></label>
+      <label class="f" style="flex:1"><span>Hauteur de la bande</span><span class="cr-in"><input class="t" id="tbHaut" inputmode="decimal" value="${tbNb(g.haut)}" autocomplete="off">mm</span></label></div>
+    <button class="chip ${g.sym ? "on" : ""}" id="tbSymOn" style="margin:2px 0 12px">${g.sym ? "☑" : "☐"} Symboles (prise, éclairage, four…)</button>
+    <div class="row2"><button class="btn sec" data-s="dl">⬇ Télécharger</button><button class="btn" data-s="sh">Partager / imprimer</button></div>`);
+  const prep = () => { const pas = parseFloat(s.querySelector("#tbPas").value.replace(",", ".")), haut = parseFloat(s.querySelector("#tbHaut").value.replace(",", "."));
+    if(!(pas >= 10 && pas <= 30) || !(haut >= 5 && haut <= 40)){ pret = null; return; }
+    t.bande = {pas, haut, sym: g.sym}; tbSave(t); const j = ++jeton; pret = null; tbBandePDF(t).then(b => { if(j === jeton) pret = b; }, () => {}); };
+  s.querySelectorAll("#tbPas, #tbHaut").forEach(e => e.addEventListener("input", prep));
+  s.querySelector("#tbSymOn").onclick = e => { g.sym = !g.sym; e.currentTarget.classList.toggle("on", g.sym); e.currentTarget.textContent = (g.sym ? "☑" : "☐") + " Symboles (prise, éclairage, four…)"; prep(); };
+  prep();
+  const sortir = async mode => { if(!pret){ toast("Préparation du PDF… réessaie dans un instant"); return; }
+    const blob = pret, nom = tbNomFichier(t), dansCadre = window.top !== window.self;
+    try{
+      if(mode === "sh" && !dansCadre && navigator.share && window.File){ const f = new File([blob], nom, {type: "application/pdf"});
+        if(!navigator.canShare || navigator.canShare({files: [f]})){ try{ await navigator.share({files: [f], title: nom.replace(/\.pdf$/, "")}); }catch(e){ if(!e || e.name !== "AbortError") telechargerBlob(blob, nom); } return; } }
+      if(dansCadre && window.claude && claude.use){ const dl = await claude.use("downloads");
+        if(dl){ try{ await dl.save({filename: nom, data: blob}); }catch(e){ if(!e || e.code !== "declined") toast("Téléchargement impossible ici"); } return; } }
+      telechargerBlob(blob, nom);
+    }catch(e){ toast("Erreur pendant la création du PDF"); } };
+  s.querySelector('[data-s="dl"]').onclick = () => sortir("dl");
+  s.querySelector('[data-s="sh"]').onclick = () => sortir("sh");
+}
+
+/* ---- Scan d'un tableau existant : photo → rangées et modules proposés, à corriger ensuite ---- */
+const tbPhKey = id => TB_KEY + "-ph-" + id;
+function tbPhoto(id){ try{ return localStorage.getItem(tbPhKey(id)) || ""; }catch(e){ return ""; } }
+function tbToile(src, max){ const k = Math.min(1, max / Math.max(src.width, src.height)), c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(src.width * k)); c.height = Math.max(1, Math.round(src.height * k)); c.getContext("2d").drawImage(src, 0, 0, c.width, c.height); return c; }
+function tbImage(file){ return new Promise((ok, ko) => { const u = URL.createObjectURL(file), im = new Image();
+  im.onload = () => { URL.revokeObjectURL(u); ok(im); }; im.onerror = () => { URL.revokeObjectURL(u); ko(new Error("image")); }; im.src = u; }); }
+function tbScanPrompt(){ return `This photo shows an electrical distribution panel in France (tableau électrique, modular devices clipped on DIN rails).
+List every row (rail) from top to bottom and, in each row, every modular device from left to right.
+
+Reply with ONLY one JSON object, no other text:
+{"larg": 13, "rangees": [{"mods": [{"t": "id40ac", "p": 0, "nom": ""}, {"t": "d16", "p": 2, "nom": "Prises cuisine"}]}], "note": "..."}
+
+- "larg": capacity of one row in modules (1 module = 17.5 mm wide, the width of a single-pole breaker). Choose 13, 18 or 24, the closest to what the enclosure holds.
+- "t": one of these type keys (label, width in modules):
+${Object.entries(TB_TYPES).filter(([k]) => k !== "vide").map(([k, v]) => `  ${k} = ${v.lib}${v.s ? " " + v.s : ""} (${v.w})`).join("\n")}
+  Use "autre" with "lib" (short French designation) and "w" (width in modules) for anything not in the list.
+- "p": position of the left edge of the device, counted in modules from the left end of the row (0 = first position; 0.5 steps allowed). Leave gaps where positions are empty or covered by blanking plates: do not list blanks.
+- "nom": the circuit label written on, above or under the device (handwritten or printed strip), copied IN FULL exactly as written, every word, never shortened or summarised even if it is long (e.g. "Prises cuisine plan de travail + hotte"). "" if there is no label or it cannot be read.
+- A residual-current switch or main switch is usually 2 modules wide with a test button (40 A or 63 A, type AC or A). A breaker is 1 module with its rating printed (C10, C16, C20, C32 or 10 A, 16 A, 20 A, 32 A). If a rating cannot be read, choose the most likely one.
+- "note": one or two short sentences IN FRENCH saying what you could not read or are unsure about ("" if nothing).
+If the photo does not show an electrical panel, reply {"larg": 13, "rangees": [], "note": "<why, in French>"}.`; }
+// Résultat de la lecture → rangées et modules, en ne gardant que ce qui est valide
+function tbScanApplique(t, res){
+  res = res && typeof res === "object" ? res : {}; let maxFin = 0; t.rangees = [];
+  (Array.isArray(res.rangees) ? res.rangees : []).slice(0, 10).forEach(rg => { const r = {id: uid(), mods: []}; let fin = 0;
+    (Array.isArray(rg && rg.mods) ? rg.mods : []).slice(0, 48).forEach(x => { if(!x || typeof x !== "object") return;
+      const k = TB_TYPES[x.t] && x.t !== "vide" ? x.t : "autre", m = {id: uid(), t: k, nom: String(x.nom || "").replace(/\s+/g, " ").trim().slice(0, 200)};
+      if(k === "autre"){ m.lib = String(x.lib || "Module").trim().slice(0, 30) || "Module"; m.w = Math.max(.5, Math.min(8, Math.round((+x.w || 1) * 2) / 2)); }
+      let p = Math.round(+x.p * 2); if(!(p >= fin)) p = fin; if(fin + tbW2(m) > 48) return; m.p = Math.min(p, 48 - tbW2(m)); fin = m.p + tbW2(m); r.mods.push(m); });
+    maxFin = Math.max(maxFin, fin); t.rangees.push(r); });
+  const dit = [13, 18, 24].includes(+res.larg) ? +res.larg : 13;
+  t.larg = Math.max(dit, [13, 18, 24].find(n => n * 2 >= maxFin) || 24); t.note = String(res.note || "").trim().slice(0, 300); tbNorm(t);
+}
+function tbScanSheet(){
+  const s = sheet(`<h3>📷 Scan d'un tableau</h3>
+    <p style="font-size:13.5px;color:var(--muted);margin:-4px 0 10px">Prends le tableau bien en face, porte ouverte, avec toutes les rangées dans le cadre et assez de lumière. L'appli compte les modules et propose leur type. Tu corriges ensuite comme pour un nouveau tableau.</p>
+    <label class="f"><span>Nom du chantier</span><input class="t" id="tbNom" placeholder="Ex. Dupont — cuisine" autocomplete="off"></label>
+    <div class="row2"><label class="btn tb-file"><input type="file" accept="image/*" capture="environment" id="tbCam">📷 Prendre la photo</label>
+      <label class="btn sec tb-file"><input type="file" accept="image/*" id="tbGal">🖼 Choisir une photo</label></div>`);
+  s.querySelectorAll("input[type=file]").forEach(i => i.onchange = () => { const f = i.files && i.files[0]; if(!f) return;
+    tbScan(f, s.querySelector("#tbNom").value.trim() || "Tableau du " + new Date().toLocaleDateString("fr-FR")); });
+}
+async function tbScan(file, nom){
+  let grand; try{ grand = tbToile(await tbImage(file), 1600); }catch(e){ toast("Photo illisible, réessaie"); return; }
+  const mini = tbToile(grand, 1000).toDataURL("image/jpeg", .6);
+  const t = {id: uid(), kind: "tableau", origine: "scan", chantier: nom, cree: Date.now(), maj: Date.now(), larg: 13, rangees: []};
+  const finir = () => { tabs.push(t); try{ localStorage.setItem(tbPhKey(t.id), mini); }catch(e){} tbSave(t); closeSheet(); go("tableau", {tid: t.id}); };
+  const aLaMain = msg => { t.rangees = [{id: uid(), mods: []}]; finir();
+    const s = sheet(`<h3>Lecture automatique indisponible</h3><p style="font-size:14px;margin:0 0 12px">${msg}</p><p style="font-size:14px;color:var(--muted);margin:0 0 14px">La photo est gardée en haut du tableau : tu peux le recopier en l'ayant sous les yeux.</p><button class="btn" data-s="ok">Compris</button>`);
+    s.querySelector('[data-s="ok"]').onclick = closeSheet; };
+  let sample = null, lim = null;
+  try{ if(window.claude && claude.use) sample = await claude.use("sample"); if(sample) lim = await sample.limits(); }catch(e){}
+  if(!sample || !lim || !lim.images){ aLaMain("Cette version de l'appli ne peut pas encore lire la photo toute seule."); return; }
+  const ctl = new AbortController();
+  const s = sheet(`<h3>Lecture de la photo…</h3><div class="tb-scan-img"><img src="${mini}" alt=""><i></i></div>
+    <p style="font-size:13.5px;color:var(--muted);margin:10px 0 12px">Je compte les rangées et les modules. Ça prend en général moins d'une minute.</p><button class="btn sec" data-s="no">Annuler</button>`);
+  s.querySelector('[data-s="no"]').onclick = () => { ctl.abort(); closeSheet(); };
+  try{
+    const blob = await new Promise(r => grand.toBlob(r, "image/jpeg", .85));
+    const res = await sample.json(tbScanPrompt(), {images: [blob], signal: ctl.signal, cache: false});
+    tbScanApplique(t, res);
+    const nm = t.rangees.reduce((a, r) => a + r.mods.length, 0);
+    if(!nm){ aLaMain(t.note ? esc(t.note) : "Je n'ai reconnu aucun module sur cette photo."); return; }
+    t.scan = true; finir(); toast(`${t.rangees.length} rangée${t.rangees.length > 1 ? "s" : ""} et ${nm} module${nm > 1 ? "s" : ""} trouvés`);
+  }catch(e){ const c = e && e.code; if(c === "cancelled") return;
+    aLaMain(c === "not_granted" ? "Tu n'as pas autorisé l'analyse de la photo." : c === "rate_limited" ? "Trop de demandes pour l'instant, réessaie un peu plus tard."
+      : c === "image_rejected" ? "La photo n'a pas été acceptée (trop lourde ou format inconnu)." : c === "refused" ? "La photo n'a pas pu être analysée." : "L'analyse de la photo n'a pas abouti."); }
+}
+function tbPhotoVue(src){ const o = document.createElement("div"); o.className = "tb-ap tb-phv";
+  o.innerHTML = `<div class="tb-ap-h"><div><b>Photo du tableau</b><small>Touche la photo pour zoomer</small></div><button data-x aria-label="Fermer">✕</button></div><div class="tb-ap-c"><img src="${src}" alt=""></div>`;
+  document.body.appendChild(o); o.querySelector("[data-x]").onclick = () => o.remove(); o.querySelector("img").onclick = e => e.currentTarget.classList.toggle("zoom"); }
+
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("[data-tb]"); if(!b) return;
+  const a = b.dataset.tb, t = tbCur();
+  if(a === "liste"){ go("tableaux"); return; }
+  if(a === "nouveau"){ tbNomSheet(); return; }
+  if(a === "scan"){ tbScanSheet(); return; }
+  if(a === "ouvrir"){ go("tableau", {tid: b.dataset.id}); return; }
+  if(a === "suppr"){ const x = tabs.find(v => v.id === b.dataset.id); if(!x) return;
+    confirmSheet(`Supprimer le tableau « ${esc(x.chantier)} » ?`, "Supprimer", () => { tabs = tabs.filter(v => v !== x); tbSave(); cloudSave(x.id); try{ localStorage.removeItem(tbPhKey(x.id)); }catch(_){} closeSheet(); render(); }); return; }
+  if(!t) return;
+  const rg = b.closest("[data-rid]"), r = rg && t.rangees.find(v => v.id === rg.dataset.rid);
+  if(a === "renommer") tbNomSheet(t);
+  else if(a === "rangee"){ t.rangees.push({id: uid(), mods: []}); tbSave(t); renderTableau(); window.scrollTo(0, document.body.scrollHeight); }
+  else if(a === "larg") tbLargSheet(t);
+  else if(a === "nomRg" && r) tbRgSheet(t, r);
+  else if(a === "ajout" && r) tbAjoutSheet(t, r, +b.dataset.p || 0);
+  else if(a === "apercu") tbApercu(t);
+  else if(a === "photo") tbPhotoVue(b.src);
+  else if(a === "scanOk"){ delete t.scan; delete t.note; tbSave(t); renderTableau(); }
+  else if(a === "supprRg" && r){ const suppr = () => { t.rangees = t.rangees.filter(v => v !== r); tbSave(t); closeSheet(); renderTableau(); };
+    r.mods.length ? confirmSheet(`Supprimer la rangée et ses ${r.mods.length} module${r.mods.length > 1 ? "s" : ""} ?`, "Supprimer", suppr) : suppr(); }
+  else if(a === "mod"){ if(tbDrag.fini && Date.now() - tbDrag.fini < 400) return; tbModSheet(t, b.dataset.mid); }
+  else if(a === "bande") tbBandeSheet(t);
+});
+/* =====================================================================
+   Outils : listes de tâches, codes, documentation technique
+   ===================================================================== */
+const LS_KEY = KEY + "-listes", CD_KEY = KEY + "-codes";
+function oLoad(k){ try{ const a = JSON.parse(localStorage.getItem(k)); if(Array.isArray(a)) return a; }catch(e){} return []; }
+function lsSave(l){ if(l){ l.maj = Date.now(); cloudSave(l.id); } try{ localStorage.setItem(LS_KEY, JSON.stringify(listes)); }catch(e){} }
+// Les codes restent sur le téléphone : ils ne sont jamais envoyés ailleurs
+function cdSave(){ try{ localStorage.setItem(CD_KEY, JSON.stringify(codes)); }catch(e){ toast("Enregistrement impossible"); } }
+const lsCur = () => listes.find(l => l.id === view.lid);
+
+/* ---- Listes de tâches ---- */
+function renderListes(){
+  const tri = [...listes].sort((a, b) => (b.maj || 0) - (a.maj || 0));
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-act="accueil" aria-label="Retour">‹</button><h1>Listes de tâches</h1></header>
+  <main>
+    ${tri.length ? tri.map(l => { const n = l.lignes.filter(x => x.txt).length, f = l.lignes.filter(x => x.txt && x.ok).length;
+      return `<div class="note" style="--bar:#5fd38d"><button class="note-main" data-o="liste" data-id="${l.id}" style="flex:1;text-align:left;padding:12px 14px;min-width:0">
+        <b class="note-client" style="display:block">${esc(l.titre || "Liste sans titre")}</b>
+        <span class="note-adr">${n ? `${f} / ${n} fait${f > 1 ? "s" : ""}` : "Liste vide"} · ${ilya(l.maj || l.cree)}</span></button>
+        <button class="note-menu" data-o="listeSuppr" data-id="${l.id}" aria-label="Supprimer">🗑</button></div>`; }).join("")
+    : `<div class="vide"><div class="vide-ico">✅</div><b>Aucune liste</b><p>Crée une liste (matériel à prendre, choses à finir sur un chantier…) et coche les lignes au fur et à mesure.</p></div>`}
+  </main>
+  <div class="bottom"><button class="btn" data-o="listeNew">＋ Nouvelle liste</button></div>`;
+}
+function lsLigneHTML(x){ return `<div class="ls-l ${x.ok ? "ok" : ""}" data-lid="${x.id}"><button class="ls-c" data-o="lsCoche" aria-label="Cocher">${x.ok ? "✓" : ""}</button>
+  <textarea class="ls-t" rows="1" data-lst="${x.id}" placeholder="À faire…" autocomplete="off">${esc(x.txt || "")}</textarea><button class="ls-x" data-o="lsSuppr" aria-label="Supprimer la ligne">✕</button></div>`; }
+function lsHaut(el){ el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; }
+function renderListe(){
+  const l = lsCur(); if(!l){ go("listes"); return; }
+  const f = l.lignes.filter(x => x.ok).length;
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-o="listes" aria-label="Retour">‹</button><h1>Liste</h1>
+    ${f ? `<button data-o="lsVider" aria-label="Retirer les lignes cochées" style="font-size:13px;white-space:nowrap">Retirer ✓</button>` : ""}</header>
+  <main class="ls">
+    <input class="ls-titre" id="lsTitre" value="${esc(l.titre || "")}" placeholder="Titre de la liste" autocomplete="off">
+    <div id="lsLignes">${l.lignes.map(lsLigneHTML).join("")}</div>
+    <button class="ls-add" data-o="lsAdd"><span>＋</span> Ajouter une ligne</button>
+  </main>`;
+  document.querySelectorAll(".ls-t").forEach(lsHaut);
+}
+function lsAjoute(l, apres, focus){ const x = {id: uid(), txt: "", ok: false}, i = apres ? l.lignes.findIndex(v => v.id === apres) : -1;
+  if(i >= 0) l.lignes.splice(i + 1, 0, x); else l.lignes.push(x); lsSave(l);
+  const box = document.getElementById("lsLignes"); if(!box) return;
+  const tmp = document.createElement("div"); tmp.innerHTML = lsLigneHTML(x); const el = tmp.firstChild, ref = i >= 0 ? box.children[i] : null;
+  if(ref) ref.after(el); else box.appendChild(el);
+  if(focus !== false) el.querySelector("textarea").focus(); }
+document.addEventListener("input", e => { const el = e.target; if(view.name !== "liste") return; const l = lsCur(); if(!l) return;
+  if(el.id === "lsTitre"){ l.titre = el.value; lsSave(l); }
+  else if(el.dataset && el.dataset.lst){ const x = l.lignes.find(v => v.id === el.dataset.lst); if(x){ x.txt = el.value.replace(/\n/g, " "); lsSave(l); } lsHaut(el); } });
+document.addEventListener("keydown", e => { const el = e.target; if(view.name !== "liste" || e.key !== "Enter") return; const l = lsCur(); if(!l) return;
+  if(el.id === "lsTitre"){ e.preventDefault(); e.stopImmediatePropagation(); const p = document.querySelector(".ls-t"); p ? p.focus() : lsAjoute(l); }
+  else if(el.dataset && el.dataset.lst){ e.preventDefault(); e.stopImmediatePropagation(); if(el.value.trim()) lsAjoute(l, el.dataset.lst); } }, true);
+
+/* ---- Codes des résidences et chantiers ---- */
+function renderCodes(){
+  const q = (ui.cdQ || "").toLowerCase(), tri = [...codes].sort((a, b) => (a.lieu || "").localeCompare(b.lieu || "", "fr"))
+    .filter(c => !q || [c.lieu, c.adresse, c.note, ...(c.lignes || []).map(x => x.lib)].join(" ").toLowerCase().includes(q));
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-act="accueil" aria-label="Retour">‹</button><h1>Codes</h1></header>
+  <main>
+    ${codes.length ? `<input class="t" id="cdQ" type="search" placeholder="🔍 Chercher une résidence, une rue…" value="${esc(ui.cdQ || "")}" autocomplete="off" style="margin-bottom:10px">` : ""}
+    <div id="cdListe">${cdListeHTML(tri)}</div>
+    <p class="tb-aide" style="margin-top:14px">🔒 Les codes sont gardés sur ce téléphone uniquement. Ils ne sont envoyés nulle part.</p>
+  </main>
+  <div class="bottom"><button class="btn" data-o="codeNew">＋ Ajouter une adresse</button></div>`;
+}
+function cdListeHTML(tri){ return tri.length ? tri.map(c => `<div class="cd" data-cid="${c.id}">
+    <div class="cd-h"><div><b>${esc(c.lieu || "Sans nom")}</b>${c.adresse ? `<small>📍 ${esc(c.adresse)}</small>` : ""}</div><button data-o="codeEdit" aria-label="Modifier">✎</button></div>
+    ${(c.lignes || []).filter(x => x.val).map((x, k) => `<button class="cd-l" data-o="codeCopie" data-k="${k}"><span>${esc(x.lib || "Code")}</span><b>${esc(x.val)}</b></button>`).join("")}
+    ${c.note ? `<p class="cd-n">${esc(c.note)}</p>` : ""}</div>`).join("")
+  : codes.length ? `<div class="empty">Aucun résultat</div>`
+  : `<div class="vide"><div class="vide-ico">🔑</div><b>Aucun code enregistré</b><p>Ajoute une résidence ou un chantier avec ses digicodes, codes de boîte à clés ou mots de passe. Tu les retrouves ici, même sans réseau.</p></div>`; }
+function codeSheet(c){
+  const lignes = c ? JSON.parse(JSON.stringify(c.lignes || [])) : []; if(!lignes.length) lignes.push({lib: "Digicode", val: ""});
+  const s = sheet(`<h3>${c ? "Modifier l'adresse" : "Nouvelle adresse"}</h3>
+    <label class="f"><span>Résidence ou chantier</span><input class="t" id="cdLieu" value="${esc(c ? c.lieu : "")}" placeholder="Ex. Résidence Les Pins" autocomplete="off"></label>
+    <label class="f"><span>Adresse</span><input class="t" id="cdAdr" value="${esc(c ? c.adresse || "" : "")}" placeholder="Ex. 12 rue Paradis, Marseille" autocomplete="off"></label>
+    <div class="f"><span style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px">Codes et mots de passe</span><div id="cdLs"></div>
+      <button class="chip" data-s="plus" style="margin-top:4px">＋ Ajouter un code</button></div>
+    <label class="f"><span>Note</span><textarea class="t" id="cdNote" placeholder="Ex. gardien le matin, clé chez la voisine…">${esc(c ? c.note || "" : "")}</textarea></label>
+    <div class="row2">${c ? `<button class="btn sec danger-t" data-s="del" style="flex:0 0 auto;width:auto;padding:0 14px">🗑</button>` : `<button class="btn sec" data-s="no">Annuler</button>`}<button class="btn" data-s="ok">Enregistrer</button></div>`);
+  const box = s.querySelector("#cdLs");
+  const lire = () => [...box.children].map(r => ({lib: r.children[0].value.trim(), val: r.children[1].value.trim()}));
+  const dessine = () => { box.innerHTML = lignes.map(x => `<div class="cd-e"><input class="t" value="${esc(x.lib)}" placeholder="Quoi (portail, hall…)" autocomplete="off"><input class="t" value="${esc(x.val)}" placeholder="Code" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"><button aria-label="Retirer">✕</button></div>`).join("");
+    [...box.children].forEach((r, k) => r.children[2].onclick = () => { const v = lire(); v.splice(k, 1); lignes.length = 0; lignes.push(...v); dessine(); }); };
+  dessine();
+  s.querySelector('[data-s="plus"]').onclick = () => { const v = lire(); lignes.length = 0; lignes.push(...v, {lib: "", val: ""}); dessine(); box.lastChild.children[0].focus(); };
+  const no = s.querySelector('[data-s="no"]'); if(no) no.onclick = closeSheet;
+  const del = s.querySelector('[data-s="del"]'); if(del) del.onclick = () => confirmSheet(`Supprimer « ${esc(c.lieu)} » et ses codes ?`, "Supprimer", () => { codes = codes.filter(x => x !== c); cdSave(); closeSheet(); render(); });
+  s.querySelector('[data-s="ok"]').onclick = () => { const lieu = s.querySelector("#cdLieu").value.trim(); if(!lieu){ toast("Donne un nom à l'adresse"); return; }
+    const o = c || {id: uid()}; Object.assign(o, {lieu, adresse: s.querySelector("#cdAdr").value.trim(), note: s.querySelector("#cdNote").value.trim(), lignes: lire().filter(x => x.val), maj: Date.now()});
+    if(!c) codes.push(o); cdSave(); closeSheet(); render(); };
+}
+document.addEventListener("input", e => { if(e.target.id !== "cdQ") return; ui.cdQ = e.target.value; const q = ui.cdQ.toLowerCase();
+  const tri = [...codes].sort((a, b) => (a.lieu || "").localeCompare(b.lieu || "", "fr")).filter(c => !q || [c.lieu, c.adresse, c.note, ...(c.lignes || []).map(x => x.lib)].join(" ").toLowerCase().includes(q));
+  document.getElementById("cdListe").innerHTML = cdListeHTML(tri); });
+
+/* ---- Documentation technique : PDF gardés dans l'appli (base locale du téléphone) ---- */
+const DT = {db: null, liste: null};
+function dtOuvrir(){ if(DT.db) return Promise.resolve(DT.db);
+  return new Promise((ok, ko) => { let r; try{ r = indexedDB.open("azerem-doc", 1); }catch(e){ return ko(e); }
+    r.onupgradeneeded = () => { r.result.createObjectStore("meta", {keyPath: "id"}); r.result.createObjectStore("pdf"); };
+    r.onsuccess = () => ok(DT.db = r.result); r.onerror = () => ko(r.error); }); }
+function dtReq(mode, f){ return dtOuvrir().then(d => new Promise((ok, ko) => { const tx = d.transaction(["meta", "pdf"], mode); let res; const r = f(tx);
+  if(r) r.onsuccess = () => { res = r.result; }; tx.oncomplete = () => ok(res); tx.onerror = tx.onabort = () => ko(tx.error); })); }
+// Documents livrés avec l'appli (fichiers du dossier docs/) : toujours là, sur tous les appareils
+const DT_FIXES = [
+  {id: "fixe-came-bxv-zn7", fixe: true, nom: "CAME BXV (carte ZN7) — portail coulissant, branchements et programmation", dossier: "Portails et automatismes", url: "docs/came-bxv-zn7.pdf", taille: 2347407}
+];
+const dtCharger = () => dtReq("readonly", tx => tx.objectStore("meta").getAll()).then(a => (DT.liste = [...DT_FIXES, ...(a || [])]), () => (DT.liste = [...DT_FIXES]));
+const dtPoids = n => n > 1048576 ? (n / 1048576).toFixed(1).replace(".", ",") + " Mo" : Math.max(1, Math.round(n / 1024)) + " Ko";
+const DT_DOSSIERS = ["Schémas", "Notices", "Normes et guides", "Fabricants"];
+function renderDoct(){
+  $app.innerHTML = `
+  <header class="top"><button class="retour" data-act="accueil" aria-label="Retour">‹</button><h1>Documentation technique</h1></header>
+  <main><div id="dtListe"><div class="empty">Chargement…</div></div></main>
+  <div class="bottom"><button class="btn" data-o="dtNew">＋ Ajouter un PDF</button></div>`;
+  dtCharger().then(dtDessine, () => { const b = document.getElementById("dtListe"); if(b) b.innerHTML = `<div class="empty">Ce navigateur ne permet pas de garder des fichiers dans l'appli.</div>`; });
+}
+function dtDessine(){ const box = document.getElementById("dtListe"); if(!box || view.name !== "doct") return; const L = DT.liste || [];
+  if(!L.length){ box.innerHTML = `<div class="vide"><div class="vide-ico">📚</div><b>Aucun document</b><p>Ajoute tes PDF (schémas, notices, guides). Ils sont copiés dans l'appli et restent lisibles sans réseau.</p></div>`; return; }
+  const dos = [...new Set(L.map(d => d.dossier || "Divers"))].sort((a, b) => a.localeCompare(b, "fr"));
+  box.innerHTML = dos.map(g => { const ds = L.filter(d => (d.dossier || "Divers") === g).sort((a, b) => a.nom.localeCompare(b.nom, "fr"));
+    return `<details class="cat" ${ui.dtOuv && ui.dtOuv[g] === false ? "" : "open"} data-dos="${esc(g)}"><summary><span>📁 ${esc(g)}</span><span class="cat-n">${ds.length}</span></summary><div class="cat-body">${ds.map(d =>
+      `<div class="note" style="--bar:#ffd650;margin-bottom:6px"><button class="note-main" data-o="dtVoir" data-id="${d.id}" style="flex:1;text-align:left;padding:10px 12px;min-width:0">
+        <b class="note-client" style="display:block;font-size:15px;white-space:normal">📄 ${esc(d.nom)}</b><span class="note-adr">${dtPoids(d.taille || 0)}${d.fixe ? " · fourni avec l'appli" : ""}</span></button>
+        ${d.fixe ? "" : `<button class="note-menu" data-o="dtMenu" data-id="${d.id}" aria-label="Options">⋯</button>`}</div>`).join("")}</div></details>`; }).join("")
+    + `<p class="tb-aide" style="margin-top:12px">${L.length} document${L.length > 1 ? "s" : ""} · ${dtPoids(L.reduce((a, d) => a + (d.taille || 0), 0))} dans l'appli.</p>`;
+}
+function dtDossierChamp(val){ const connus = [...new Set([...(DT.liste || []).map(d => d.dossier).filter(Boolean), ...DT_DOSSIERS])];
+  return `<label class="f"><span>Dossier</span><input class="t" id="dtDos" value="${esc(val || "")}" placeholder="Ex. Schémas" autocomplete="off"></label>
+    <div class="tb-larg" style="margin:-4px 0 12px">${connus.map(g => `<button class="chip" data-g="${esc(g)}">${esc(g)}</button>`).join("")}</div>`; }
+function dtBrancheDossier(s){ s.querySelectorAll("[data-g]").forEach(b => b.onclick = () => { s.querySelector("#dtDos").value = b.dataset.g; }); }
+function dtNewSheet(){
+  const s = sheet(`<h3>Ajouter des PDF</h3>
+    <p style="font-size:13.5px;color:var(--muted);margin:-4px 0 10px">Choisis d'abord le dossier, puis les fichiers. Tu peux en prendre plusieurs d'un coup.</p>
+    ${dtDossierChamp(ui.dtDernier || "")}
+    <label class="btn tb-file"><input type="file" accept="application/pdf,.pdf" multiple id="dtF">📄 Choisir les PDF</label>`);
+  dtBrancheDossier(s);
+  s.querySelector("#dtF").onchange = async e => { const fs = [...e.target.files].filter(f => /pdf$/i.test(f.type) || /\.pdf$/i.test(f.name)); if(!fs.length){ toast("Choisis des fichiers PDF"); return; }
+    const dossier = s.querySelector("#dtDos").value.trim() || "Divers"; ui.dtDernier = dossier; closeSheet(); toast("Copie dans l'appli…");
+    try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); }catch(_){}
+    let ok = 0; for(const f of fs){ try{ const buf = await f.arrayBuffer(), id = uid();
+        await dtReq("readwrite", tx => { tx.objectStore("pdf").put(buf, id); return tx.objectStore("meta").put({id, nom: f.name.replace(/\.pdf$/i, ""), dossier, taille: f.size, cree: Date.now()}); }); ok++; }catch(_){} }
+    toast(ok === fs.length ? `${ok} document${ok > 1 ? "s" : ""} ajouté${ok > 1 ? "s" : ""}` : `${ok} sur ${fs.length} ajoutés : plus assez de place sur le téléphone ?`);
+    dtCharger().then(dtDessine); };
+}
+function dtMenuSheet(d){
+  const s = sheet(`<h3>${esc(d.nom)}</h3>
+    <label class="f"><span>Nom</span><input class="t" id="dtNom" value="${esc(d.nom)}" autocomplete="off"></label>
+    ${dtDossierChamp(d.dossier || "")}
+    <div class="row2"><button class="btn sec danger-t" data-s="del" style="flex:0 0 auto;width:auto;padding:0 14px">🗑</button><button class="btn" data-s="ok">Enregistrer</button></div>`);
+  dtBrancheDossier(s);
+  s.querySelector('[data-s="del"]').onclick = () => confirmSheet(`Supprimer « ${esc(d.nom)} » de l'appli ?`, "Supprimer", () => {
+    dtReq("readwrite", tx => { tx.objectStore("pdf").delete(d.id); return tx.objectStore("meta").delete(d.id); }).then(() => { closeSheet(); dtCharger().then(dtDessine); }); });
+  s.querySelector('[data-s="ok"]').onclick = () => { const nom = s.querySelector("#dtNom").value.trim(); if(!nom){ toast("Donne un nom"); return; }
+    d.nom = nom; d.dossier = s.querySelector("#dtDos").value.trim() || "Divers";
+    dtReq("readwrite", tx => tx.objectStore("meta").put(d)).then(() => { closeSheet(); dtCharger().then(dtDessine); }); };
+}
+const PDFJS_URLS = [["pdf.min.js", "pdf.worker.min.js"], ["https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"]];
+function chargerPdfJs(){
+  if(window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  const essai = i => new Promise((ok, ko) => { if(i >= PDFJS_URLS.length) return ko(new Error("Réseau"));
+    const sc = document.createElement("script"); sc.src = PDFJS_URLS[i][0];
+    sc.onload = () => { if(window.pdfjsLib){ pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_URLS[i][1]; ok(pdfjsLib); } else essai(i + 1).then(ok, ko); };
+    sc.onerror = () => { sc.remove(); essai(i + 1).then(ok, ko); }; document.head.appendChild(sc); });
+  return essai(0);
+}
+async function dtVoir(d){
+  const v = document.createElement("div"); v.className = "pdfview"; v.id = "pdfview";
+  v.innerHTML = `<header class="top"><button class="retour" data-pv="close" aria-label="Fermer">‹</button><h1>${esc(d.nom)}</h1></header>
+    <div class="pv-pages"><p class="muted" style="text-align:center;margin-top:40px">Ouverture…</p></div>
+    <div class="bottom"><button class="btn sec" data-pv="dl">⬇ Télécharger</button><button class="btn" data-pv="share">Ouvrir / partager</button></div>`;
+  document.body.appendChild(v); document.body.classList.add("pv-open");
+  let pdf = null, obs = null;
+  const fermer = () => { if(obs) obs.disconnect(); if(pdf) try{ pdf.destroy(); }catch(_){} v.remove(); document.body.classList.remove("pv-open"); };
+  v.querySelector('[data-pv="close"]').onclick = fermer;
+  const box = v.querySelector(".pv-pages"), rate = msg => { box.innerHTML = `<p class="muted" style="text-align:center;margin-top:40px">${msg}</p>`; };
+  let buf; try{ buf = d.url ? await fetch(d.url).then(r => { if(!r.ok) throw 0; return r.arrayBuffer(); }) : await dtReq("readonly", tx => tx.objectStore("pdf").get(d.id)); }catch(e){}
+  if(!buf){ rate(d.url ? "Document indisponible : ouvre-le une première fois avec du réseau." : "Fichier introuvable dans l'appli"); return; }
+  const blob = new Blob([buf], {type: "application/pdf"}), nom = d.nom.replace(/[\\/:*?"<>|]/g, " ").trim() + ".pdf";
+  const sortir = async mode => { const cadre = window.top !== window.self;
+    if(mode === "share" && !cadre && navigator.share && window.File){ const f = new File([blob], nom, {type: "application/pdf"});
+      if(!navigator.canShare || navigator.canShare({files: [f]})){ try{ await navigator.share({files: [f], title: d.nom}); }catch(e){ if(!e || e.name !== "AbortError") telechargerBlob(blob, nom); } return; } }
+    if(cadre && window.claude && claude.use){ const dl = await claude.use("downloads"); if(dl){ try{ await dl.save({filename: nom, data: blob}); }catch(e){ if(!e || e.code !== "declined") toast("Téléchargement impossible ici"); } return; } }
+    telechargerBlob(blob, nom); };
+  v.querySelector('[data-pv="dl"]').onclick = () => sortir("dl"); v.querySelector('[data-pv="share"]').onclick = () => sortir("share");
+  try{
+    const lib = await chargerPdfJs(); pdf = await lib.getDocument({data: buf.slice(0)}).promise; if(!v.isConnected){ pdf.destroy(); return; }
+    box.innerHTML = ""; const larg = Math.min(640, box.clientWidth - 28), dpr = Math.min(3, window.devicePixelRatio || 2);
+    const p1 = await pdf.getPage(1), v1 = p1.getViewport({scale: 1}), ratio = v1.height / v1.width;
+    obs = new IntersectionObserver(es => es.forEach(async en => { if(!en.isIntersecting || en.target.dataset.fait) return; const cv = en.target; cv.dataset.fait = "1";
+      try{ const pg = await pdf.getPage(+cv.dataset.n), vp0 = pg.getViewport({scale: 1}), vp = pg.getViewport({scale: larg * dpr / vp0.width});
+        cv.width = Math.round(vp.width); cv.height = Math.round(vp.height); cv.style.aspectRatio = vp.width + " / " + vp.height; cv.style.height = "auto";
+        await pg.render({canvasContext: cv.getContext("2d"), viewport: vp}).promise; }catch(_){ delete cv.dataset.fait; } }), {root: box, rootMargin: "600px 0px"});
+    for(let n = 1; n <= pdf.numPages; n++){ const cv = document.createElement("canvas"); cv.className = "pv-page"; cv.dataset.n = n; cv.style.background = "#fff"; cv.style.height = Math.round(larg * ratio) + "px"; box.appendChild(cv); obs.observe(cv); }
+  }catch(e){ rate("Aperçu impossible ici. Utilise « Ouvrir / partager » pour lire le PDF."); }
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("[data-o]"); if(!b) return;
+  const a = b.dataset.o, id = b.dataset.id;
+  if(a === "listes" || a === "codes" || a === "doct"){ go(a); return; }
+  if(a === "liste"){ go("liste", {lid: id}); return; }
+  if(a === "listeNew"){ const l = {id: uid(), kind: "liste", titre: "", cree: Date.now(), maj: Date.now(), lignes: [{id: uid(), txt: "", ok: false}]}; listes.push(l); lsSave(l); go("liste", {lid: l.id}); const t = document.getElementById("lsTitre"); if(t) t.focus(); return; }
+  if(a === "listeSuppr"){ const l = listes.find(x => x.id === id); if(!l) return;
+    confirmSheet(`Supprimer la liste « ${esc(l.titre || "sans titre")} » ?`, "Supprimer", () => { listes = listes.filter(x => x !== l); lsSave(); cloudSave(l.id); closeSheet(); render(); }); return; }
+  if(a === "codeNew"){ codeSheet(); return; }
+  if(a === "codeEdit" || a === "codeCopie"){ const c = codes.find(x => x.id === b.closest("[data-cid]").dataset.cid); if(!c) return;
+    if(a === "codeEdit"){ codeSheet(c); return; }
+    const x = (c.lignes || []).filter(v => v.val)[+b.dataset.k]; if(!x) return;
+    try{ navigator.clipboard.writeText(x.val).then(() => toast("Code copié"), () => {}); }catch(_){} return; }
+  if(a === "dtNew"){ dtNewSheet(); return; }
+  if(a === "dtVoir" || a === "dtMenu"){ const d = (DT.liste || []).find(x => x.id === id); if(!d) return; a === "dtVoir" ? dtVoir(d) : dtMenuSheet(d); return; }
+  const l = lsCur(); if(!l) return;
+  const row = b.closest("[data-lid]"), x = row && l.lignes.find(v => v.id === row.dataset.lid);
+  if(a === "lsAdd") lsAjoute(l);
+  else if(a === "lsCoche" && x){ x.ok = !x.ok; lsSave(l); row.classList.toggle("ok", x.ok); b.textContent = x.ok ? "✓" : ""; const h = document.querySelector("header.top"); if(!!h.querySelector('[data-o="lsVider"]') !== l.lignes.some(v => v.ok)){ const y = window.scrollY; renderListe(); window.scrollTo(0, y); } }
+  else if(a === "lsSuppr" && x){ l.lignes = l.lignes.filter(v => v !== x); lsSave(l); row.remove(); }
+  else if(a === "lsVider"){ l.lignes = l.lignes.filter(v => !v.ok); lsSave(l); renderListe(); }
+});
+document.addEventListener("toggle", e => { const d = e.target; if(d.dataset && d.dataset.dos){ (ui.dtOuv = ui.dtOuv || {})[d.dataset.dos] = d.open; } }, true);
+
+listes = oLoad(LS_KEY); codes = oLoad(CD_KEY);
+tabs = tbLoad();
 try{ const v = JSON.parse(localStorage.getItem(KEY+"-vue"));
   if(v && v.name === "devis" && db.devis.some(d => d.id === v.id)) view = v; }catch(e){}
 render();

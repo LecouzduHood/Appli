@@ -1,5 +1,5 @@
-const CACHE = "devis-v13";
-const FILES = ["./", "index.html", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png", "jspdf.umd.min.js"];
+const CACHE = "devis-v14";
+const FILES = ["./", "index.html", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png", "jspdf.umd.min.js", "pdf.min.js", "pdf.worker.min.js", "docs/came-bxv-zn7.pdf"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))); self.clients.claim(); });
 // Réseau d'abord (pour recevoir les mises à jour), cache si hors ligne
