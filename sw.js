@@ -1,4 +1,4 @@
-const CACHE = "devis-v16";
+const CACHE = "devis-v17";
 const OCR = "lecteur-v1";   // lecteur de photos (30 Mo) : gardé à part pour ne pas le retélécharger à chaque mise à jour
 const FILES = ["./", "index.html", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png", "jspdf.umd.min.js", "pdf.min.js", "pdf.worker.min.js", "docs/came-bxv-zn7.pdf", "atelier-cablage.html", "tb-ocr.js"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });

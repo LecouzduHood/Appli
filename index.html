@@ -699,6 +699,23 @@ select.t{appearance:none;-webkit-appearance:none;width:100%;font-size:16px;min-h
 .tuile.c-codes{background:linear-gradient(160deg,rgba(255,150,90,.3),rgba(255,150,90,.1));border-color:rgba(255,160,100,.65)}
 .tuile.c-doc{grid-column:auto}
 .tuile.c-jeu{grid-column:1 / -1;background:linear-gradient(160deg,rgba(70,220,246,.26),rgba(224,76,245,.16));border-color:rgba(70,220,246,.6)}
+/* Sauvegarde Drive */
+.svg-ligne{grid-column:1 / -1;display:flex;align-items:stretch;gap:8px;margin-top:2px}
+.svg-info{flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;border:1px dashed var(--line);background:transparent;color:var(--muted);text-align:left;font-size:12px}
+.svg-info > span:first-child{font-size:18px;flex:none}.svg-t{min-width:0}
+.svg-info b{display:block;color:var(--text);font-size:13px;font-weight:600}.svg-info small{display:block;font-size:11.5px;color:var(--muted)}
+.svg-go{flex:none;padding:0 14px;min-height:44px;border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);background:rgba(70,220,246,.1);border:1px solid rgba(70,220,246,.55)}
+.svg-go:disabled{opacity:.45}
+.svg-ligne.alerte .svg-info{border-color:rgba(255,206,48,.55)}.svg-ligne.alerte .svg-info small{color:#ffd84a}
+.svg-p{font-size:14px;line-height:1.45;margin:0 0 10px}.svg-etape{color:var(--accent);min-height:0;margin-bottom:10px}.svg-etape:empty{display:none}.svg-etape.ko{color:#ffd84a}
+.svg-b{display:flex;flex-direction:column;gap:8px}
+.svg-auto{display:flex;align-items:flex-start;gap:10px;margin:14px 0 4px;padding:10px 12px;border-radius:12px;border:1px solid var(--line)}
+.svg-auto input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:var(--primary)}
+.svg-auto b{display:block;font-size:14px}.svg-auto small{display:block;font-size:12px;color:var(--muted);line-height:1.4;margin-top:2px}
+.svg-note{font-size:12px;color:var(--muted);margin:8px 2px 12px}
+.svg-voile{position:fixed;inset:0;z-index:80;background:rgba(21,22,27,.94);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:#fff;font-size:15px;line-height:1.45}
+.svg-rond{width:34px;height:34px;margin:0 auto 14px;border-radius:50%;border:3px solid rgba(255,255,255,.2);border-top-color:var(--accent);animation:svgTourne 1s linear infinite}
+@keyframes svgTourne{to{transform:rotate(360deg)}}
 .jeu-v .tb-ap-h{padding:6px 10px}.jeu-v .tb-ap-h button{font-size:22px;font-weight:800}.jeu-v iframe{flex:1;width:100%;border:0;background:#2b2c31}
 .ls-titre{width:100%;border:0;background:transparent;color:var(--text);font-size:24px;font-weight:800;padding:4px 2px 10px;outline:0}
 .ls-titre::placeholder{color:var(--muted)}
@@ -977,9 +994,11 @@ function load(){
   return {devis:[]};
 }
 let saveT;
+let gelStockage = false;   // vrai pendant qu'une sauvegarde est restaurée : l'ancien contenu en mémoire ne doit plus être réécrit
 let tabs = [];
 let listes = [], codes = [];   // notes de tableau électrique (chargées plus bas : tbLoad)
 function save(){
+  if(gelStockage) return;
   try{ localStorage.setItem(KEY, JSON.stringify(db)); }catch(e){}
 }
 
@@ -1126,6 +1145,7 @@ function renderAccueil(){
     <button class="tuile t-doc c-doc" data-o="doct"><span class="ti">📚</span><span class="tt"><b>Documentation technique</b><small>PDF gardés dans l'appli</small></span></button>
     <button class="tuile t-doc t-norme2" data-act="norme"><span class="ti">📘</span><span class="tt"><b>Norme NF C 15‑100</b><small>Édition 2024</small></span></button>
     <button class="tuile t-doc c-jeu" data-o="jeu"><span class="ti">🎮</span><span class="tt"><b>Atelier câblage</b><small>Jeu d'entraînement : alternatif, continu, mode libre</small></span></button>
+    <div class="svg-ligne${!svgHorsSite() && (!svgEtat.fichier || svgEtat.err) ? " alerte" : ""}" id="svgLigne">${svgLigneTxt()}</div>
   </main>`;
 }
 
@@ -1228,9 +1248,10 @@ function filtreNorme(q){
 }
 document.addEventListener("input", e => { if(e.target.id === "normeQ") filtreNorme(e.target.value); });
 
-/* ---------- Google Drive : PDF de devis et factures (lecture seule, dossier AZEREM) ---------- */
+/* ---------- Google Drive : PDF de devis et factures (dossier AZEREM) + sauvegarde de l'appli dans AZEREM / Archive ---------- */
+// Le droit « drive » (lire et écrire) est nécessaire pour déposer la sauvegarde dans un dossier qui existe déjà (AZEREM).
 const GDRIVE = {client:"221320566257-hhjo1g9ea21mersovch83o5g38suhp24.apps.googleusercontent.com",
-  racine:"1R7W6cUriYPnS3FDHo6Ityc6ZwBU6CL07", scope:"https://www.googleapis.com/auth/drive.readonly",
+  racine:"1R7W6cUriYPnS3FDHo6Ityc6ZwBU6CL07", scope:"https://www.googleapis.com/auth/drive",
   site:"lecouzduhood.github.io"};
 const DOSSIER = "application/vnd.google-apps.folder";
 let gTok = (() => { try{ const t = JSON.parse(sessionStorage.getItem("gdrive-tok")); return t && t.exp > Date.now() ? t : null; }catch(e){ return null; } })();
@@ -1243,10 +1264,12 @@ function gScript(){
 function gPreparer(){
   return gScript().then(() => { if(gClient) return;
     gClient = google.accounts.oauth2.initTokenClient({client_id:GDRIVE.client, scope:GDRIVE.scope, callback: r => {
-      if(r && r.access_token){ gTok = {t:r.access_token, exp:Date.now() + (r.expires_in - 60) * 1000};
+      if(r && r.access_token){ let w = false; try{ w = google.accounts.oauth2.hasGrantedAllScopes(r, GDRIVE.scope); }catch(e){}
+        gTok = {t:r.access_token, exp:Date.now() + (r.expires_in - 60) * 1000, w};   // w : le jeton permet d'écrire dans le Drive
         try{ sessionStorage.setItem("gdrive-tok", JSON.stringify(gTok)); }catch(e){}
-        if(view.name === "docs") renderDocs(); }
-      else toast("Connexion Google annulée"); }});
+        if(view.name === "docs") renderDocs(); svgApresGoogle(true); }
+      else { if(!svg.apres) toast("Connexion Google annulée"); svgApresGoogle(false); } },
+      error_callback: e => svgApresGoogle(false, e)});
   });
 }
 function gConnecter(){ if(gClient) gClient.requestAccessToken({prompt: gTok ? "" : "consent"}); else gPreparer().then(() => gClient.requestAccessToken()).catch(e => toast(e.message)); }
@@ -3279,12 +3302,275 @@ document.addEventListener("click", e => {
 });
 document.addEventListener("toggle", e => { const d = e.target; if(d.dataset && d.dataset.dos){ (ui.dtOuv = ui.dtOuv || {})[d.dataset.dos] = d.open; } }, true);
 
+/* ---------- Sauvegarde quotidienne sur le Drive : dossier AZEREM / Archive ----------
+   Une appli web ne peut rien faire quand elle est fermée (iPhone). La sauvegarde « de 21 h » part donc au premier toucher
+   dans l'appli après 21 h (le soir même ou le lendemain) : rien ne change tant que l'appli est fermée, le contenu est le même.
+   - un fichier daté par sauvegarde dans Archive : tout le stockage de l'appli, tel quel (les clés ne sont ni renommées ni effacées) ;
+   - les photos de tableaux et les PDF de la documentation dans un sous-dossier, envoyés une seule fois chacun ;
+   - rien n'est jamais supprimé sur le Drive. */
+const SVG_KEY = KEY + "-sauvegarde";   // état de la sauvegarde sur ce téléphone (ni envoyé, ni touché par une restauration)
+const SVG_HEURE = 21, SVG_ARCHIVE = "Archive", SVG_PIECES = "Photos et documents de l'appli", SVG_NOM = "Sauvegarde appli ";
+const G_FICHIERS = "https://www.googleapis.com/drive/v3/files", G_ENVOI = "https://www.googleapis.com/upload/drive/v3/files";
+let svgEtat = (() => { try{ const e = JSON.parse(localStorage.getItem(SVG_KEY)); if(e && typeof e === "object" && !Array.isArray(e)) return e; }catch(_){} return {}; })();
+const svg = {encours: false, attente: false, apres: null, auto: false, essai: 0, texte: "", ko: false};
+function svgNote(maj){ Object.assign(svgEtat, maj); try{ localStorage.setItem(SVG_KEY, JSON.stringify(svgEtat)); }catch(_){} svgLigneMaj(); }
+const svgHorsSite = () => location.hostname !== GDRIVE.site;
+const gTokOk = () => !!(gTok && gTok.w && gTok.exp > Date.now());
+
+/* -- Dates -- */
+const svgDeux = n => String(n).padStart(2, "0");
+const svgHorodate = d => `${d.getFullYear()}-${svgDeux(d.getMonth() + 1)}-${svgDeux(d.getDate())} ${svgDeux(d.getHours())}h${svgDeux(d.getMinutes())}`;
+function svgQuand(t){ if(!t) return "";
+  const d = new Date(t), j = new Date(), jour = x => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime(), ecart = Math.round((jour(j) - jour(d)) / 864e5);
+  return (ecart === 0 ? "aujourd'hui" : ecart === 1 ? "hier" : "le " + d.toLocaleDateString("fr-FR", {day: "numeric", month: "short", year: d.getFullYear() === j.getFullYear() ? undefined : "numeric"})) + " à " + svgDeux(d.getHours()) + " h " + svgDeux(d.getMinutes()); }
+// Dernier « 21 h » passé : une sauvegarde est due tant qu'aucune n'a été faite depuis
+function svgBorne(t){ const d = new Date(t); d.setHours(SVG_HEURE, 0, 0, 0); if(d.getTime() > t) d.setDate(d.getDate() - 1); return d.getTime(); }
+const svgAuto = () => svgEtat.actif !== false;   // réglage « automatique chaque jour » (coché tant qu'il n'a pas été décoché)
+// L'automatique ne démarre qu'après une première sauvegarde faite à la main : Google a alors déjà donné son accord sur ce téléphone
+const svgDue = () => svgAuto() && !!svgEtat.fichier && (svgEtat.dernier || 0) < svgBorne(Date.now());
+
+/* -- Ligne d'état en bas de l'accueil -- */
+function svgLigneTxt(){
+  const hs = svgHorsSite();
+  const info = hs ? `<b>Sauvegarde sur le Drive</b><small>dans l'appli en ligne seulement</small>`
+    : svg.encours ? `<b>Sauvegarde en cours…</b>`
+    : !svgEtat.fichier ? `<b>Sauvegarde sur le Drive</b><small>pas encore faite sur ce téléphone</small>`
+    : svgEtat.err ? `<b>⚠️ Sauvegarde du jour pas partie</b><small>dernière ${svgQuand(svgEtat.fichier)}</small>`
+    : svgDue() ? `<b>Sauvegarde du jour en attente</b><small>dernière ${svgQuand(svgEtat.fichier)}</small>`
+    : `<b>Sauvegardé sur le Drive</b><small>${svgQuand(svgEtat.fichier)}</small>`;
+  return `<button class="svg-info" data-svg="ouvrir"><span>💾</span><span class="svg-t">${info}</span></button>${hs ? "" : `<button class="svg-go" data-svg="sauve" ${svg.encours ? "disabled" : ""}>Sauvegarder</button>`}`; }
+function svgLigneMaj(){ const el = document.getElementById("svgLigne"); if(!el) return; el.innerHTML = svgLigneTxt();
+  el.classList.toggle("alerte", !svgHorsSite() && !svg.encours && (!svgEtat.fichier || !!svgEtat.err)); }
+function svgDit(txt, ko){ svg.texte = txt || ""; svg.ko = !!ko;
+  const el = document.getElementById("svgEtape"); if(el){ el.textContent = svg.texte; el.classList.toggle("ko", svg.ko); }
+  const v = document.querySelector("#svgVoile p"); if(v && txt) v.textContent = txt; }
+function svgVoile(txt){ let v = document.getElementById("svgVoile"); if(txt == null){ if(v) v.remove(); return; }
+  if(!v){ v = document.createElement("div"); v.id = "svgVoile"; v.className = "svg-voile"; v.innerHTML = `<div><div class="svg-rond"></div><p></p></div>`; document.body.appendChild(v); }
+  v.querySelector("p").textContent = txt; }
+function svgMessage(e){ const m = (e && e.message) || "";
+  if(m === "connexion") return "La connexion Google a expiré. Recommence.";
+  if(/Failed to fetch|NetworkError|Load failed|network/i.test(m)) return "Pas de réseau, ou Google injoignable.";
+  return m || "Erreur inconnue"; }
+
+/* -- Ce qui est sauvegardé : tout le stockage de l'appli -- */
+const svgCleOk = k => (k.startsWith(KEY) || k.startsWith("azerem-")) && k !== SVG_KEY && k !== KEY + "-t" && k !== KEY + "-vue" && !/-purge\d*$/.test(k);
+const svgClePhoto = k => k.startsWith(TB_KEY + "-ph-");   // photos réduites des tableaux : rangées à part, envoyées une seule fois
+function svgHash(s){ let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for(let i = 0; i < s.length; i++){ const c = s.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909); h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (h2 >>> 0).toString(16).padStart(8, "0") + (h1 >>> 0).toString(16).padStart(8, "0"); }
+function svgClesLS(){ const o = []; for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if(k && svgCleOk(k)) o.push(k); } return o.sort(); }
+async function svgDonnees(){
+  save();
+  const ls = {}, photos = [];
+  svgClesLS().forEach(k => { const v = localStorage.getItem(k); if(v == null) return; if(svgClePhoto(k)) photos.push({cle: k, taille: v.length, v}); else ls[k] = v; });
+  let base = null;   // base locale : PDF de la documentation et photos des tableaux (null = illisible, on n'y touchera pas)
+  try{ const meta = await dtReq("readonly", tx => tx.objectStore("meta").getAll()), cles = await dtReq("readonly", tx => tx.objectStore("pdf").getAllKeys());
+    base = {meta: meta || [], cles: (cles || []).map(String).sort()}; }catch(e){}
+  const sig = svgHash(JSON.stringify([Object.keys(ls).map(k => [k, ls[k]]), photos.map(p => [p.cle, p.taille]), base && [base.meta.map(m => JSON.stringify(m)).sort(), base.cles]]));
+  const vide = !db.devis.length && !tabs.length && !listes.length && !codes.length && !cat.perso.length && !Object.keys(cat.prix).length && !photos.length && !(base && (base.meta.length || base.cles.length));
+  return {ls, photos, base, sig, vide}; }
+// Photo gardée en texte (data:image/jpeg;base64,…) ↔ vrai fichier image, visible dans le Drive
+function svgImage(v){ const m = /^data:([\w.+-]+\/[\w.+-]+);base64,([A-Za-z0-9+/=]+)$/.exec(v); if(!m) return null;
+  try{ const bin = atob(m[2]); if(btoa(bin) !== m[2]) return null; const o = new Uint8Array(bin.length); for(let i = 0; i < bin.length; i++) o[i] = bin.charCodeAt(i);
+    return {type: m[1], blob: new Blob([o], {type: m[1]})}; }catch(e){ return null; } }
+const svgEnTexte = (blob, type) => new Promise((ok, ko) => { const r = new FileReader(); r.onload = () => { const s = String(r.result), i = s.indexOf(","); ok("data:" + type + ";base64," + s.slice(i + 1)); }; r.onerror = () => ko(r.error); r.readAsDataURL(blob); });
+const svgNomPropre = s => String(s || "").replace(/[\\/:*?"<>|\r\n\t]+/g, " ").replace(/\s+/g, " ").trim().slice(0, 80);
+const svgExt = type => ({"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp", "application/pdf": ".pdf"}[type] || ".txt");
+function svgNomPiece(cle, type, meta){
+  const tab = id => { const t = tabs.find(x => x.id === id); return "Tableau " + (svgNomPropre(t && t.chantier) || id); };
+  if(svgClePhoto(cle)){ const id = cle.slice((TB_KEY + "-ph-").length); return tab(id) + " - photo réduite (" + id + ")" + svgExt(type); }
+  if(cle.startsWith("tbph-")) return tab(cle.slice(5)) + " - photo (" + cle.slice(5) + ")" + svgExt(type);
+  const m = (meta || []).find(x => x.id === cle); return (svgNomPropre(m && m.nom) || "Document") + " (" + cle + ")" + svgExt(type); }
+
+/* -- Drive : dossiers, envoi, téléchargement -- */
+async function gReq(url, opt){
+  if(!gTok) throw new Error("connexion");
+  const r = await fetch(url, Object.assign({}, opt, {headers: Object.assign({Authorization: "Bearer " + gTok.t}, opt && opt.headers)}));
+  if(r.status === 401){ gTok = null; try{ sessionStorage.removeItem("gdrive-tok"); }catch(e){} throw new Error("connexion"); }
+  if(!r.ok){ let m = ""; try{ m = ((await r.json()).error || {}).message || ""; }catch(e){}
+    const er = new Error("Drive : erreur " + r.status + (m ? " (" + m + ")" : "")); er.status = r.status; throw er; }
+  return r; }
+async function gDossierCree(nom, parent){
+  return (await (await gReq(G_FICHIERS + "?supportsAllDrives=true&fields=id", {method: "POST", headers: {"Content-Type": "application/json; charset=UTF-8"}, body: JSON.stringify({name: nom, mimeType: DOSSIER, parents: [parent]})})).json()).id; }
+async function gDossierTrouve(noms, parent, creer){
+  const fs = await gTout({q: `'${parent}' in parents and mimeType='${DOSSIER}' and trashed=false`, fields: "nextPageToken,files(id,name,createdTime)"});
+  for(const n of noms){ const f = fs.filter(x => sansAccent(x.name).trim() === sansAccent(n)).sort((a, b) => String(a.createdTime).localeCompare(String(b.createdTime)))[0]; if(f) return f.id; }
+  return creer ? gDossierCree(noms[0], parent) : null; }
+const svgArchive = creer => gDossierTrouve([SVG_ARCHIVE, "Archives"], GDRIVE.racine, creer);
+// Crée un fichier dans le Drive (jusqu'à 5 Mo en un envoi, au-delà en deux temps comme le demande Google)
+async function gEnvoie(meta, blob, type){
+  const q = "&supportsAllDrives=true&fields=id,name";
+  if(blob.size <= 4.5e6){ const b = "azerem-" + uid() + uid();
+    const corps = new Blob(["--" + b + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" + JSON.stringify(meta) + "\r\n--" + b + "\r\nContent-Type: " + type + "\r\n\r\n", blob, "\r\n--" + b + "--"]);
+    return (await gReq(G_ENVOI + "?uploadType=multipart" + q, {method: "POST", headers: {"Content-Type": "multipart/related; boundary=" + b}, body: corps})).json(); }
+  const r = await gReq(G_ENVOI + "?uploadType=resumable" + q, {method: "POST", headers: {"Content-Type": "application/json; charset=UTF-8", "X-Upload-Content-Type": type}, body: JSON.stringify(meta)});
+  const lieu = r.headers.get("Location"); if(!lieu) throw new Error("Drive : envoi refusé (gros fichier)");
+  return (await gReq(lieu, {method: "PUT", headers: {"Content-Type": type}, body: blob})).json(); }
+const gContenu = id => gReq(G_FICHIERS + "/" + encodeURIComponent(id) + "?alt=media&supportsAllDrives=true");
+
+/* -- Une sauvegarde complète : photos et documents manquants, puis le fichier daté -- */
+async function svgEnvoyer(motif){
+  const d = await svgDonnees();
+  svgDit("Recherche du dossier Archive…");
+  const archive = await svgArchive(true), fichiers = []; let manque = 0;
+  if(d.photos.length || (d.base && d.base.cles.length)){
+    const dossier = await gDossierTrouve([SVG_PIECES], archive, true), idx = {}; let n = 0;
+    (await gTout({q: `'${dossier}' in parents and trashed=false`, fields: "nextPageToken,files(id,appProperties)"})).forEach(f => { const p = f.appProperties || {}; if(p.cle) idx[p.cle + "|" + (p.taille || "")] = {id: f.id, forme: p.forme, type: p.type}; });
+    const envoi = async (cle, taille, forme, type, blob) => { svgDit(`Envoi des photos et documents (${++n})…`);
+      try{ return (await gEnvoie({name: svgNomPiece(cle, type, d.base && d.base.meta), parents: [dossier], appProperties: {cle, taille: String(taille || ""), forme, type}}, blob, type)).id; }
+      catch(e){ if(e.message === "connexion") throw e; manque++; return null; } };
+    for(const p of d.photos){ const la = idx[p.cle + "|" + p.taille];
+      if(la){ fichiers.push({src: "ls", cle: p.cle, taille: p.taille, forme: la.forme, type: la.type, id: la.id}); continue; }
+      const img = svgImage(p.v), forme = img ? "image" : "texte", type = img ? img.type : "text/plain";
+      fichiers.push({src: "ls", cle: p.cle, taille: p.taille, forme, type, id: await envoi(p.cle, p.taille, forme, type, img ? img.blob : new Blob([p.v], {type}))}); }
+    for(const cle of (d.base ? d.base.cles : [])){ const la = idx[cle + "|"];
+      if(la){ fichiers.push({src: "base", cle, forme: la.forme, type: la.type, id: la.id}); continue; }
+      let v; try{ v = await dtReq("readonly", tx => tx.objectStore("pdf").get(cle)); }catch(e){}
+      if(v == null) continue;
+      const estBlob = v instanceof Blob, forme = estBlob ? "blob" : "tampon", type = estBlob ? (v.type || "image/jpeg") : "application/pdf";
+      fichiers.push({src: "base", cle, forme, type, id: await envoi(cle, "", forme, type, estBlob ? v : new Blob([v], {type}))}); }
+  }
+  const quand = new Date(), nom = SVG_NOM + svgHorodate(quand) + (motif ? " (" + motif + ")" : "") + ".json";
+  svgDit("Envoi de la sauvegarde…");
+  await gEnvoie({name: nom, parents: [archive]}, new Blob([JSON.stringify({app: "AZEREM", format: 1, cree: quand.toISOString(), ls: d.ls, fichiers, base: d.base ? {meta: d.base.meta} : null})], {type: "application/json"}), "application/json");
+  return {nom, manque, sig: manque ? "" : d.sig}; }
+async function svgSauve(auto){
+  if(svg.encours) return; svg.encours = true; svgLigneMaj(); svgDit("Préparation…");
+  try{ const r = await svgEnvoyer(), t = Date.now();
+    svg.encours = false; svgNote({dernier: t, fichier: t, sig: r.sig, nom: r.nom, err: ""});
+    svgFin(r.manque ? `Sauvegarde envoyée, sauf ${r.manque} photo${r.manque > 1 ? "s" : ""} ou document${r.manque > 1 ? "s" : ""} qui repartir${r.manque > 1 ? "ont" : "a"} la prochaine fois.` : "Sauvegarde envoyée sur le Drive ✓", false, auto);
+  }catch(e){ svg.encours = false; const m = svgMessage(e); if(auto) svgNote({err: m}); svgFin("Sauvegarde impossible. " + m, true, auto); }
+  svgLigneMaj(); }
+function svgFin(msg, ko, auto){ svgDit(msg, ko);
+  if(document.getElementById("svgFeuille") || (ko && !auto)) svgSheet();   // une erreur après un appui reste affichée dans la fenêtre
+  else if(!ko) toast(msg); }
+
+/* -- Connexion Google : toujours lancée par un toucher (Google ouvre une fenêtre) -- */
+function svgDemande(f, auto){ svg.apres = f; svg.auto = !!auto; svg.essai = Date.now();
+  try{ gClient.requestAccessToken(Object.assign({prompt: ""}, svgEtat.compte ? {login_hint: svgEtat.compte} : {})); }catch(e){ svgApresGoogle(false, e); } }
+function svgApresGoogle(ok, err){ const f = svg.apres, auto = svg.auto; svg.apres = null; svg.auto = false;
+  if(ok && gTokOk()){ if(!svgEtat.compte) gReq("https://www.googleapis.com/drive/v3/about?fields=user(emailAddress)").then(r => r.json()).then(j => { if(j && j.user && j.user.emailAddress) svgNote({compte: j.user.emailAddress}); }).catch(() => {});
+    if(f) f(); else { svg.attente = false; svgVerifie(); } return; }
+  if(!f) return;
+  const m = ok ? "Google n'a pas donné à l'appli le droit d'écrire dans le Drive. Recommence en laissant le Drive coché."
+    : err && err.type === "popup_failed_to_open" ? "La fenêtre Google n'a pas pu s'ouvrir. Touche de nouveau le bouton." : "Connexion Google annulée.";
+  if(auto) svgNote({err: m}); else svgFin(m, true); }
+function svgAvecDrive(f){
+  if(svgHorsSite() || svg.encours) return;
+  if(!navigator.onLine){ svgFin("Pas de réseau pour l'instant.", true); return; }
+  if(gTokOk()){ f(); return; }
+  svgDit("Connexion à Google…");
+  if(gClient) svgDemande(f, false); else gPreparer().then(() => svgDemande(f, false)).catch(e => svgFin(svgMessage(e), true)); }
+// Vérification automatique : au lancement, au retour dans l'appli, et de temps en temps tant qu'elle reste ouverte
+async function svgVerifie(){
+  if(svgHorsSite() || svg.encours || svg.attente || svg.apres || !navigator.onLine || !svgDue()) return;
+  if(Date.now() - svg.essai < 20 * 60000) return;   // après un essai raté, on ne redemande pas Google tout de suite
+  let d; try{ d = await svgDonnees(); }catch(e){ return; }
+  if(svgEtat.sig && d.sig === svgEtat.sig){ svgNote({dernier: Date.now(), err: ""}); return; }   // rien de nouveau depuis la dernière sauvegarde
+  if(gTokOk()){ svgSauve(true); return; }
+  gPreparer().then(() => { svg.attente = true; svgLigneMaj(); }).catch(() => {}); }
+// Sauvegarde due : la connexion Google part au premier toucher de navigation (tuile d'accueil ou bouton retour)
+document.addEventListener("click", e => {
+  if(!svg.attente || svg.encours || svg.apres || !gClient || !navigator.onLine) return;
+  if(!e.target.closest || !e.target.closest(".tuile, .retour")) return;
+  svg.attente = false;
+  if(!svgDue()) return;
+  if(gTokOk()) svgSauve(true); else svgDemande(() => svgSauve(true), true);
+}, true);
+
+/* -- Fenêtre « Sauvegarde » -- */
+function svgSheet(){
+  const hs = svgHorsSite(), off = hs || svg.encours ? "disabled" : "";
+  const etat = svgEtat.fichier ? `Dernière sauvegarde : <b>${svgQuand(svgEtat.fichier)}</b>${(svgEtat.dernier || 0) > svgEtat.fichier ? `<br>Vérifié ${svgQuand(svgEtat.dernier)} : rien de nouveau depuis.` : ""}<br>Dossier AZEREM › Archive${svgEtat.compte ? " · " + esc(svgEtat.compte) : ""}`
+    : `Chaque sauvegarde copie tout ce que tu as mis dans l'appli (notes de devis, tableaux et leurs photos, listes de tâches, codes, prix, documents) dans ton Google Drive, dossier <b>AZEREM › Archive</b>.<br>Pas encore de sauvegarde faite depuis ce téléphone.`;
+  const s = sheet(`<div id="svgFeuille"><h3>💾 Sauvegarde sur le Drive</h3>
+    ${hs ? `<p class="cat-avert">La sauvegarde ne marche que dans l'appli en ligne (lecouzduhood.github.io), pas dans l'aperçu.</p>` : ""}
+    <p class="svg-p">${etat}</p>
+    ${svgEtat.err && !svg.texte ? `<p class="svg-p svg-etape ko">${esc(svgEtat.err)}</p>` : ""}
+    <p class="svg-p svg-etape${svg.ko ? " ko" : ""}" id="svgEtape">${esc(svg.texte)}</p>
+    <div class="svg-b">
+      <button class="btn" data-s="sauve" ${off}>Sauvegarder maintenant</button>
+      <button class="btn sec" data-s="liste" ${off}>Restaurer une sauvegarde</button>
+    </div>
+    <label class="svg-auto"><input type="checkbox" data-s="auto" ${svgAuto() ? "checked" : ""}><span><b>Sauvegarde automatique chaque jour</b>
+      <small>À partir de 21 h, elle part toute seule au premier toucher dans l'appli (le soir même, sinon le lendemain) : une fenêtre Google s'ouvre et se referme. L'appli ne peut rien envoyer quand elle est fermée.${svgEtat.fichier ? "" : " Elle démarre après ta première sauvegarde."}</small></span></label>
+    <p class="svg-note">Chaque sauvegarde est un fichier daté dans AZEREM › Archive. Rien n'est jamais supprimé sur le Drive.</p>
+    <button class="btn sec" data-s="fermer" style="width:100%">Fermer</button></div>`);
+  const sur = (n, f) => { const b = s.querySelector(`[data-s="${n}"]`); if(b) b.onclick = f; };
+  sur("fermer", () => { svgDit(""); closeSheet(); });
+  sur("sauve", () => { svgAvecDrive(() => svgSauve(false)); svgBoutons(); });
+  sur("liste", () => svgAvecDrive(svgListe));
+  s.querySelector('[data-s="auto"]').onchange = e => { svgNote({actif: e.target.checked, err: ""}); if(e.target.checked) svgVerifie(); else svg.attente = false; };
+  if(!hs && !gClient && navigator.onLine) gPreparer().catch(() => {});   // prêt avant le toucher : Google exige que sa fenêtre s'ouvre pendant le toucher
+}
+function svgBoutons(){ if(svg.encours) document.querySelectorAll('#svgFeuille [data-s="sauve"], #svgFeuille [data-s="liste"]').forEach(b => b.disabled = true); }
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("[data-svg]"); if(!b) return;
+  if(b.dataset.svg === "ouvrir"){ svgDit(""); svgSheet(); }
+  else if(b.dataset.svg === "sauve"){ svgDit(""); svgAvecDrive(() => svgSauve(false)); } });
+
+/* -- Restaurer : remettre une sauvegarde du Drive sur ce téléphone -- */
+function svgDateNom(f){ const m = /(\d{4})-(\d\d)-(\d\d) (\d\d)h(\d\d)/.exec(f.name), d = m ? new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]) : new Date(f.createdTime);
+  return d.toLocaleDateString("fr-FR", {weekday: "long", day: "numeric", month: "long", year: "numeric"}) + " à " + svgDeux(d.getHours()) + " h " + svgDeux(d.getMinutes()); }
+async function svgListe(){
+  svgDit("Recherche des sauvegardes…");
+  let liste;
+  try{ const archive = await svgArchive(false);
+    liste = !archive ? [] : (await gTout({q: `'${archive}' in parents and trashed=false and mimeType!='${DOSSIER}'`, fields: "nextPageToken,files(id,name,size,createdTime)"}))
+      .filter(f => f.name.startsWith(SVG_NOM) && /\.json$/i.test(f.name)).sort((a, b) => String(b.createdTime).localeCompare(String(a.createdTime)));
+  }catch(e){ svgFin(svgMessage(e), true); return; }
+  svgDit("");
+  const s = sheet(`<h3>Restaurer une sauvegarde</h3>
+    ${liste.length ? `<p class="svg-p">Choisis la sauvegarde à remettre sur ce téléphone.</p>` : `<div class="empty">Aucune sauvegarde dans AZEREM › Archive.</div>`}
+    ${liste.slice(0, 60).map((f, i) => `<button class="doc" data-k="${i}"><span class="di">📦</span><span class="dt"><b>${esc(svgDateNom(f))}</b><small>${f.size ? dtPoids(+f.size) : ""}${/\(([^)]+)\)\.json$/i.test(f.name) ? " · " + esc(/\(([^)]+)\)\.json$/i.exec(f.name)[1]) : ""}</small></span></button>`).join("")}
+    <button class="btn sec" data-s="retour" style="margin-top:8px;width:100%">Retour</button>`);
+  s.querySelector('[data-s="retour"]').onclick = svgSheet;
+  s.querySelectorAll("[data-k]").forEach(b => b.onclick = () => { const f = liste[+b.dataset.k];
+    confirmSheet(`Remettre la sauvegarde du ${esc(svgDateNom(f))} ?<br><small style="font-weight:500;font-style:normal;font-size:13px;color:var(--muted)">Elle remplace tout ce qui est dans l'appli sur ce téléphone. Avant, l'état actuel est lui aussi envoyé dans Archive.</small>`, "Restaurer", () => svgRestaure(f)); });
+}
+async function svgRestaure(f){
+  if(svg.encours) return; svg.encours = true; closeSheet(); svgVoile("Lecture de la sauvegarde…");
+  try{
+    let s; try{ s = await (await gContenu(f.id)).json(); }catch(e){ if(e.message === "connexion" || e.status) throw e; s = null; }
+    if(!s || s.app !== "AZEREM" || s.format !== 1 || !s.ls || typeof s.ls !== "object") throw new Error("Ce fichier n'est pas une sauvegarde de l'appli.");
+    // 1. L'état actuel du téléphone part d'abord sur le Drive (sauf s'il est vide, ou déjà sauvegardé tel quel)
+    const ici = await svgDonnees();
+    if(!ici.vide && !(svgEtat.sig && ici.sig === svgEtat.sig)){ svgVoile("Sauvegarde de l'état actuel du téléphone…");
+      const r = await svgEnvoyer("avant restauration"); if(r.manque) throw new Error("L'état actuel du téléphone n'a pas pu être sauvegardé en entier."); }
+    // 2. Photos et documents de la sauvegarde
+    const pieces = (Array.isArray(s.fichiers) ? s.fichiers : []).filter(p => p && typeof p.cle === "string"), photos = [], docs = []; let manque = 0, n = 0;
+    for(const p of pieces){ svgVoile(`Téléchargement des photos et documents : ${++n} sur ${pieces.length}…`);
+      if(!p.id){ manque++; continue; }
+      let b; try{ b = await (await gContenu(p.id)).blob(); }catch(e){ if(e.status === 404){ manque++; continue; } throw e; }
+      if(p.src === "ls"){ if(svgCleOk(p.cle) && svgClePhoto(p.cle)) photos.push([p.cle, p.forme === "image" ? await svgEnTexte(b, p.type || "image/jpeg") : await b.text()]); }
+      else if(s.base) docs.push([p.cle, p.forme === "blob" ? new Blob([b], {type: p.type || "image/jpeg"}) : await b.arrayBuffer()]); }
+    // 3. Remise en place : le stockage d'abord (retour arrière si ça ne rentre pas), puis la base des documents
+    svgVoile("Remise en place des données…");
+    const avant = svgClesLS().map(k => [k, localStorage.getItem(k)]);
+    const vide = () => svgClesLS().forEach(k => localStorage.removeItem(k));
+    gelStockage = true;
+    try{ vide(); Object.keys(s.ls).filter(k => svgCleOk(k) && !svgClePhoto(k) && typeof s.ls[k] === "string").map(k => [k, s.ls[k]]).concat(photos).forEach(([k, v]) => localStorage.setItem(k, v)); }
+    catch(e){ vide(); avant.forEach(([k, v]) => { try{ localStorage.setItem(k, v); }catch(_){} });   // retour arrière, clé par clé
+      gelStockage = false; throw new Error("Pas assez de place sur le téléphone pour cette sauvegarde."); }
+    let docsOk = true;
+    if(s.base){ try{ await dtReq("readwrite", tx => { const m = tx.objectStore("meta"), p = tx.objectStore("pdf"); m.clear(); p.clear();
+      (Array.isArray(s.base.meta) ? s.base.meta : []).forEach(x => { if(x && x.id) m.put(x); }); docs.forEach(([k, v]) => p.put(v, k)); }); }catch(e){ docsOk = false; } }
+    svgNote({sig: "", err: ""});
+    svgVoile("Sauvegarde remise ✓" + (manque ? ` (${manque} photo${manque > 1 ? "s" : ""} ou document${manque > 1 ? "s" : ""} introuvable${manque > 1 ? "s" : ""} sur le Drive)` : "") + (docsOk ? "" : " Les documents PDF n'ont pas pu être remis."));
+    setTimeout(() => location.reload(), manque || !docsOk ? 4000 : 1200);   // l'appli redémarre sur les données remises
+  }catch(e){ svg.encours = false; svgVoile(null); svgDit(""); svgSheet(); svgDit("Restauration impossible, rien n'a été changé. " + svgMessage(e), true); svgLigneMaj(); }
+}
+
 listes = oLoad(LS_KEY); codes = oLoad(CD_KEY);
 tabs = tbLoad();
 try{ const v = JSON.parse(localStorage.getItem(KEY+"-vue"));
   if(v && v.name === "devis" && db.devis.some(d => d.id === v.id)) view = v; }catch(e){}
 render();
 initCloud();
+// Sauvegarde Drive : Google est préparé d'avance (sa fenêtre doit s'ouvrir pendant le toucher), puis on regarde si la sauvegarde du jour est due
+if(!svgHorsSite()){ if(navigator.onLine) gPreparer().catch(() => {});
+  svgVerifie(); setInterval(svgVerifie, 10 * 60000); window.addEventListener("online", svgVerifie);
+  document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible"){ svgVerifie(); svgLigneMaj(); } }); }
 
 /* Hors ligne (seulement si la page est servie en https, hors aperçu) */
 if("serviceWorker" in navigator && location.protocol === "https:" && window.top === window.self){
