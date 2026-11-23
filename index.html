@@ -665,6 +665,12 @@ select.t{appearance:none;-webkit-appearance:none;width:100%;font-size:16px;min-h
 .tb-scan-img img{display:block;width:100%;max-height:38vh;object-fit:contain;opacity:.85}
 .tb-scan-img i{position:absolute;left:0;right:0;height:3px;background:var(--primary);box-shadow:0 0 14px 4px rgba(224,76,245,.7);animation:tbScan 1.8s ease-in-out infinite alternate}
 @keyframes tbScan{from{top:4%}to{top:94%}}
+.tb-scan-bar{height:8px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden;margin:12px 0 8px}
+.tb-scan-bar i{display:block;height:100%;width:2%;border-radius:99px;background:linear-gradient(90deg,var(--primary),#46dcf6);transition:width .3s}
+.tb-crop{position:relative;overflow:hidden;border-radius:10px;background:#000;margin:0 auto 10px;border:1px solid var(--line);cursor:zoom-in}
+.tb-crop img{position:absolute;max-width:none;display:block}
+.tb-crop i{position:absolute;top:0;bottom:0;border:2px solid var(--primary);border-radius:6px;box-shadow:0 0 0 2000px rgba(0,0,0,.3);pointer-events:none}
+.tb-crop small{position:absolute;right:6px;bottom:5px;font-size:11px;color:#fff;background:rgba(0,0,0,.6);padding:2px 7px;border-radius:99px;pointer-events:none}
 
 .tb-coffret button.tb-rn{flex:0 1 auto;display:flex;align-items:center;gap:6px;border:0;text-align:left;overflow:hidden;padding:0 2px}.tb-coffret .tb-rg-h .tb-add{margin-left:4px}.tb-coffret .tb-rg-h .tb-add+span{margin-left:auto}
 .tb-coffret button.tb-rn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1d1a2b;font-size:17px;font-weight:700}
@@ -2771,6 +2777,7 @@ function tbModSheet(t, mid){
   const s = sheet(`<div class="tb-pop-h" style="--h:${TB_TEINTE[tbType(m).g] || 260}"><span class="tb-pop-b">${esc(tbCourt(m) || "—")}</span>
       <div><b>${esc(tbLib(m))}</b><small>${esc(r.nom || "Rangée " + (t.rangees.indexOf(r) + 1))} · emplacement ${tbPos(r, i)}</small></div>
       <button class="tb-pop-x" data-s="no" aria-label="Fermer">✕</button></div>
+    ${m.z && t.phr && tbPhoto(t.id) ? `<div class="tb-crop" id="tbCrop"></div>` : ""}
     <label class="f"><span>Nom du circuit</span><input class="t" id="tbMn" value="${esc(m.nom || "")}" placeholder="Ex. Four" autocomplete="off"></label>
     <label class="f"><span>Type</span><select class="t" id="tbMt">${TB_GROUPES.map(g => `<optgroup label="${g}">${Object.entries(TB_TYPES).filter(([, v]) => v.g === g).map(([k, v]) =>
       `<option value="${k}" ${k === m.t ? "selected" : ""}>${esc(v.lib)}</option>`).join("")}</optgroup>`).join("")}</select></label>
@@ -2781,7 +2788,7 @@ function tbModSheet(t, mid){
     ${t.rangees.length > 1 ? `<label class="f"><span>Rangée</span><select class="t" id="tbMr">${t.rangees.map((x, k) => `<option value="${x.id}" ${x === r ? "selected" : ""}>${k + 1}${x.nom ? " · " + esc(x.nom) : ""}</option>`).join("")}</select></label>` : ""}
     <div class="row2" style="margin-top:10px"><button class="btn sec danger-t" data-s="del" style="flex:0 0 auto;width:auto;padding:0 14px">🗑</button>
       <button class="btn sec" data-s="ok">OK</button>${suivant ? `<button class="btn" data-s="suiv">Suivant ›</button>` : ""}</div>`);
-  s.classList.add("pop");
+  s.classList.add("pop"); tbCropMontre(t, m, s.querySelector("#tbCrop"));
   const majSym = () => s.querySelectorAll("[data-y]").forEach(b => b.classList.toggle("on", b.dataset.y === sym));
   s.querySelectorAll("[data-y]").forEach(b => b.onclick = () => { sym = b.dataset.y; majSym();
     // La vignette choisie préremplit le nom, tant qu'il est vide ou qu'il vient d'une vignette
@@ -2930,6 +2937,8 @@ function tbScanApplique(t, res){
     (Array.isArray(rg && rg.mods) ? rg.mods : []).slice(0, 48).forEach(x => { if(!x || typeof x !== "object") return;
       const k = TB_TYPES[x.t] && x.t !== "vide" ? x.t : "autre", m = {id: uid(), t: k, nom: String(x.nom || "").replace(/\s+/g, " ").trim().slice(0, 200)};
       if(k === "autre"){ m.lib = String(x.lib || "Module").trim().slice(0, 30) || "Module"; m.w = Math.max(.5, Math.min(8, Math.round((+x.w || 1) * 2) / 2)); }
+      // z : où se trouve l'appareil sur la photo (zone à montrer, puis place de l'appareil), en fractions de l'image
+      if(Array.isArray(x.z) && x.z.length === 6 && x.z.every(v => typeof v === "number" && v >= 0 && v <= 1) && x.z[2] > 0 && x.z[3] > 0) m.z = x.z;
       let p = Math.round(+x.p * 2); if(!(p >= fin)) p = fin; if(fin + tbW2(m) > 48) return; m.p = Math.min(p, 48 - tbW2(m)); fin = m.p + tbW2(m); r.mods.push(m); });
     maxFin = Math.max(maxFin, fin); t.rangees.push(r); });
   const dit = [13, 18, 24].includes(+res.larg) ? +res.larg : 13;
@@ -2937,38 +2946,83 @@ function tbScanApplique(t, res){
 }
 function tbScanSheet(){
   const s = sheet(`<h3>📷 Scan d'un tableau</h3>
-    <p style="font-size:13.5px;color:var(--muted);margin:-4px 0 10px">Prends le tableau bien en face, porte ouverte, avec toutes les rangées dans le cadre et assez de lumière. L'appli compte les modules et propose leur type. Tu corriges ensuite comme pour un nouveau tableau.</p>
+    <p style="font-size:13.5px;color:var(--muted);margin:-4px 0 10px">Prends le tableau <b>de près et bien en face</b>, porte ouverte, avec de la lumière : les calibres (C16, C20…) doivent être nets. L'appli lit la photo toute seule, dans le téléphone, et propose les rangées et les disjoncteurs. Tu corriges ensuite.</p>
     <label class="f"><span>Nom du chantier</span><input class="t" id="tbNom" placeholder="Ex. Dupont — cuisine" autocomplete="off"></label>
     <div class="row2"><label class="btn tb-file"><input type="file" accept="image/*" capture="environment" id="tbCam">📷 Prendre la photo</label>
       <label class="btn sec tb-file"><input type="file" accept="image/*" id="tbGal">🖼 Choisir une photo</label></div>`);
   s.querySelectorAll("input[type=file]").forEach(i => i.onchange = () => { const f = i.files && i.files[0]; if(!f) return;
     tbScan(f, s.querySelector("#tbNom").value.trim() || "Tableau du " + new Date().toLocaleDateString("fr-FR")); });
 }
+/* Lecteur intégré : il tourne dans le téléphone (fichier tb-ocr.js et dossier ocr/), la photo n'est envoyée nulle part.
+   Il est chargé à la première lecture seulement (30 Mo), puis gardé par le téléphone. */
+let tbOcrP = null;
+function tbOcr(){ if(window.TBOCR && TBOCR.analyser) return Promise.resolve(TBOCR);
+  return tbOcrP || (tbOcrP = new Promise((ok, ko) => { const s = document.createElement("script"); s.src = "tb-ocr.js";
+    const rate = () => { tbOcrP = null; s.remove(); ko(new Error("lecteur")); };
+    s.onload = () => window.TBOCR && TBOCR.analyser ? ok(TBOCR) : rate(); s.onerror = rate; document.head.appendChild(s); })); }
+// Photo en bonne définition, gardée dans la base locale du téléphone : elle sert à montrer chaque disjoncteur dans sa fiche
+const tbHD = {};
+function tbPhotoHD(id){ if(tbHD[id]) return Promise.resolve(tbHD[id]);
+  return dtReq("readonly", tx => tx.objectStore("pdf").get("tbph-" + id)).then(b => b ? (tbHD[id] = URL.createObjectURL(b)) : "").catch(() => ""); }
+function tbPhotoHDGarde(id, blob){ return dtReq("readwrite", tx => { tx.objectStore("pdf").put(blob, "tbph-" + id); }).catch(() => {}); }
+function tbPhotoHDSuppr(id){ if(tbHD[id]){ URL.revokeObjectURL(tbHD[id]); delete tbHD[id]; } dtReq("readwrite", tx => { tx.objectStore("pdf").delete("tbph-" + id); }).catch(() => {}); }
+// Dans la fiche d'un module lu sur la photo : le morceau de photo où il se trouve, lui-même encadré
+function tbCropMontre(t, m, el){ if(!el) return; const z = m.z;
+  let ch = Math.min(210, Math.round(window.innerHeight * .27)), cw = Math.round(ch * z[2] / (z[3] * t.phr)); const maxW = Math.min(320, window.innerWidth - 72);
+  if(cw > maxW){ ch = Math.round(ch * maxW / cw); cw = maxW; }
+  el.style.width = cw + "px"; el.style.height = ch + "px";
+  const pose = src => { if(src) el.innerHTML = `<img src="${src}" alt="" style="width:${cw / z[2]}px;height:${ch / z[3]}px;left:${-z[0] / z[2] * cw}px;top:${-z[1] / z[3] * ch}px"><i style="left:${(z[4] - z[0]) / z[2] * 100}%;width:${z[5] / z[2] * 100}%"></i><small>sur la photo</small>`; };
+  pose(tbPhoto(t.id)); tbPhotoHD(t.id).then(u => { if(u && el.isConnected) pose(u); });
+  el.onclick = () => tbPhotoVue(tbHD[t.id] || tbPhoto(t.id)); }
 async function tbScan(file, nom){
-  let grand; try{ grand = tbToile(await tbImage(file), 1600); }catch(e){ toast("Photo illisible, réessaie"); return; }
+  let grand; try{ grand = tbToile(await tbImage(file), 3200); }catch(e){ toast("Photo illisible, réessaie"); return; }
   const mini = tbToile(grand, 1000).toDataURL("image/jpeg", .6);
-  const t = {id: uid(), kind: "tableau", origine: "scan", chantier: nom, cree: Date.now(), maj: Date.now(), larg: 13, rangees: []};
-  const finir = () => { tabs.push(t); try{ localStorage.setItem(tbPhKey(t.id), mini); }catch(e){} tbSave(t); closeSheet(); go("tableau", {tid: t.id}); };
-  const aLaMain = msg => { t.rangees = [{id: uid(), mods: []}]; finir();
-    const s = sheet(`<h3>Lecture automatique indisponible</h3><p style="font-size:14px;margin:0 0 12px">${msg}</p><p style="font-size:14px;color:var(--muted);margin:0 0 14px">La photo est gardée en haut du tableau : tu peux le recopier en l'ayant sous les yeux.</p><button class="btn" data-s="ok">Compris</button>`);
+  const t = {id: uid(), kind: "tableau", origine: "scan", chantier: nom, cree: Date.now(), maj: Date.now(), larg: 13, rangees: [], phr: Math.round(grand.height / grand.width * 1e4) / 1e4};
+  const finir = () => { tabs.push(t); try{ localStorage.setItem(tbPhKey(t.id), mini); }catch(e){}
+    try{ tbToile(grand, 2000).toBlob(b => { if(b) tbPhotoHDGarde(t.id, b); }, "image/jpeg", .8); }catch(e){}
+    tbSave(t); closeSheet(); go("tableau", {tid: t.id}); };
+  const aLaMain = (titre, msg) => { t.rangees = [{id: uid(), mods: []}]; finir();
+    const s = sheet(`<h3>${titre}</h3><p style="font-size:14px;margin:0 0 12px">${msg}</p><p style="font-size:14px;color:var(--muted);margin:0 0 14px">La photo est gardée en haut du tableau : tu peux le recopier en l'ayant sous les yeux.</p><button class="btn" data-s="ok">Compris</button>`);
     s.querySelector('[data-s="ok"]').onclick = closeSheet; };
+  const trouve = () => { const nm = t.rangees.reduce((a, r) => a + r.mods.length, 0); if(!nm) return false;
+    t.scan = true; finir(); toast(`${t.rangees.length} rangée${t.rangees.length > 1 ? "s" : ""} et ${nm} module${nm > 1 ? "s" : ""} trouvés`); return true; };
+  let arret = false;
+  const s = sheet(`<h3>Lecture de la photo…</h3><div class="tb-scan-img"><img src="${mini}" alt=""><i></i></div>
+    <div class="tb-scan-bar"><i id="tbScanBar"></i></div><p id="tbScanMsg" style="font-size:13.5px;color:var(--muted);margin:0 0 12px">Préparation du lecteur…</p><button class="btn sec" data-s="no">Annuler</button>`);
+  s.querySelector('[data-s="no"]').onclick = () => { arret = true; closeSheet(); };
+  const dit = (p, m) => { const b = document.getElementById("tbScanBar"), e = document.getElementById("tbScanMsg"); if(b) b.style.width = Math.max(2, Math.round(p * 100)) + "%"; if(e && m) e.textContent = m; };
+  let etape = "lecteur";
+  try{
+    const O = await tbOcr(), t0 = Date.now(); let long = false;
+    await O.charger("ocr/", p => { if(p < .98 && Date.now() - t0 > 1200) long = true; dit(.3 * p, long ? `Installation du lecteur : ${Math.round(p * 100)} % (30 Mo, la première fois seulement)` : "Préparation du lecteur…"); }, {b64: !!(window.claude && claude.use)});
+    if(arret) return; etape = "lecture";
+    const r = await O.analyser(grand, (p, e) => dit(.3 + .7 * p, e === "texte" ? "Lecture des calibres et des étiquettes…" : "Recherche des rangées de disjoncteurs…"), {stop: () => arret});
+    if(arret) return;
+    tbScanApplique(t, O.tableau(r.boites, grand.width, grand.height));
+    if(!trouve()) aLaMain("Rien de lisible sur cette photo", esc(t.note || "Je n'ai reconnu aucun disjoncteur sur cette photo."));
+  }catch(e){ if(arret || (e && e.code === "cancelled")) return;
+    // Secours, seulement dans l'aperçu ouvert depuis Claude : si le lecteur intégré ne démarre pas, l'analyse passe par Claude
+    if(etape === "lecteur" && await tbScanClaude(t, grand, trouve, aLaMain, () => arret)) return;
+    if(arret) return;
+    aLaMain("Lecture automatique indisponible", etape === "lecteur" ? "Le lecteur de photo n'a pas pu s'installer. La première fois il faut du réseau pour télécharger 30 Mo ; ensuite il marche même sans connexion."
+      : "La lecture de la photo s'est arrêtée en route. Réessaie avec une photo prise d'un peu plus loin, ou ferme les autres applis ouvertes."); }
+}
+// Ancienne lecture par Claude (aperçu seulement). Renvoie true si elle a pris la main.
+async function tbScanClaude(t, grand, trouve, aLaMain, arrete){
   let sample = null, lim = null;
   try{ if(window.claude && claude.use) sample = await claude.use("sample"); if(sample) lim = await sample.limits(); }catch(e){}
-  if(!sample || !lim || !lim.images){ aLaMain("Cette version de l'appli ne peut pas encore lire la photo toute seule."); return; }
-  const ctl = new AbortController();
-  const s = sheet(`<h3>Lecture de la photo…</h3><div class="tb-scan-img"><img src="${mini}" alt=""><i></i></div>
-    <p style="font-size:13.5px;color:var(--muted);margin:10px 0 12px">Je compte les rangées et les modules. Ça prend en général moins d'une minute.</p><button class="btn sec" data-s="no">Annuler</button>`);
-  s.querySelector('[data-s="no"]').onclick = () => { ctl.abort(); closeSheet(); };
+  if(!sample || !lim || !lim.images) return false;
+  const e0 = document.getElementById("tbScanMsg"); if(e0) e0.textContent = "Je compte les rangées et les modules. Ça prend en général moins d'une minute.";
   try{
-    const blob = await new Promise(r => grand.toBlob(r, "image/jpeg", .85));
-    const res = await sample.json(tbScanPrompt(), {images: [blob], signal: ctl.signal, cache: false});
+    const blob = await new Promise(r => tbToile(grand, 1600).toBlob(r, "image/jpeg", .85));
+    const res = await sample.json(tbScanPrompt(), {images: [blob], cache: false});
+    if(arrete()) return true;
     tbScanApplique(t, res);
-    const nm = t.rangees.reduce((a, r) => a + r.mods.length, 0);
-    if(!nm){ aLaMain(t.note ? esc(t.note) : "Je n'ai reconnu aucun module sur cette photo."); return; }
-    t.scan = true; finir(); toast(`${t.rangees.length} rangée${t.rangees.length > 1 ? "s" : ""} et ${nm} module${nm > 1 ? "s" : ""} trouvés`);
-  }catch(e){ const c = e && e.code; if(c === "cancelled") return;
-    aLaMain(c === "not_granted" ? "Tu n'as pas autorisé l'analyse de la photo." : c === "rate_limited" ? "Trop de demandes pour l'instant, réessaie un peu plus tard."
+    if(!trouve()) aLaMain("Rien de lisible sur cette photo", t.note ? esc(t.note) : "Je n'ai reconnu aucun module sur cette photo.");
+  }catch(e){ const c = e && e.code; if(c === "cancelled" || arrete()) return true;
+    aLaMain("Lecture automatique indisponible", c === "not_granted" ? "Tu n'as pas autorisé l'analyse de la photo." : c === "rate_limited" ? "Trop de demandes pour l'instant, réessaie un peu plus tard."
       : c === "image_rejected" ? "La photo n'a pas été acceptée (trop lourde ou format inconnu)." : c === "refused" ? "La photo n'a pas pu être analysée." : "L'analyse de la photo n'a pas abouti."); }
+  return true;
 }
 function tbPhotoVue(src){ const o = document.createElement("div"); o.className = "tb-ap tb-phv";
   o.innerHTML = `<div class="tb-ap-h"><div><b>Photo du tableau</b><small>Touche la photo pour zoomer</small></div><button data-x aria-label="Fermer">✕</button></div><div class="tb-ap-c"><img src="${src}" alt=""></div>`;
@@ -2982,7 +3036,7 @@ document.addEventListener("click", e => {
   if(a === "scan"){ tbScanSheet(); return; }
   if(a === "ouvrir"){ go("tableau", {tid: b.dataset.id}); return; }
   if(a === "suppr"){ const x = tabs.find(v => v.id === b.dataset.id); if(!x) return;
-    confirmSheet(`Supprimer le tableau « ${esc(x.chantier)} » ?`, "Supprimer", () => { tabs = tabs.filter(v => v !== x); tbSave(); cloudSave(x.id); try{ localStorage.removeItem(tbPhKey(x.id)); }catch(_){} closeSheet(); render(); }); return; }
+    confirmSheet(`Supprimer le tableau « ${esc(x.chantier)} » ?`, "Supprimer", () => { tabs = tabs.filter(v => v !== x); tbSave(); cloudSave(x.id); try{ localStorage.removeItem(tbPhKey(x.id)); }catch(_){} tbPhotoHDSuppr(x.id); closeSheet(); render(); }); return; }
   if(!t) return;
   const rg = b.closest("[data-rid]"), r = rg && t.rangees.find(v => v.id === rg.dataset.rid);
   if(a === "renommer") tbNomSheet(t);

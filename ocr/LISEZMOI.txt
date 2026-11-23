@@ -1,0 +1,20 @@
+Lecteur de photos de l'appli (scan d'un tableau électrique)
+============================================================
+
+Ces fichiers font tourner la lecture du texte directement dans le téléphone.
+Aucune photo n'est envoyée sur Internet. Ils sont téléchargés une seule fois
+(30 Mo), à la première lecture, puis gardés par le téléphone.
+
+Fichiers et origine
+-------------------
+ort.wasm.min.js, ort-wasm-simd-threaded.js (renommé depuis .mjs), ort-wasm-simd-threaded.wasm
+    ONNX Runtime Web 1.31.1 (paquet npm « onnxruntime-web »)
+    Copyright (c) Microsoft Corporation. Licence MIT.
+    https://github.com/microsoft/onnxruntime
+
+det.onnx (détection des zones de texte), rec.onnx (lecture du texte), dict.txt (liste des caractères)
+    Modèles PP-OCRv4 de PaddleOCR, repris du paquet npm « @gutenye/ocr-models » 1.4.2 (licence MIT)
+    Copyright (c) PaddlePaddle Authors. Licence Apache 2.0.
+    https://github.com/PaddlePaddle/PaddleOCR
+
+Le code qui les utilise est dans ../tb-ocr.js.
